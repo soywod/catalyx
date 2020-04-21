@@ -19,32 +19,36 @@ const data$ = new BehaviorSubject<Data[]>([]);
 
 const $table = $("#table tbody");
 
-$table.bindArr(data$, data => `<tr><td>${data.name}</td></tr>`);
+// TODO unsubscribe
+if ($table.elem) {
+  const tableObserver = new MutationObserver(mutlist => {
+    /* console.log(mutlist); */
+  });
 
-$table.on("click", evt => {
-  if (evt.target instanceof HTMLTableCellElement) {
-    if (evt.target.parentElement) {
-      const idx = evt.target.parentElement.getAttribute("data-key");
-      if (idx) {
-        data$.next(Object.assign(data$.value, {[+idx]: {name: "YOLO *changed"}}));
-      }
-    }
-  }
+  tableObserver.observe($table.elem, {childList: true});
+}
+
+$table.bindArr(
+  data$,
+  data => `
+    <tr>
+      <td>
+        <span>${data.name}</span>
+      </td>
+    </tr>
+  `,
+);
+
+$table.on("click", "tr", evt => {
+  data$.next(Object.assign(data$.value, {[evt.key]: {name: "YOLO *changed"}}));
 });
 
-$table.on("contextmenu", evt => {
+$table.on("contextmenu", "tr", evt => {
   evt.preventDefault();
-  if (evt.target instanceof HTMLTableCellElement) {
-    if (evt.target.parentElement) {
-      const dataIdx = evt.target.parentElement.getAttribute("data-key");
-      if (dataIdx) {
-        data$.next(
-          Object.assign(
-            [],
-            data$.value.filter((_, idx) => idx !== +dataIdx),
-          ),
-        );
-      }
-    }
-  }
+  data$.next(
+    Object.assign(
+      [],
+      data$.value.filter((_, key) => key !== evt.key),
+    ),
+  );
 });

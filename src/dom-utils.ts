@@ -9,13 +9,26 @@ type Trex = TrexBindings & {
   elems: HTMLElement[];
 };
 
+type TrexBind = <T>(obs$: Observable<T>, fn: (val: T) => string) => void;
+type TrexBindArr = <T>(obs$: Observable<T[]>, render: (val: T, idx: number) => string) => void;
+
+type TrexOn = <T extends keyof GlobalEventHandlersEventMap>(
+  evtType: T,
+  targetOrFn: string | TrexOnFn<T>,
+  fn?: TrexOnFn<T>,
+) => void;
+
+type TrexOnFn<T extends keyof GlobalEventHandlersEventMap> = (
+  evt: GlobalEventHandlersEventMap[T] & {
+    mainTarget: HTMLElement;
+    key: number;
+  },
+) => void;
+
 type TrexBindings = {
-  bind: <T>(obs$: Observable<T>, fn: (val: T) => string) => void;
-  bindArr: <T>(obs$: Observable<T[]>, render: (val: T, idx: number) => string) => void;
-  on: <T extends keyof GlobalEventHandlersEventMap>(
-    evtType: T,
-    fn: (evt: GlobalEventHandlersEventMap[T], el: HTMLElement) => void,
-  ) => void;
+  bind: TrexBind;
+  bindArr: TrexBindArr;
+  on: TrexOn;
 };
 
 function trexFactory(e: HTMLElement | null): Trex;
@@ -74,9 +87,26 @@ function trexFactory(e: HTMLElement | HTMLElement[] | null) {
           });
       });
     },
-    on: (evtType, fn) => {
+    on: (evtType, targetOrFn, fn) => {
       elems.forEach(elem => {
-        elem.addEventListener(evtType, evt => fn(evt, elem));
+        elem.addEventListener(evtType, evt => {
+          if (typeof targetOrFn === "string" && typeof fn === "function") {
+            const $target = $(targetOrFn, elem);
+            const containsTarget = (el: HTMLElement) => {
+              if (!(evt.target instanceof Node)) return false;
+              if (!el.contains(evt.target)) return false;
+              return true;
+            };
+
+            $target.elems.filter(containsTarget).forEach(elem => {
+              const overload = {mainTarget: elem, key: Number(elem.getAttribute("data-key"))};
+              fn(Object.assign(evt, overload));
+            });
+          } else if (typeof targetOrFn === "function") {
+            const overload = {mainTarget: elem, key: Number(elem.getAttribute("data-key"))};
+            targetOrFn(Object.assign(evt, overload));
+          }
+        });
       });
     },
   };
@@ -84,7 +114,8 @@ function trexFactory(e: HTMLElement | HTMLElement[] | null) {
   return Object.assign({elem, elems}, bindings);
 }
 
-export function $(selector: string): Trex {
+export function $(selector: string, parent?: HTMLElement): Trex {
+  const root = parent || document;
   const sanitizedSelector = selector.trim();
   if (sanitizedSelector.length === 0) return trexFactory([]);
 
@@ -95,7 +126,7 @@ export function $(selector: string): Trex {
 
   if (sanitizedSelector[0] === "." && selector.indexOf(" ") === -1) {
     return trexFactory(
-      Array.from(document.getElementsByClassName(selector.slice(1))).reduce<HTMLElement[]>(
+      Array.from(root.getElementsByClassName(selector.slice(1))).reduce<HTMLElement[]>(
         (elements, el) => (el instanceof HTMLElement ? [...elements, el] : elements),
         [],
       ),
@@ -103,7 +134,7 @@ export function $(selector: string): Trex {
   }
 
   return trexFactory(
-    Array.from(document.querySelectorAll(selector)).reduce<HTMLElement[]>(
+    Array.from(root.querySelectorAll(selector)).reduce<HTMLElement[]>(
       (elements, el) => (el instanceof HTMLElement ? [...elements, el] : elements),
       [],
     ),
