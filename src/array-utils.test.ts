@@ -1,4 +1,4 @@
-import {ArrDiffs, arrayDiffs} from "./array-utils"
+import {ArrDiffs, arrayDiffs} from "./array-utils";
 
 test("String array diff", () => {
   const cases: [string[], string[], ArrDiffs<string>][] = [
@@ -24,9 +24,9 @@ test("String array diff", () => {
         {type: "update", idx: 0, item: "c"},
       ],
     ],
-  ]
+  ];
 
   for (const [a, b, expectedDiff] of cases) {
-    expect(arrayDiffs(a, b)).toEqual(expectedDiff)
+    expect(arrayDiffs(a, b)).toEqual(expectedDiff);
   }
-})
+});

@@ -1,75 +1,50 @@
-import {BehaviorSubject} from "rxjs"
+import {BehaviorSubject} from "rxjs";
 
-import {findElement, createElement} from "../dom-utils"
-import {bind, bindArr, on} from "../bind"
+import {$} from "../dom-utils";
 
-const counter$ = new BehaviorSubject(1)
-const counterEl = findElement("#counter")
-const incEl = findElement("#inc")
+const counter$ = new BehaviorSubject(1);
 
-bind(counter$, counterEl, (counter, el) => {
-  el.innerHTML = String(counter)
-})
+$("#counter").bind(counter$, counter => String(counter));
 
-on("click", incEl, () => {
-  counter$.next(counter$.value + 1)
-  data$.next([...data$.value, {name: "YOLO"}])
-})
+$("#inc").on("click", () => {
+  counter$.next(counter$.value + 1);
+  data$.next([...data$.value, {name: "YOLO"}]);
+});
 
 type Data = {
-  name: string
-}
+  name: string;
+};
 
-const data$ = new BehaviorSubject<Data[]>([])
+const data$ = new BehaviorSubject<Data[]>([]);
 
-const tableEl = findElement("#table tbody")
+const $table = $("#table tbody");
 
-if (tableEl) {
-  const tableObserver = new MutationObserver(mutlist => {
-    console.log(mutlist)
-  })
+$table.bindArr(data$, data => `<tr><td>${data.name}</td></tr>`);
 
-  tableObserver.observe(tableEl, {childList: true})
-}
-
-bindArr(
-  data$,
-  tableEl,
-  (change, el) => {
-    switch (change.type) {
-      case "create": {
-        el.appendChild(
-          createElement("tr", {"data-idx": String(change.idx)}, `<td>${change.item.name}</td>`),
-        )
-        break
-      }
-
-      case "update": {
-        const rowEl = el.children.item(change.idx)
-        rowEl &&
-          rowEl.replaceWith(
-            createElement("tr", {"data-idx": String(change.idx)}, `<td>${change.item.name}</td>`),
-          )
-        break
-      }
-
-      case "delete": {
-        const rowEl = el.children.item(change.idx)
-        rowEl && rowEl.remove()
-        break
-      }
-    }
-  },
-  (a, b) => a.name === b.name,
-)
-
-on("click", tableEl, evt => {
+$table.on("click", evt => {
   if (evt.target instanceof HTMLTableCellElement) {
     if (evt.target.parentElement) {
-      const idx = evt.target.parentElement.getAttribute("data-idx")
+      const idx = evt.target.parentElement.getAttribute("data-key");
       if (idx) {
-        data$.next(Object.assign(data$.value, {[+idx]: {name: "coucou"}}))
+        data$.next(Object.assign(data$.value, {[+idx]: {name: "YOLO *changed"}}));
       }
     }
   }
-})
+});
+
+$table.on("contextmenu", evt => {
+  evt.preventDefault();
+  if (evt.target instanceof HTMLTableCellElement) {
+    if (evt.target.parentElement) {
+      const dataIdx = evt.target.parentElement.getAttribute("data-key");
+      if (dataIdx) {
+        data$.next(
+          Object.assign(
+            [],
+            data$.value.filter((_, idx) => idx !== +dataIdx),
+          ),
+        );
+      }
+    }
+  }
+});

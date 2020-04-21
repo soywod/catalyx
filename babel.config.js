@@ -1,5 +1,5 @@
 module.exports = api => {
-  api.cache(true)
+  api.cache(true);
 
   return {
     presets: [
@@ -11,5 +11,5 @@ module.exports = api => {
       "@babel/proposal-class-properties",
       "@babel/proposal-object-rest-spread",
     ],
-  }
-}
+  };
+};
