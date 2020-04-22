@@ -34,12 +34,17 @@ defineCustomElement(template, styles, $ => {
     }
   });
 
-  $(".tasks").bindList(tasks$, task => {
+  $(".tasks").bind(tasks$, task => {
     const classes = cn("task", {done: task.done});
     return `<div class="${classes}">${task.desc}</div>`;
   });
 
   $(".tasks").on("click", ".task", evt => {
     tasks$.next(tasks$.value.map((t, key) => (key === evt.key ? {...t, done: !t.done} : t)));
+  });
+
+  $(".tasks").on("contextmenu", ".task", evt => {
+    evt.preventDefault();
+    tasks$.next(tasks$.value.filter((_, key) => key !== evt.key));
   });
 });

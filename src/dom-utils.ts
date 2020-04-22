@@ -1,5 +1,4 @@
-import {Observable, BehaviorSubject, defer} from "rxjs";
-import {withLatestFrom, flatMap, mergeAll} from "rxjs/operators";
+import {Observable, BehaviorSubject} from "rxjs";
 import isEqual from "lodash/fp/isEqual";
 
 import {arrayDiffs} from "./array-utils";
@@ -9,8 +8,10 @@ type Trex = TrexBindings & {
   elems: HTMLElement[];
 };
 
-type TrexBind = <T>(obs$: Observable<T>, fn: (val: T, elem: HTMLElement) => any) => void;
-type TrexBindList = <T>(obs$: Observable<T[]>, fn: (val: T, idx: number) => string) => void;
+type TrexBind = <T>(
+  obs$: Observable<T | T[]>,
+  fn: (val: T, elem: HTMLElement, idx: number) => any,
+) => void;
 
 type TrexOn = <T extends keyof GlobalEventHandlersEventMap>(
   evtType: T,
@@ -27,7 +28,6 @@ type TrexOnFn<T extends keyof GlobalEventHandlersEventMap> = (
 
 type TrexBindings = {
   bind: TrexBind;
-  bindList: TrexBindList;
   on: TrexOn;
 };
 
@@ -37,56 +37,51 @@ function trexFactory(e: HTMLElement | HTMLElement[] | null) {
   const elems: HTMLElement[] = Array.isArray(e) ? e : e ? [e] : [];
   const elem: HTMLElement | null = 0 in elems ? elems[0] : null;
   const bindings: TrexBindings = {
-    bind: (obs$, render) => {
-      elems.forEach(elem => {
-        obs$.subscribe(val => {
-          const content = render(val, elem);
-          if (typeof content === "string") {
-            elem.innerHTML = content;
-          }
-        });
-      });
-    },
-    bindList: <T>(obs$: Observable<T[]>, render: (val: T, idx: number) => string) => {
+    bind: <T>(
+      obs$: Observable<T | T[]>,
+      fn: (val: T, elem: HTMLElement, idx: number) => string,
+    ) => {
       elems.forEach(elem => {
         const prev$ = new BehaviorSubject<T[]>([]);
-        const subscription = obs$
-          .pipe(
-            withLatestFrom(prev$),
-            flatMap(([next, prev]) => [
-              arrayDiffs(prev, next, isEqual),
-              defer(() => prev$.next(Object.assign([], next))),
-            ]),
-            mergeAll(),
-          )
-          .subscribe(change => {
-            console.log("CHANGE", change);
+        const subscription = obs$.subscribe(next => {
+          if (Array.isArray(next)) {
+            arrayDiffs(prev$.value, next, isEqual).forEach(change => {
+              console.log("CHANGE", change);
 
-            switch (change.type) {
-              case "create": {
-                const child = parseHTML(render(change.item, change.idx));
-                child.setAttribute("data-key", String(change.idx));
-                elem.appendChild(child);
-                break;
-              }
-
-              case "update": {
-                const rowEl = elem.children.item(change.idx);
-                if (rowEl) {
-                  const child = parseHTML(render(change.item, change.idx));
+              switch (change.type) {
+                case "create": {
+                  const child = parseHTML(fn(change.item, elem, change.idx));
                   child.setAttribute("data-key", String(change.idx));
-                  rowEl.replaceWith(child);
+                  elem.appendChild(child);
+                  break;
                 }
-                break;
-              }
 
-              case "delete": {
-                const rowEl = elem.children.item(change.idx);
-                rowEl && rowEl.remove();
-                break;
+                case "update": {
+                  const rowEl = elem.children.item(change.idx);
+                  if (rowEl) {
+                    const child = parseHTML(fn(change.item, elem, change.idx));
+                    child.setAttribute("data-key", String(change.idx));
+                    rowEl.replaceWith(child);
+                  }
+                  break;
+                }
+
+                case "delete": {
+                  const rowEl = elem.children.item(change.idx);
+                  rowEl && rowEl.remove();
+                  break;
+                }
               }
+            });
+
+            prev$.next(Object.assign([], next));
+          } else {
+            const content = fn(next, elem, NaN);
+            if (typeof content === "string") {
+              elem.innerHTML = content;
             }
-          });
+          }
+        });
 
         if (elem.parentNode) {
           const elemObs = new MutationObserver(mutlist => {
