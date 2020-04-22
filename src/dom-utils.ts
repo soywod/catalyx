@@ -1,4 +1,4 @@
-import {Observable, BehaviorSubject} from "rxjs";
+import {Observable} from "rxjs";
 import isEqual from "lodash/fp/isEqual";
 
 import {arrayDiffs} from "./array-utils";
@@ -42,10 +42,10 @@ function trexFactory(e: HTMLElement | HTMLElement[] | null) {
       fn: (val: T, elem: HTMLElement, idx: number) => string,
     ) => {
       elems.forEach(elem => {
-        const prev$ = new BehaviorSubject<T[]>([]);
+        let prev: T[] = [];
         const subscription = obs$.subscribe(next => {
           if (Array.isArray(next)) {
-            arrayDiffs(prev$.value, next, isEqual).forEach(change => {
+            arrayDiffs(prev, next, isEqual).forEach(change => {
               console.log("CHANGE", change);
 
               switch (change.type) {
@@ -74,7 +74,7 @@ function trexFactory(e: HTMLElement | HTMLElement[] | null) {
               }
             });
 
-            prev$.next(Object.assign([], next));
+            prev = Object.assign([], next);
           } else {
             const content = fn(next, elem, NaN);
             if (typeof content === "string") {
@@ -99,9 +99,13 @@ function trexFactory(e: HTMLElement | HTMLElement[] | null) {
         }
       });
     },
-    on: (evtType, targetOrFn, fn) => {
+    on: <T extends keyof GlobalEventHandlersEventMap>(
+      evtType: T,
+      targetOrFn: string | TrexOnFn<T>,
+      fn?: TrexOnFn<T>,
+    ) => {
       elems.forEach(elem => {
-        elem.addEventListener(evtType, evt => {
+        function handler(evt: HTMLElementEventMap[T]) {
           if (typeof targetOrFn === "string" && typeof fn === "function") {
             const $target = $(targetOrFn, elem);
             const containsTarget = (el: HTMLElement) => {
@@ -118,7 +122,24 @@ function trexFactory(e: HTMLElement | HTMLElement[] | null) {
             const overload = {mainTarget: elem, key: Number(elem.getAttribute("data-key"))};
             targetOrFn(Object.assign(evt, overload));
           }
-        });
+        }
+
+        elem.addEventListener(evtType, handler);
+
+        if (elem.parentNode) {
+          const elemObs = new MutationObserver(mutlist => {
+            mutlist
+              .flatMap(mut => Array.from(mut.removedNodes))
+              .forEach(removedNode => {
+                if (removedNode.isEqualNode(elem.parentNode)) {
+                  console.log("unsub!");
+                  elem.removeEventListener(evtType, handler);
+                }
+              });
+          });
+
+          elemObs.observe(document.body, {childList: true});
+        }
       });
     },
   };
