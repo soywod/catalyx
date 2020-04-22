@@ -44,11 +44,10 @@ function trexFactory(e: HTMLElement | HTMLElement[] | null) {
         });
       });
     },
-    bindArr: <T>(next$: Observable<T[]>, render: (val: T, idx: number) => string) => {
+    bindArr: <T>(obs$: Observable<T[]>, render: (val: T, idx: number) => string) => {
       elems.forEach(elem => {
         const prev$ = new BehaviorSubject<T[]>([]);
-
-        next$
+        const subscription = obs$
           .pipe(
             withLatestFrom(prev$),
             flatMap(([next, prev]) => [
@@ -85,6 +84,21 @@ function trexFactory(e: HTMLElement | HTMLElement[] | null) {
               }
             }
           });
+
+        if (elem.parentNode) {
+          const elemObs = new MutationObserver(mutlist => {
+            mutlist
+              .flatMap(mut => Array.from(mut.removedNodes))
+              .forEach(removedNode => {
+                if (removedNode.isEqualNode(elem.parentNode)) {
+                  console.log("unsub!");
+                  subscription.unsubscribe();
+                }
+              });
+          });
+
+          elemObs.observe(document.body, {childList: true});
+        }
       });
     },
     on: (evtType, targetOrFn, fn) => {
@@ -114,24 +128,10 @@ function trexFactory(e: HTMLElement | HTMLElement[] | null) {
   return Object.assign({elem, elems}, bindings);
 }
 
-export function $(selector: string, parent?: HTMLElement): Trex {
+export function $(selector: string, parent?: ParentNode): Trex {
   const root = parent || document;
   const sanitizedSelector = selector.trim();
   if (sanitizedSelector.length === 0) return trexFactory([]);
-
-  if (sanitizedSelector[0] === "#" && sanitizedSelector.indexOf(" ") === -1) {
-    const element = document.getElementById(selector.slice(1));
-    return trexFactory(element ? [element] : []);
-  }
-
-  if (sanitizedSelector[0] === "." && selector.indexOf(" ") === -1) {
-    return trexFactory(
-      Array.from(root.getElementsByClassName(selector.slice(1))).reduce<HTMLElement[]>(
-        (elements, el) => (el instanceof HTMLElement ? [...elements, el] : elements),
-        [],
-      ),
-    );
-  }
 
   return trexFactory(
     Array.from(root.querySelectorAll(selector)).reduce<HTMLElement[]>(
@@ -141,10 +141,65 @@ export function $(selector: string, parent?: HTMLElement): Trex {
   );
 }
 
-function parseHTML(html: string): HTMLElement {
+export function parseHTML(html: string): HTMLElement {
   const wrapper = document.createElement("template");
   wrapper.innerHTML = html.trim();
   const elem = wrapper.content.firstElementChild;
   if (!(elem instanceof HTMLElement)) throw "Parsing element failed!";
   return elem;
+}
+
+type DefineCustomElementFn = ($: (selector: string) => Trex) => void;
+
+export function defineCustomElement(view: string, fn?: DefineCustomElementFn): void;
+export function defineCustomElement(
+  view: string,
+  styles?: string,
+  fn?: DefineCustomElementFn,
+): void;
+export function defineCustomElement(
+  view: string,
+  stylesOrFn?: string | DefineCustomElementFn,
+  fn?: DefineCustomElementFn,
+) {
+  const maybeTpl = parseHTML(view);
+  if (!(maybeTpl instanceof HTMLTemplateElement))
+    throw new Error("The view must be in a <template>.");
+  const tpl: HTMLTemplateElement = maybeTpl;
+  const tplIdAttr = tpl.getAttribute("id");
+  if (!tplIdAttr) throw new Error("Attribute id is missing in <template>.");
+  const name: string = tplIdAttr;
+
+  customElements.define(
+    name,
+    class extends HTMLElement {
+      constructor() {
+        super();
+        const shadow = this.attachShadow({mode: "open"});
+
+        const tpl = parseHTML(view);
+        if (!(tpl instanceof HTMLTemplateElement)) {
+          throw new Error("Template must be inside a <template>.");
+        }
+
+        const name = tpl.getAttribute("id");
+        if (!name) {
+          throw new Error("Attribute [id] is missing in <template>.");
+        }
+
+        shadow.appendChild(tpl.content);
+
+        if (typeof stylesOrFn === "string") {
+          const styleEl = document.createElement("style");
+          styleEl.textContent = stylesOrFn;
+          shadow.appendChild(styleEl);
+        }
+
+        const callback = typeof stylesOrFn === "function" ? stylesOrFn : fn;
+        if (callback) {
+          customElements.whenDefined(name).then(() => callback(selector => $(selector, shadow)));
+        }
+      }
+    },
+  );
 }
