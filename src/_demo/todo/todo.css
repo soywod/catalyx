@@ -1,0 +1,27 @@
+form {
+  display: grid;
+  grid-template-columns: 1fr 50px;
+  max-width: 300px;
+  justify-self: center;
+  margin: 0 auto;
+}
+
+input {
+  border: 1px solid #efefef;
+  padding: 5px 10px;
+}
+
+button {
+  border: 1px solid #efefef;
+  padding: 5px 10px;
+}
+
+.task {
+  cursor: pointer;
+}
+
+.task.done {
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: line-through;
+}

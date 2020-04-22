@@ -9,8 +9,8 @@ type Trex = TrexBindings & {
   elems: HTMLElement[];
 };
 
-type TrexBind = <T>(obs$: Observable<T>, fn: (val: T) => string) => void;
-type TrexBindArr = <T>(obs$: Observable<T[]>, render: (val: T, idx: number) => string) => void;
+type TrexBind = <T>(obs$: Observable<T>, fn: (val: T, elem: HTMLElement) => any) => void;
+type TrexBindList = <T>(obs$: Observable<T[]>, fn: (val: T, idx: number) => string) => void;
 
 type TrexOn = <T extends keyof GlobalEventHandlersEventMap>(
   evtType: T,
@@ -27,7 +27,7 @@ type TrexOnFn<T extends keyof GlobalEventHandlersEventMap> = (
 
 type TrexBindings = {
   bind: TrexBind;
-  bindArr: TrexBindArr;
+  bindList: TrexBindList;
   on: TrexOn;
 };
 
@@ -40,11 +40,14 @@ function trexFactory(e: HTMLElement | HTMLElement[] | null) {
     bind: (obs$, render) => {
       elems.forEach(elem => {
         obs$.subscribe(val => {
-          elem.innerHTML = render(val);
+          const content = render(val, elem);
+          if (typeof content === "string") {
+            elem.innerHTML = content;
+          }
         });
       });
     },
-    bindArr: <T>(obs$: Observable<T[]>, render: (val: T, idx: number) => string) => {
+    bindList: <T>(obs$: Observable<T[]>, render: (val: T, idx: number) => string) => {
       elems.forEach(elem => {
         const prev$ = new BehaviorSubject<T[]>([]);
         const subscription = obs$
@@ -158,46 +161,41 @@ export function defineCustomElement(
   fn?: DefineCustomElementFn,
 ): void;
 export function defineCustomElement(
-  view: string,
+  template: string,
   stylesOrFn?: string | DefineCustomElementFn,
   fn?: DefineCustomElementFn,
 ) {
-  const maybeTpl = parseHTML(view);
-  if (!(maybeTpl instanceof HTMLTemplateElement))
-    throw new Error("The view must be in a <template>.");
-  const tpl: HTMLTemplateElement = maybeTpl;
-  const tplIdAttr = tpl.getAttribute("id");
-  if (!tplIdAttr) throw new Error("Attribute id is missing in <template>.");
-  const name: string = tplIdAttr;
+  const $maybeTemplate = parseHTML(template);
+  if (!($maybeTemplate instanceof HTMLTemplateElement)) {
+    throw new Error("Template must be inside a <template>.");
+  }
+  const $template: HTMLTemplateElement = $maybeTemplate;
+
+  const maybeName = $template.getAttribute("id");
+  if (!maybeName) {
+    throw new Error("Attribute [id] is missing in <template>.");
+  }
+  const name: string = maybeName;
 
   customElements.define(
     name,
     class extends HTMLElement {
       constructor() {
         super();
-        const shadow = this.attachShadow({mode: "open"});
 
-        const tpl = parseHTML(view);
-        if (!(tpl instanceof HTMLTemplateElement)) {
-          throw new Error("Template must be inside a <template>.");
-        }
-
-        const name = tpl.getAttribute("id");
-        if (!name) {
-          throw new Error("Attribute [id] is missing in <template>.");
-        }
-
-        shadow.appendChild(tpl.content);
+        const $shadow = this.attachShadow({mode: "open"});
 
         if (typeof stylesOrFn === "string") {
-          const styleEl = document.createElement("style");
-          styleEl.textContent = stylesOrFn;
-          shadow.appendChild(styleEl);
+          const $style = document.createElement("style");
+          $style.textContent = stylesOrFn;
+          $shadow.appendChild($style);
         }
+
+        $shadow.appendChild($template.content);
 
         const callback = typeof stylesOrFn === "function" ? stylesOrFn : fn;
         if (callback) {
-          customElements.whenDefined(name).then(() => callback(selector => $(selector, shadow)));
+          customElements.whenDefined(name).then(() => callback(selector => $(selector, $shadow)));
         }
       }
     },

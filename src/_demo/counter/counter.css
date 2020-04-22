@@ -1,4 +1,4 @@
-.a-trexCounter__container {
+:host {
   display: grid;
   grid-template-columns: 50px minmax(0, 1fr) 50px;
   grid-template-rows: 50px;
@@ -8,7 +8,7 @@
   margin: 0 auto;
 }
 
-.a-trexCounter__button {
+button {
   border: none;
   cursor: pointer;
   font-size: 30px;
@@ -17,11 +17,11 @@
   transition: 250ms background;
 }
 
-.a-trexCounter__button:hover {
+button:hover {
   background: #dfdfdf;
 }
 
-.a-trexCounter__view {
+.view {
   justify-self: center;
   align-self: center;
   font-size: 50px;
