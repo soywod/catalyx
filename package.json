@@ -52,7 +52,6 @@
     "prebuild": "rm -rf lib",
     "build": "rollup -c .rolluprc.lib.js",
     "postbuild": "tsc --emitDeclarationOnly && rm -rf lib/_demo",
-    "test": "yarn jest -c .jestrc.js",
-    "release": "node release.js"
+    "test": "yarn jest -c .jestrc.js"
   }
 }
