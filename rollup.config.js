@@ -1,4 +1,5 @@
 import ts from "@wessberg/rollup-plugin-ts";
+import {terser} from "rollup-plugin-terser";
 
 import pkg from "./package.json";
 
@@ -18,6 +19,12 @@ export default {
       sourcemap: true,
     },
   ],
-  external: ["rxjs", "rxjs/operators", "lodash/fp/isEqual"],
-  plugins: [ts()],
+  plugins: [
+    ts(),
+    terser({
+      output: {
+        comments: () => false,
+      },
+    }),
+  ],
 };

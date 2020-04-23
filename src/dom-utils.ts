@@ -1,52 +1,50 @@
-import {Observable} from "rxjs";
-import isEqual from "lodash/fp/isEqual";
-
 import {arrayDiffs} from "./array-utils";
 
-type Trex = TrexBindings & {
+type Observable<T> = {
+  subscribe: (observer: (next: T) => void) => Subscription;
+};
+
+type Subscription = {
+  unsubscribe: () => void;
+};
+
+export type Catalyx = CatalyxBindings & {
   elem: HTMLElement | null;
   elems: HTMLElement[];
 };
 
-type TrexBind = <T>(
-  obs$: Observable<T | T[]>,
-  fn: (val: T, elem: HTMLElement, idx: number) => any,
-) => void;
+export type CatalyxBindings = {
+  bind: CatalyxBind;
+  on: CatalyxOn;
+};
 
-type TrexOn = <T extends keyof GlobalEventHandlersEventMap>(
+export type CatalyxBind = <T>(obs$: Observable<T | T[]>, fn: CatalyxBindFn<T>) => void;
+export type CatalyxBindFn<T> = (val: T, elem: HTMLElement, idx: number) => any;
+
+export type CatalyxOn = <T extends keyof GlobalEventHandlersEventMap>(
   evtType: T,
-  targetOrFn: string | TrexOnFn<T>,
-  fn?: TrexOnFn<T>,
+  targetOrFn: string | CatalyxOnFn<T>,
+  fn?: CatalyxOnFn<T>,
 ) => void;
 
-type TrexOnFn<T extends keyof GlobalEventHandlersEventMap> = (
+export type CatalyxOnFn<T extends keyof GlobalEventHandlersEventMap> = (
   evt: GlobalEventHandlersEventMap[T] & {
     mainTarget: HTMLElement;
     key: number;
   },
 ) => void;
 
-type TrexBindings = {
-  bind: TrexBind;
-  on: TrexOn;
-};
-
-function trexFactory(e: HTMLElement | null): Trex;
-function trexFactory(e: HTMLElement[]): Trex;
-function trexFactory(e: HTMLElement | HTMLElement[] | null) {
+function catalyxFactory(e: HTMLElement | HTMLElement[] | null): Catalyx {
   const elems: HTMLElement[] = Array.isArray(e) ? e : e ? [e] : [];
   const elem: HTMLElement | null = 0 in elems ? elems[0] : null;
-  const bindings: TrexBindings = {
-    bind: <T>(
-      obs$: Observable<T | T[]>,
-      fn: (val: T, elem: HTMLElement, idx: number) => string,
-    ) => {
+  const bindings: CatalyxBindings = {
+    bind: <T>(obs$: Observable<T | T[]>, fn: CatalyxBindFn<T>) => {
       elems.forEach(elem => {
         let prev: T[] = [];
         const subscription = obs$.subscribe(next => {
           if (Array.isArray(next)) {
-            arrayDiffs(prev, next, isEqual).forEach(change => {
-              console.log("CHANGE", change);
+            arrayDiffs(prev, next).forEach(change => {
+              console.debug("[catalyx] change", change);
 
               switch (change.type) {
                 case "create": {
@@ -89,7 +87,7 @@ function trexFactory(e: HTMLElement | HTMLElement[] | null) {
               .flatMap(mut => Array.from(mut.removedNodes))
               .forEach(removedNode => {
                 if (removedNode.isEqualNode(elem.parentNode)) {
-                  console.log("unsub!");
+                  console.debug("[catalyx] unsubscribed", removedNode);
                   subscription.unsubscribe();
                 }
               });
@@ -101,8 +99,8 @@ function trexFactory(e: HTMLElement | HTMLElement[] | null) {
     },
     on: <T extends keyof GlobalEventHandlersEventMap>(
       evtType: T,
-      targetOrFn: string | TrexOnFn<T>,
-      fn?: TrexOnFn<T>,
+      targetOrFn: string | CatalyxOnFn<T>,
+      fn?: CatalyxOnFn<T>,
     ) => {
       elems.forEach(elem => {
         function handler(evt: HTMLElementEventMap[T]) {
@@ -132,7 +130,7 @@ function trexFactory(e: HTMLElement | HTMLElement[] | null) {
               .flatMap(mut => Array.from(mut.removedNodes))
               .forEach(removedNode => {
                 if (removedNode.isEqualNode(elem.parentNode)) {
-                  console.log("unsub!");
+                  console.debug(`[catalyx] unsubscribed "${evtType}"`, removedNode);
                   elem.removeEventListener(evtType, handler);
                 }
               });
@@ -147,12 +145,12 @@ function trexFactory(e: HTMLElement | HTMLElement[] | null) {
   return Object.assign({elem, elems}, bindings);
 }
 
-export function $(selector: string, parent?: ParentNode): Trex {
+export function $(selector: string, parent?: ParentNode): Catalyx {
   const root = parent || document;
   const sanitizedSelector = selector.trim();
-  if (sanitizedSelector.length === 0) return trexFactory([]);
+  if (sanitizedSelector.length === 0) return catalyxFactory([]);
 
-  return trexFactory(
+  return catalyxFactory(
     Array.from(root.querySelectorAll(selector)).reduce<HTMLElement[]>(
       (elements, el) => (el instanceof HTMLElement ? [...elements, el] : elements),
       [],
@@ -168,19 +166,13 @@ export function parseHTML(html: string): HTMLElement {
   return elem;
 }
 
-type DefineCustomElementFn = ($: (selector: string) => Trex) => void;
+type CatalyxDefineCustomElementFn = ($: (selector: string) => Catalyx) => void;
 
-export function defineCustomElement(view: string, fn?: DefineCustomElementFn): void;
-export function defineCustomElement(
-  view: string,
-  styles?: string,
-  fn?: DefineCustomElementFn,
-): void;
 export function defineCustomElement(
   template: string,
-  stylesOrFn?: string | DefineCustomElementFn,
-  fn?: DefineCustomElementFn,
-) {
+  stylesOrFn?: string | CatalyxDefineCustomElementFn,
+  fn?: CatalyxDefineCustomElementFn,
+): void {
   const $maybeTemplate = parseHTML(template);
   if (!($maybeTemplate instanceof HTMLTemplateElement)) {
     throw new Error("Template must be inside a <template>.");
