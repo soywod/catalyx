@@ -3,9 +3,9 @@
   "description": "A JavaScript library to build reactive interfaces.",
   "author": "soywod <clement.douin@posteo.net>",
   "license": "MIT",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "private": false,
-  "types": "lib/index.cjs.d.ts",
+  "types": "lib/index.d.ts",
   "main": "lib/index.cjs.js",
   "module": "lib/index.esm.js",
   "files": [
@@ -52,7 +52,6 @@
     "prebuild": "rm -rf lib",
     "build": "rollup -c .rolluprc.lib.js",
     "postbuild": "tsc --emitDeclarationOnly && rm -rf lib/_demo",
-    "test": "yarn jest -c .jestrc.js",
-    "release": "node release.js"
+    "test": "yarn jest -c .jestrc.js"
   }
 }
