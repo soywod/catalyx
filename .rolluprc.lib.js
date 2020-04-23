@@ -1,7 +1,10 @@
-import ts from "@wessberg/rollup-plugin-ts";
+import resolve from "rollup-plugin-node-resolve";
+import babel from "rollup-plugin-babel";
 import {terser} from "rollup-plugin-terser";
 
 import pkg from "./package.json";
+
+const extensions = [".ts"];
 
 export default {
   input: "src/index.ts",
@@ -20,7 +23,12 @@ export default {
     },
   ],
   plugins: [
-    ts(),
+    resolve({extensions}),
+    babel({
+      include: ["src/**/*"],
+      exclude: "node_modules/**",
+      extensions,
+    }),
     terser({
       output: {
         comments: () => false,

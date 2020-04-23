@@ -1,1 +1,1 @@
-export {$, defineCustomElement} from "./dom-utils";
+export * from "./dom-utils";
