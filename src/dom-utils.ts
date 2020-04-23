@@ -199,7 +199,7 @@ export function defineCustomElement(
           $shadow.appendChild($style);
         }
 
-        $shadow.appendChild($template.content);
+        $shadow.appendChild($template.content.cloneNode(true));
 
         const callback = typeof stylesOrFn === "function" ? stylesOrFn : fn;
         if (callback) {
