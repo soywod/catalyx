@@ -6,7 +6,7 @@ import style from "./counter.scss";
 
 const counter$ = new BehaviorSubject(0);
 
-const component = new WebComponent("demo-counter");
+const component = new WebComponent();
 
 component.style = style;
 component.template = `
@@ -18,3 +18,5 @@ component.template = `
 component.find(".counter").bind(counter$, String);
 component.find(".sub").on("click", () => counter$.next(counter$.value - 1));
 component.find(".add").on("click", () => counter$.next(counter$.value + 1));
+
+component.registerAs("demo-counter");

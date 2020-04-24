@@ -1,10 +1,10 @@
 import {arrayDiffs} from "./obj-utils";
 
-type Observable<T> = {
+export type Observable<T> = {
   subscribe: (observer: (next: T) => void) => Subscription;
 };
 
-type Subscription = {
+export type Subscription = {
   unsubscribe: () => void;
 };
 

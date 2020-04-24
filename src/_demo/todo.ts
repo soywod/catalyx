@@ -13,7 +13,7 @@ type Task = {
 const tasks$ = new BehaviorSubject<Task[]>([]);
 const taskName$ = new BehaviorSubject<string | null>(null);
 
-const component = new WebComponent("demo-todo");
+const component = new WebComponent();
 
 component.style = style;
 component.template = `
@@ -57,3 +57,5 @@ component.find(".tasks").on("contextmenu", ".task", evt => {
   evt.preventDefault();
   tasks$.next(tasks$.value.filter((_, key) => key !== evt.key));
 });
+
+component.registerAs("demo-todo");

@@ -1,75 +1,50 @@
 import {Catalyx, parseHTML, find} from "./dom-utils";
 
-type WebComponentProps =
-  | string
-  | {
-      name: string;
-      template?: string;
-      style?: string;
-    };
+type WebComponentProps = {
+  template?: string;
+  style?: string;
+};
 
 export class WebComponent {
-  public name: string;
+  private _template = document.createElement("template");
 
-  private _style?: HTMLStyleElement;
-  private _template?: HTMLTemplateElement;
-  private _shadowRoot?: ShadowRoot;
+  public constructor(props: WebComponentProps = {}) {
+    this.style = props.style;
+    this.template = props.template;
+  }
 
-  constructor(props: WebComponentProps) {
-    const setShadowRoot = this.setShadowRoot.bind(this);
-    const {name, template, style} = Object.assign(
-      {},
-      typeof props === "string" ? {name: props} : props,
-    );
+  public set style(str: string | undefined | null) {
+    if (str) {
+      this._template.content.prepend(parseStyle(str));
+    }
+  }
 
+  public set template(str: string | undefined | null) {
+    if (str) {
+      this._template.content.append(...parseTemplate(str).content.children);
+    }
+  }
+
+  public find(selector: string): Catalyx {
+    return find(selector, this._template.content);
+  }
+
+  public registerAs(name: string) {
+    const template = this._template.content;
     customElements.define(
       name,
       class extends HTMLElement {
         constructor() {
           super();
-          setShadowRoot(this.attachShadow({mode: "open"}));
+          this.attachShadow({mode: "open"}).appendChild(template);
         }
       },
     );
-
-    this.name = name;
-    this.style = style;
-    this.template = template;
-  }
-
-  set style(str: string | undefined | null) {
-    if (str) {
-      this._style = parseStyle(str);
-      this.shadowRoot.appendChild(this._style);
-    }
-  }
-
-  set template(str: string | undefined | null) {
-    if (str) {
-      this._template = parseTemplate(str);
-      this.shadowRoot.appendChild(this._template.content);
-    }
-  }
-
-  get shadowRoot(): ShadowRoot {
-    if (!this._shadowRoot) {
-      throw new Error("Shadow root not initialized.");
-    }
-
-    return this._shadowRoot;
-  }
-
-  private setShadowRoot(shadowRoot: ShadowRoot) {
-    this._shadowRoot = shadowRoot;
-  }
-
-  find(selector: string): Catalyx {
-    return find(selector, this.shadowRoot);
   }
 }
 
 function parseStyle(str: string): HTMLStyleElement {
-  const style = parseHTML("<style>" + str + "</style>");
+  const style = parseHTML("<style>" + str.trim() + "</style>");
 
   if (!(style instanceof HTMLStyleElement)) {
     throw new Error("Styles must be a <style> element.");
@@ -79,7 +54,7 @@ function parseStyle(str: string): HTMLStyleElement {
 }
 
 function parseTemplate(str: string): HTMLTemplateElement {
-  const template = parseHTML("<template>" + str + "</template>");
+  const template = parseHTML("<template>" + str.trim() + "</template>");
 
   if (!(template instanceof HTMLTemplateElement)) {
     throw new Error("Template must be a <template> element.");
