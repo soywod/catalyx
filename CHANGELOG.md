@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.5] - 2020-04-24
+
+### Changed
+
+- Refactor defineCustomElement
+
+### Fixed
+
+- Clone template before attaching to shadow element
+
 ## [0.0.4] - 2020-04-23
 
 ### Fixed
@@ -19,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First release
 
-[unreleased]: https://github.com/soywod/catalyx/compare/v0.0.4...HEAD
+[unreleased]: https://github.com/soywod/catalyx/compare/v0.0.5...HEAD
+[0.0.5]: https://github.com/soywod/catalyx/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/soywod/catalyx/compare/v0.0.1...v0.0.4
 [0.0.1]: https://github.com/soywod/catalyx/releases/tag/v0.0.1
