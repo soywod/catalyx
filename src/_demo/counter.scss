@@ -15,13 +15,13 @@ button {
   font-weight: bold;
   background: #efefef;
   transition: 250ms background;
+
+  &:hover {
+    background: #dfdfdf;
+  }
 }
 
-button:hover {
-  background: #dfdfdf;
-}
-
-.view {
+.counter {
   justify-self: center;
   align-self: center;
   font-size: 50px;

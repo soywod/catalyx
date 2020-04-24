@@ -6,8 +6,8 @@
     "declaration": true,
     "declarationDir": "lib",
     "esModuleInterop": true,
+    "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
-    "jsx": "react",
     "lib": ["dom", "dom.iterable", "esnext"],
     "module": "CommonJS",
     "moduleResolution": "Node",
@@ -17,6 +17,6 @@
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es5"
+    "target": "es6"
   }
 }

@@ -8,8 +8,6 @@ lib/
 
 # misc
 .DS_Store
-.cache
-.env
 
 npm-debug.log*
 yarn-debug.log*

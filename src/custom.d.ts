@@ -2,6 +2,6 @@ declare module "*.html" {
   export default string;
 }
 
-declare module "*.css" {
+declare module "*.scss" {
   export default string;
 }

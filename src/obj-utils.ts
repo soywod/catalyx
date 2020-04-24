@@ -28,7 +28,7 @@ export function arrayDiffs<T>(prev: T[], next: T[]): ArrDiffs<T> {
 
     if (!(i in prev)) {
       diffs.push({type: "create", idx: i, item: nextItem});
-    } else if (!isEquivalent(prev[i], nextItem)) {
+    } else if (!isEqual(prev[i], nextItem)) {
       diffs.push({type: "update", idx: i, item: nextItem});
     }
   }
@@ -37,18 +37,18 @@ export function arrayDiffs<T>(prev: T[], next: T[]): ArrDiffs<T> {
   return diffs.concat(prev.slice(i).map((_, j) => ({type: "delete", idx: i + j}))).reverse();
 }
 
-export function isEquivalent<T>(a?: T | null, b?: T | null): boolean {
+export function isEqual<T>(a?: T | null, b?: T | null): boolean {
   if (a === null || a === undefined) return b === null || b === undefined;
   if (b === null || b === undefined) return a === null || a === undefined;
   if (typeof a !== typeof b) return false;
   if (typeof a !== "object") return a === b;
 
   if (Array.isArray(a) && Array.isArray(b)) {
-    for (const va of a) if (!b.some(vb => isEquivalent(va, vb))) return false;
-    for (const vb of b) if (!a.some(va => isEquivalent(va, vb))) return false;
+    for (const va of a) if (!b.some(vb => isEqual(va, vb))) return false;
+    for (const vb of b) if (!a.some(va => isEqual(va, vb))) return false;
   } else {
-    for (const ka in a) if (!isEquivalent(a[ka], b[ka])) return false;
-    for (const kb in b) if (!isEquivalent(a[kb], b[kb])) return false;
+    for (const ka in a) if (!isEqual(a[ka], b[ka])) return false;
+    for (const kb in b) if (!isEqual(a[kb], b[kb])) return false;
   }
 
   return true;

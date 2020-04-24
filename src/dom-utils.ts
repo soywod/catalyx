@@ -1,4 +1,4 @@
-import {arrayDiffs} from "./array-utils";
+import {arrayDiffs} from "./obj-utils";
 
 type Observable<T> = {
   subscribe: (observer: (next: T) => void) => Subscription;
@@ -44,7 +44,7 @@ function catalyxFactory(e: HTMLElement | HTMLElement[] | null): Catalyx {
         const subscription = obs$.subscribe(next => {
           if (Array.isArray(next)) {
             arrayDiffs(prev, next).forEach(change => {
-              console.debug("[catalyx] change", change);
+              console.debug("[catalyx] array changed", change, elem);
 
               switch (change.type) {
                 case "create": {
@@ -74,6 +74,7 @@ function catalyxFactory(e: HTMLElement | HTMLElement[] | null): Catalyx {
 
             prev = Object.assign([], next);
           } else {
+            console.debug("[catalyx] value changed", next, elem);
             const content = fn(next, elem, NaN);
             if (typeof content === "string") {
               elem.innerHTML = content;
@@ -104,8 +105,9 @@ function catalyxFactory(e: HTMLElement | HTMLElement[] | null): Catalyx {
     ) => {
       elems.forEach(elem => {
         function handler(evt: HTMLElementEventMap[T]) {
+          console.debug("[catalyx] event triggered", evt, elem);
           if (typeof targetOrFn === "string" && typeof fn === "function") {
-            const $target = $(targetOrFn, elem);
+            const $target = find(targetOrFn, elem);
             const containsTarget = (el: HTMLElement) => {
               if (!(evt.target instanceof Node)) return false;
               if (!el.contains(evt.target)) return false;
@@ -130,7 +132,7 @@ function catalyxFactory(e: HTMLElement | HTMLElement[] | null): Catalyx {
               .flatMap(mut => Array.from(mut.removedNodes))
               .forEach(removedNode => {
                 if (removedNode.isEqualNode(elem.parentNode)) {
-                  console.debug(`[catalyx] unsubscribed "${evtType}"`, removedNode);
+                  console.debug("[catalyx] unsubscribed", evtType, removedNode);
                   elem.removeEventListener(evtType, handler);
                 }
               });
@@ -145,13 +147,12 @@ function catalyxFactory(e: HTMLElement | HTMLElement[] | null): Catalyx {
   return Object.assign({elem, elems}, bindings);
 }
 
-export function $(selector: string, parent?: ParentNode): Catalyx {
-  const root = parent || document;
+export function find(selector: string, parent: ParentNode = document): Catalyx {
   const sanitizedSelector = selector.trim();
   if (sanitizedSelector.length === 0) return catalyxFactory([]);
 
   return catalyxFactory(
-    Array.from(root.querySelectorAll(selector)).reduce<HTMLElement[]>(
+    Array.from(parent.querySelectorAll(selector)).reduce<HTMLElement[]>(
       (elements, el) => (el instanceof HTMLElement ? [...elements, el] : elements),
       [],
     ),
@@ -164,48 +165,4 @@ export function parseHTML(html: string): HTMLElement {
   const elem = wrapper.content.firstElementChild;
   if (!(elem instanceof HTMLElement)) throw "Parsing element failed!";
   return elem;
-}
-
-type CatalyxDefineCustomElementFn = ($: (selector: string) => Catalyx) => void;
-
-export function defineCustomElement(
-  template: string,
-  stylesOrFn?: string | CatalyxDefineCustomElementFn,
-  fn?: CatalyxDefineCustomElementFn,
-): void {
-  const $maybeTemplate = parseHTML(template);
-  if (!($maybeTemplate instanceof HTMLTemplateElement)) {
-    throw new Error("Template must be inside a <template>.");
-  }
-  const $template: HTMLTemplateElement = $maybeTemplate;
-
-  const maybeName = $template.getAttribute("id");
-  if (!maybeName) {
-    throw new Error("Attribute [id] is missing in <template>.");
-  }
-  const name: string = maybeName;
-
-  customElements.define(
-    name,
-    class extends HTMLElement {
-      constructor() {
-        super();
-
-        const $shadow = this.attachShadow({mode: "open"});
-
-        if (typeof stylesOrFn === "string") {
-          const $style = document.createElement("style");
-          $style.textContent = stylesOrFn;
-          $shadow.appendChild($style);
-        }
-
-        $shadow.appendChild($template.content.cloneNode(true));
-
-        const callback = typeof stylesOrFn === "function" ? stylesOrFn : fn;
-        if (callback) {
-          customElements.whenDefined(name).then(() => callback(selector => $(selector, $shadow)));
-        }
-      }
-    },
-  );
 }
