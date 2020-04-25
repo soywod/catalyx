@@ -18,7 +18,8 @@ export type CatalyxBindings = {
   on: CatalyxOn;
 };
 
-export type CatalyxBind = <T>(obs$: Observable<T | T[]>, fn: CatalyxBindFn<T>) => void;
+export type CatalyxBind = <T>(data: CatalyxBindData<T>, fn?: CatalyxBindFn<T>) => void;
+export type CatalyxBindData<T> = T | T[] | Observable<T> | Observable<T[]>;
 export type CatalyxBindFn<T> = (val: T, elem: HTMLElement, idx: number) => any;
 
 export type CatalyxOn = <T extends keyof GlobalEventHandlersEventMap>(
@@ -32,69 +33,92 @@ export type CatalyxOnFn<T extends keyof GlobalEventHandlersEventMap> = (
     mainTarget: HTMLElement;
     key: number;
   },
+  elem: HTMLElement,
 ) => void;
+
+function isObservable<T>(data: any): data is Observable<T | T[]> {
+  return typeof data === "object" && "subscribe" in data && typeof data.subscribe === "function";
+}
 
 function catalyxFactory(e: HTMLElement | HTMLElement[] | null): Catalyx {
   const elems: HTMLElement[] = Array.isArray(e) ? e : e ? [e] : [];
   const elem: HTMLElement | null = 0 in elems ? elems[0] : null;
   const bindings: CatalyxBindings = {
-    bind: <T>(obs$: Observable<T | T[]>, fn: CatalyxBindFn<T>) => {
+    bind: <T>(data: CatalyxBindData<T>, fn?: CatalyxBindFn<T>) => {
       elems.forEach(elem => {
-        let prev: T[] = [];
-        const subscription = obs$.subscribe(next => {
-          if (Array.isArray(next)) {
-            arrayDiffs(prev, next).forEach(change => {
-              console.debug("[catalyx] array changed", change, elem);
+        if (isObservable(data)) {
+          let prev: T[] = [];
+          const subscription = data.subscribe((next: T | T[]) => {
+            if (Array.isArray(next)) {
+              arrayDiffs(prev, next).forEach(change => {
+                console.debug("[catalyx] array changed", change, elem);
 
-              switch (change.type) {
-                case "create": {
-                  const child = parseHTML(fn(change.item, elem, change.idx));
-                  child.setAttribute("data-key", String(change.idx));
-                  elem.appendChild(child);
-                  break;
-                }
-
-                case "update": {
-                  const rowEl = elem.children.item(change.idx);
-                  if (rowEl) {
-                    const child = parseHTML(fn(change.item, elem, change.idx));
-                    child.setAttribute("data-key", String(change.idx));
-                    rowEl.replaceWith(child);
+                switch (change.type) {
+                  case "create": {
+                    const {item, idx} = change;
+                    const child = parseHTML(fn ? fn(item, elem, idx) : String(item));
+                    child.setAttribute("data-key", String(idx));
+                    elem.appendChild(child);
+                    break;
                   }
-                  break;
-                }
 
-                case "delete": {
-                  const rowEl = elem.children.item(change.idx);
-                  rowEl && rowEl.remove();
-                  break;
-                }
-              }
-            });
+                  case "update": {
+                    const {item, idx} = change;
+                    const rowEl = elem.children.item(idx);
+                    if (rowEl) {
+                      const child = parseHTML(fn ? fn(item, elem, idx) : String(item));
+                      child.setAttribute("data-key", String(idx));
+                      rowEl.replaceWith(child);
+                    }
+                    break;
+                  }
 
-            prev = Object.assign([], next);
-          } else {
-            console.debug("[catalyx] value changed", next, elem);
-            const content = fn(next, elem, NaN);
-            if (typeof content === "string") {
-              elem.innerHTML = content;
-            }
-          }
-        });
-
-        if (elem.parentNode) {
-          const elemObs = new MutationObserver(mutlist => {
-            mutlist
-              .flatMap(mut => Array.from(mut.removedNodes))
-              .forEach(removedNode => {
-                if (removedNode.isEqualNode(elem.parentNode)) {
-                  console.debug("[catalyx] unsubscribed", removedNode);
-                  subscription.unsubscribe();
+                  case "delete": {
+                    const rowEl = elem.children.item(change.idx);
+                    rowEl && rowEl.remove();
+                    break;
+                  }
                 }
               });
+
+              prev = Object.assign([], next);
+            } else {
+              console.debug("[catalyx] value changed", next, elem);
+              const content = fn ? fn(next, elem, NaN) : String(next);
+              if (typeof content === "string") {
+                elem.innerHTML = content;
+              }
+            }
           });
 
-          elemObs.observe(document.body, {childList: true});
+          if (elem.parentNode) {
+            const elemObs = new MutationObserver(mutlist => {
+              mutlist
+                .flatMap(mut => Array.from(mut.removedNodes))
+                .forEach(removedNode => {
+                  if (removedNode.isEqualNode(elem.parentNode)) {
+                    console.debug("[catalyx] unsubscribed", removedNode);
+                    subscription.unsubscribe();
+                  }
+                });
+            });
+
+            elemObs.observe(document.body, {childList: true});
+          }
+        } else if (Array.isArray(data)) {
+          const content = data.reduce((joinedContent, data, i) => {
+            const content = fn ? fn(data, elem, i) : String(data);
+            return joinedContent + (typeof content === "string" ? content : "");
+          }, "");
+
+          if (content.length > 0) {
+            elem.innerHTML = content;
+          }
+        } else {
+          const content = fn ? fn(data, elem, NaN) : String(data);
+          if (typeof content === "string") {
+            elem.innerHTML = content;
+          }
         }
       });
     },
@@ -116,11 +140,11 @@ function catalyxFactory(e: HTMLElement | HTMLElement[] | null): Catalyx {
 
             $target.elems.filter(containsTarget).forEach(elem => {
               const overload = {mainTarget: elem, key: Number(elem.getAttribute("data-key"))};
-              fn(Object.assign(evt, overload));
+              fn(Object.assign(evt, overload), elem);
             });
           } else if (typeof targetOrFn === "function") {
             const overload = {mainTarget: elem, key: Number(elem.getAttribute("data-key"))};
-            targetOrFn(Object.assign(evt, overload));
+            targetOrFn(Object.assign(evt, overload), elem);
           }
         }
 
@@ -159,10 +183,16 @@ export function find(selector: string, parent: ParentNode = document): Catalyx {
   );
 }
 
-export function parseHTML(html: string): HTMLElement {
+export function parseHTML(str: string): HTMLElement {
   const wrapper = document.createElement("template");
-  wrapper.innerHTML = html.trim();
-  const elem = wrapper.content.firstElementChild;
-  if (!(elem instanceof HTMLElement)) throw "Parsing element failed!";
-  return elem;
+  wrapper.innerHTML = str.trim();
+  const elem = wrapper.content.firstChild;
+
+  if (elem instanceof HTMLElement) {
+    return elem;
+  } else {
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = str.trim();
+    return wrapper;
+  }
 }
