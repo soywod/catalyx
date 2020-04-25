@@ -2,7 +2,7 @@ import {Observable, isObservable} from "./observable";
 import {arrayDiffs} from "./obj-utils";
 
 export type CatalyxBind = <T>(data: CatalyxBindData<T>, fn?: CatalyxBindFn<T>) => Catalyx;
-export type CatalyxBindData<T> = T | T[] | Observable<T> | Observable<T[]>;
+export type CatalyxBindData<T> = T[] | T | Observable<T[]> | Observable<T>;
 export type CatalyxBindFn<T> = (val: T, elem: HTMLElement, idx: number) => any;
 
 export type CatalyxOn = <T extends keyof GlobalEventHandlersEventMap>(
@@ -30,7 +30,7 @@ export class Catalyx {
 
   public bind<T>(data: CatalyxBindData<T>, fn?: CatalyxBindFn<T>): this {
     this.elems.forEach(elem => {
-      if (isObservable<T | T[]>(data)) {
+      if (isObservable<T>(data) || isObservable<T[]>(data)) {
         let prev: T[] = [];
         const subscription = data.subscribe((next: T | T[]) => {
           if (Array.isArray(next)) {

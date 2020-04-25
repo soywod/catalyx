@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.7] - 2020-04-25
+
+### Added
+
+- Static variable bind
+- Make wrapper chainable
+
 ## [0.0.6] - 2020-04-24
 
 ### Fixed
@@ -35,7 +42,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First release
 
-[unreleased]: https://github.com/soywod/catalyx/compare/v0.0.6...HEAD
+[unreleased]: https://github.com/soywod/catalyx/compare/v0.0.7...HEAD
+[0.0.7]: https://github.com/soywod/catalyx/compare/v0.0.6...v0.0.7
 [0.0.6]: https://github.com/soywod/catalyx/compare/v0.0.5...v0.0.6
 [0.0.5]: https://github.com/soywod/catalyx/compare/v0.0.4...v0.0.5
 [0.0.4]: https://github.com/soywod/catalyx/compare/v0.0.1...v0.0.4
