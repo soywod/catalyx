@@ -33,8 +33,8 @@ export function arrayDiffs<T>(prev: T[], next: T[]): ArrDiffs<T> {
     }
   }
 
-  if (!prev) return diffs.reverse();
-  return diffs.concat(prev.slice(i).map((_, j) => ({type: "delete", idx: i + j}))).reverse();
+  if (!prev) return diffs;
+  return diffs.concat(prev.slice(i).map((_, j) => ({type: "delete", idx: i + j})));
 }
 
 export function isEqual<T>(a?: T | null, b?: T | null): boolean {
