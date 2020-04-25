@@ -3,7 +3,7 @@
   "description": "A JavaScript library to build reactive interfaces.",
   "author": "soywod <clement.douin@posteo.net>",
   "license": "MIT",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "private": false,
   "types": "lib/index.d.ts",
   "main": "lib/index.cjs.js",
