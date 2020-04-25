@@ -1,12 +1,13 @@
 import {BehaviorSubject} from "rxjs";
 
-import {WebComponent} from "../web-component";
+import {WebComponent, CustomElement} from "../web-component";
 
 import style from "./counter.scss";
 
 const counter$ = new BehaviorSubject(0);
 
-class DemoCounter extends WebComponent {
+@CustomElement("demo-counter")
+export default class extends WebComponent {
   constructor() {
     super({style});
 
@@ -29,5 +30,3 @@ class DemoCounter extends WebComponent {
     `;
   }
 }
-
-customElements.define("demo-counter", DemoCounter);

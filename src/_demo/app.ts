@@ -1,16 +1,15 @@
-import {WebComponent} from "../web-component";
+import {WebComponent, CustomElement} from "../web-component";
 
 import "./counter";
 import "./todo";
 
-class DemoApp extends WebComponent {
+@CustomElement("demo-app")
+export default class extends WebComponent {
   render() {
     return `
       <demo-counter></demo-counter>
       <demo-counter></demo-counter>
-      <demo-counter></demo-counter>
+      <demo-todo></demo-todo>
     `;
   }
 }
-
-customElements.define("demo-app", DemoApp);

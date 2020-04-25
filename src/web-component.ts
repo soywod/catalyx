@@ -38,3 +38,9 @@ export abstract class WebComponent extends HTMLElement {
 
   abstract render(): string;
 }
+
+export function CustomElement(name: string) {
+  return function (target: CustomElementConstructor) {
+    customElements.define(name, target);
+  };
+}

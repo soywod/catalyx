@@ -1,7 +1,7 @@
 import {BehaviorSubject} from "rxjs";
 import cn from "classnames";
 
-import {WebComponent} from "../web-component";
+import {WebComponent, CustomElement} from "../web-component";
 
 import style from "./todo.scss";
 
@@ -13,7 +13,8 @@ type Task = {
 const tasks$ = new BehaviorSubject<Task[]>([]);
 const taskName$ = new BehaviorSubject<string | null>(null);
 
-class DemoTodo extends WebComponent {
+@CustomElement("demo-todo")
+export default class extends WebComponent {
   constructor() {
     super({style});
 
@@ -61,5 +62,3 @@ class DemoTodo extends WebComponent {
     `;
   }
 }
-
-customElements.define("demo-todo", DemoTodo);
