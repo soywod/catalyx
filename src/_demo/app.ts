@@ -3,11 +3,14 @@ import {WebComponent} from "../web-component";
 import "./counter";
 import "./todo";
 
-const component = new WebComponent();
+class DemoApp extends WebComponent {
+  render() {
+    return `
+      <demo-counter></demo-counter>
+      <demo-counter></demo-counter>
+      <demo-counter></demo-counter>
+    `;
+  }
+}
 
-component.template = `
-  <demo-counter></demo-counter>
-  <demo-todo></demo-todo>
-`;
-
-component.registerAs("demo-app");
+customElements.define("demo-app", DemoApp);

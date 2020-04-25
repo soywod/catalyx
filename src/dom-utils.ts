@@ -1,17 +1,17 @@
 import {Observable, isObservable} from "./observable";
 import {arrayDiffs} from "./obj-utils";
 
-export type CatalyxBind = <T>(data: CatalyxBindData<T>, fn?: CatalyxBindFn<T>) => Catalyx;
-export type CatalyxBindData<T> = T[] | T | Observable<T[]> | Observable<T>;
-export type CatalyxBindFn<T> = (val: T, elem: HTMLElement, idx: number) => any;
+export type BinderBind = <T>(data: BinderBindData<T>, fn?: BinderBindFn<T>) => Binder;
+export type BinderBindData<T> = T[] | T | Observable<T[]> | Observable<T>;
+export type BinderBindFn<T> = (val: T, elem: HTMLElement, idx: number) => any;
 
-export type CatalyxOn = <T extends keyof GlobalEventHandlersEventMap>(
+export type BinderOn = <T extends keyof GlobalEventHandlersEventMap>(
   evtType: T,
-  targetOrFn: string | CatalyxOnFn<T>,
-  fn?: CatalyxOnFn<T>,
-) => Catalyx;
+  targetOrFn: string | BinderOnFn<T>,
+  fn?: BinderOnFn<T>,
+) => Binder;
 
-export type CatalyxOnFn<T extends keyof GlobalEventHandlersEventMap> = (
+export type BinderOnFn<T extends keyof GlobalEventHandlersEventMap> = (
   evt: GlobalEventHandlersEventMap[T] & {
     mainTarget: HTMLElement;
     key: number;
@@ -19,16 +19,16 @@ export type CatalyxOnFn<T extends keyof GlobalEventHandlersEventMap> = (
   elem: HTMLElement,
 ) => void;
 
-export class Catalyx {
-  public elem: HTMLElement | null;
-  public elems: HTMLElement[];
+export class Binder {
+  elem: HTMLElement | null;
+  elems: HTMLElement[];
 
-  public constructor(elem?: HTMLElement | HTMLElement[] | null) {
+  constructor(elem?: HTMLElement | HTMLElement[] | null) {
     this.elems = Array.isArray(elem) ? elem : elem ? [elem] : [];
     this.elem = 0 in this.elems ? this.elems[0] : null;
   }
 
-  public bind<T>(data: CatalyxBindData<T>, fn?: CatalyxBindFn<T>): this {
+  bind<T>(data: BinderBindData<T>, fn?: BinderBindFn<T>): this {
     this.elems.forEach(elem => {
       if (isObservable<T>(data) || isObservable<T[]>(data)) {
         let prev: T[] = [];
@@ -109,10 +109,10 @@ export class Catalyx {
     return this;
   }
 
-  public on<T extends keyof GlobalEventHandlersEventMap>(
+  on<T extends keyof GlobalEventHandlersEventMap>(
     evtType: T,
-    targetOrFn: string | CatalyxOnFn<T>,
-    fn?: CatalyxOnFn<T>,
+    targetOrFn: string | BinderOnFn<T>,
+    fn?: BinderOnFn<T>,
   ): this {
     this.elems.forEach(elem => {
       function handler(evt: HTMLElementEventMap[T]) {
@@ -157,11 +157,11 @@ export class Catalyx {
   }
 }
 
-export function find(selector: string, parent: ParentNode = document): Catalyx {
+export function find(selector: string, parent: ParentNode = document): Binder {
   const sanitizedSelector = selector.trim();
-  if (sanitizedSelector.length === 0) return new Catalyx([]);
+  if (sanitizedSelector.length === 0) return new Binder([]);
 
-  return new Catalyx(
+  return new Binder(
     Array.from(parent.querySelectorAll(selector)).reduce<HTMLElement[]>(
       (elements, el) => (el instanceof HTMLElement ? [...elements, el] : elements),
       [],
@@ -181,4 +181,14 @@ export function parseHTML(str: string): HTMLElement {
     wrapper.innerHTML = str.trim();
     return wrapper;
   }
+}
+
+export function parseStyle(str: string): HTMLStyleElement {
+  const style = parseHTML("<style>" + str.trim() + "</style>");
+
+  if (!(style instanceof HTMLStyleElement)) {
+    throw new Error("Styles must be a <style> element.");
+  }
+
+  return style;
 }

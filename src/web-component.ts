@@ -1,64 +1,40 @@
-import {Catalyx, parseHTML, find} from "./dom-utils";
+import {parseStyle, find} from "./dom-utils";
 
-type WebComponentProps = {
-  template?: string;
+export type WebComponentOpts = {
+  attachShadow: boolean | ShadowRootInit;
   style?: string;
 };
 
-export class WebComponent {
-  private _template = document.createElement("template");
+export const defaultOpts: WebComponentOpts = {
+  attachShadow: true,
+};
 
-  public constructor(props: WebComponentProps = {}) {
-    this.style = props.style;
-    this.template = props.template;
-  }
+export abstract class WebComponent extends HTMLElement {
+  attrs: {[key: string]: string} = {};
+  rootElement: HTMLElement | ShadowRoot;
 
-  public set style(str: string | undefined | null) {
-    if (str) {
-      this._template.content.prepend(parseStyle(str));
+  constructor(overrideOpts: Partial<WebComponentOpts> = {}) {
+    super();
+    const opts: WebComponentOpts = Object.assign({}, defaultOpts, overrideOpts);
+
+    for (const attr of this.attributes) {
+      this.attrs[attr.name] = attr.value;
+    }
+
+    this.rootElement = opts.attachShadow
+      ? this.attachShadow(opts.attachShadow === true ? {mode: "open"} : opts.attachShadow)
+      : this;
+
+    this.rootElement.innerHTML = this.render();
+
+    if (opts.style) {
+      this.rootElement.prepend(parseStyle(opts.style));
     }
   }
 
-  public set template(str: string | undefined | null) {
-    if (str) {
-      this._template.content.append(...parseTemplate(str).content.children);
-    }
+  find(selector: string) {
+    return find(selector, this.rootElement);
   }
 
-  public find(selector: string): Catalyx {
-    return find(selector, this._template.content);
-  }
-
-  public registerAs(name: string) {
-    const template = this._template.content;
-    customElements.define(
-      name,
-      class extends HTMLElement {
-        constructor() {
-          super();
-          this.attachShadow({mode: "open"}).appendChild(template);
-        }
-      },
-    );
-  }
-}
-
-function parseStyle(str: string): HTMLStyleElement {
-  const style = parseHTML("<style>" + str.trim() + "</style>");
-
-  if (!(style instanceof HTMLStyleElement)) {
-    throw new Error("Styles must be a <style> element.");
-  }
-
-  return style;
-}
-
-function parseTemplate(str: string): HTMLTemplateElement {
-  const template = parseHTML("<template>" + str.trim() + "</template>");
-
-  if (!(template instanceof HTMLTemplateElement)) {
-    throw new Error("Template must be a <template> element.");
-  }
-
-  return template;
+  abstract render(): string;
 }

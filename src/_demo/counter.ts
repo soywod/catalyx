@@ -6,25 +6,28 @@ import style from "./counter.scss";
 
 const counter$ = new BehaviorSubject(0);
 
-const component = new WebComponent();
+class DemoCounter extends WebComponent {
+  constructor() {
+    super({style});
 
-component.style = style;
-component.template = `
-  <button class="sub"></button>
-  <div class="counter"></div>
-  <button class="add"></button>
-`;
+    this.find(".counter").bind(counter$);
 
-component.find(".counter").bind(counter$, String);
+    this.find(".sub")
+      .bind("-")
+      .on("click", () => counter$.next(counter$.value - 1));
 
-component
-  .find(".add")
-  .bind("-")
-  .on("click", () => counter$.next(counter$.value + 1));
+    this.find(".add")
+      .bind("+")
+      .on("click", () => counter$.next(counter$.value + 1));
+  }
 
-component
-  .find(".sub")
-  .bind("-")
-  .on("click", () => counter$.next(counter$.value - 1));
+  render() {
+    return `
+      <button class="sub"></button>
+      <div class="counter"></div>
+      <button class="add"></button>
+    `;
+  }
+}
 
-component.registerAs("demo-counter");
+customElements.define("demo-counter", DemoCounter);
