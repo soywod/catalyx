@@ -16,9 +16,15 @@ component.template = `
 `;
 
 component.find(".counter").bind(counter$, String);
-component.find(".add").bind(["", "+", ""]);
-component.find(".add").on("click", () => counter$.next(counter$.value + 1));
-component.find(".sub").bind("-");
-component.find(".sub").on("click", () => counter$.next(counter$.value - 1));
+
+component
+  .find(".add")
+  .bind("-")
+  .on("click", () => counter$.next(counter$.value + 1));
+
+component
+  .find(".sub")
+  .bind("-")
+  .on("click", () => counter$.next(counter$.value - 1));
 
 component.registerAs("demo-counter");
