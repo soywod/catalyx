@@ -11,6 +11,8 @@ export default class extends WebComponent {
   constructor() {
     super({style});
 
+    this.on("click", () => console.log("CLICK!"));
+
     this.find(".counter").bind(counter$);
 
     this.find(".sub")

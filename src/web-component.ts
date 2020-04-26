@@ -1,4 +1,4 @@
-import {parseStyle, find} from "./dom-utils";
+import {Binder, BinderBindData, BinderBindFn, BinderOnFn, find, parseStyle} from "./dom-utils";
 import {toKebabCase} from "./str-utils";
 
 export type WebComponentOpts = {
@@ -18,7 +18,7 @@ export function CustomElement(name?: string) {
 
 export abstract class WebComponent extends HTMLElement {
   attrs: {[key: string]: string} = {};
-  rootElement: HTMLElement | ShadowRoot;
+  rootElement: ParentNode & InnerHTML;
 
   constructor(overrideOpts: Partial<WebComponentOpts> = {}) {
     super();
@@ -39,8 +39,16 @@ export abstract class WebComponent extends HTMLElement {
     }
   }
 
-  find(selector: string) {
+  find(selector: string): Binder {
     return find(selector, this.rootElement);
+  }
+
+  bind<T>(data: BinderBindData<T>, fn?: BinderBindFn<T>): Binder {
+    return new Binder(this).bind(data, fn);
+  }
+
+  on<T extends keyof GlobalEventHandlersEventMap>(evtType: T, fn: BinderOnFn<T>): Binder {
+    return new Binder(this).on(evtType, fn);
   }
 
   render() {
