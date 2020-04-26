@@ -46,17 +46,17 @@ test("arrayDiffs", () => {
       ["a", "b", "c"],
       ["a", "d"],
       [
-        {type: "delete", idx: 2},
         {type: "update", idx: 1, item: "d"},
+        {type: "delete", idx: 2},
       ],
     ],
     [
       ["a", "b", "c"],
       ["c", "c", "c", "c"],
       [
-        {type: "create", idx: 3, item: "c"},
-        {type: "update", idx: 1, item: "c"},
         {type: "update", idx: 0, item: "c"},
+        {type: "update", idx: 1, item: "c"},
+        {type: "create", idx: 3, item: "c"},
       ],
     ],
   ];

@@ -3,8 +3,8 @@ import {WebComponent, CustomElement} from "../web-component";
 import "./counter";
 import "./todo";
 
-@CustomElement("demo-app")
-export default class extends WebComponent {
+@CustomElement()
+export class DemoApp extends WebComponent {
   render() {
     return `
       <demo-counter></demo-counter>

@@ -1,4 +1,5 @@
 import {parseStyle, find} from "./dom-utils";
+import {toKebabCase} from "./str-utils";
 
 export type WebComponentOpts = {
   attachShadow: boolean | ShadowRootInit;
@@ -8,6 +9,12 @@ export type WebComponentOpts = {
 export const defaultOpts: WebComponentOpts = {
   attachShadow: true,
 };
+
+export function CustomElement(name?: string) {
+  return function (target: CustomElementConstructor) {
+    customElements.define(name || toKebabCase(target.name), target);
+  };
+}
 
 export abstract class WebComponent extends HTMLElement {
   attrs: {[key: string]: string} = {};
@@ -36,11 +43,7 @@ export abstract class WebComponent extends HTMLElement {
     return find(selector, this.rootElement);
   }
 
-  abstract render(): string;
-}
-
-export function CustomElement(name: string) {
-  return function (target: CustomElementConstructor) {
-    customElements.define(name, target);
-  };
+  render() {
+    return "";
+  }
 }
