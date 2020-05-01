@@ -32,6 +32,7 @@
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.10.1",
     "jest": "^25.4.0",
+    "peerjs": "^1.2.0",
     "prettier": "^2.0.4",
     "rollup": "^2.7.2",
     "rollup-plugin-babel": "^4.4.0",
@@ -48,7 +49,9 @@
   "scripts": {
     "clean": "rm -rf lib",
     "prestart": "yarn clean",
-    "start": "rollup -wc .rolluprc.demo.js",
+    "start": "rollup -wc .rolluprc.dev.js",
+    "predemo": "yarn clean",
+    "demo": "rollup -c .rolluprc.demo.js",
     "prebuild": "yarn clean",
     "build": "rollup -c .rolluprc.lib.js",
     "postbuild": "tsc --emitDeclarationOnly && rm -rf lib/_demo",
