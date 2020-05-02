@@ -1,10 +1,33 @@
 {
   "name": "catalyx",
-  "description": "A JavaScript library to build reactive interfaces.",
+  "description": "JavaScript utility to build reactive interfaces",
   "author": "soywod <clement.douin@posteo.net>",
   "license": "MIT",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "private": false,
+  "keywords": [
+    "reactive",
+    "webapp",
+    "web-app",
+    "library",
+    "typescript",
+    "typescript",
+    "shadow-dom",
+    "custom-elements",
+    "web-components",
+    "template",
+    "rxjs",
+    "observable",
+    "observer"
+  ],
+  "homepage": "https://github.com/soywod/catalyx",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/soywod/catalyx.git"
+  },
+  "bugs": {
+    "url": "https://github.com/soywod/catalyx/issues"
+  },
   "types": "lib/index.d.ts",
   "main": "lib/index.cjs.js",
   "module": "lib/index.esm.js",

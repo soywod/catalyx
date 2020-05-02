@@ -1,0 +1,14 @@
+os: linux
+language: node_js
+node_js: 10
+
+cache:
+  directories:
+    - ~/.cache
+    - ~/.config/yarn
+
+install:
+  - yarn install --frozen-lock file
+
+script:
+  - yarn test
