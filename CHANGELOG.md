@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.12] - 2020-05-02
+
+### Changed
+
+- Simplify web component (replace class by function)
+
 ## [0.0.11] - 2020-04-26
 
 ### Added
@@ -70,7 +76,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First release
 
-[unreleased]: https://github.com/soywod/catalyx/compare/v0.0.11...HEAD
+[unreleased]: https://github.com/soywod/catalyx/compare/v0.0.12...HEAD
+[0.0.12]: https://github.com/soywod/catalyx/compare/v0.0.11...v0.0.12
 [0.0.11]: https://github.com/soywod/catalyx/compare/v0.0.10...v0.0.11
 [0.0.10]: https://github.com/soywod/catalyx/compare/v0.0.9...v0.0.10
 [0.0.9]: https://github.com/soywod/catalyx/compare/v0.0.8...v0.0.9
