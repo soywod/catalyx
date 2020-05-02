@@ -1,12 +1,17 @@
-import {WebComponent, CustomElement} from "../web-component";
+import {defineElement} from "../custom-elem";
 
-import "./chat";
+import "./counter";
+import "./todo";
 
-@CustomElement()
-export class DemoApp extends WebComponent {
-  render() {
-    return `
-      <demo-chat></demo-chat>
-    `;
-  }
-}
+defineElement(function demoApp(elem) {
+  elem.innerHTML = `
+    <div class="columns">
+      <div class="column is-one-quarter">
+        <demo-counter></demo-counter>
+      </div>
+      <div class="column is-one-quarter">
+        <demo-todo></demo-todo>
+      </div>
+    </div>
+  `;
+});

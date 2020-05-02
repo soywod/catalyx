@@ -1,9 +1,11 @@
 import {Observable, isObservable} from "./observable";
 import {arrayDiffs} from "./obj-utils";
 
+type BinderElement = Node & ParentNode & InnerHTML;
+
 export type BinderBind = <T>(data: BinderBindData<T>, fn?: BinderBindFn<T>) => Binder;
 export type BinderBindData<T> = T[] | T | Observable<T[]> | Observable<T>;
-export type BinderBindFn<T> = (val: T, elem: HTMLElement, idx: number) => any;
+export type BinderBindFn<T> = (val: T, elem: BinderElement, idx: number) => any;
 
 export type BinderOn = <T extends keyof GlobalEventHandlersEventMap>(
   evtType: T,
@@ -20,10 +22,10 @@ export type BinderOnFn<T extends keyof GlobalEventHandlersEventMap> = (
 ) => void;
 
 export class Binder {
-  elem: HTMLElement | null;
-  elems: HTMLElement[];
+  elem: BinderElement | null;
+  elems: BinderElement[];
 
-  constructor(elem?: HTMLElement | HTMLElement[] | null) {
+  constructor(elem?: BinderElement | BinderElement[] | null) {
     this.elems = Array.isArray(elem) ? elem : elem ? [elem] : [];
     this.elem = 0 in this.elems ? this.elems[0] : null;
   }
@@ -42,7 +44,7 @@ export class Binder {
                   const {item, idx} = change;
                   const child = parseHTML(fn ? fn(item, elem, idx) : String(item));
                   child.setAttribute("data-key", String(idx));
-                  elem.appendChild(child);
+                  elem.append(child);
                   break;
                 }
 
@@ -114,26 +116,28 @@ export class Binder {
     targetOrFn: string | BinderOnFn<T>,
     fn?: BinderOnFn<T>,
   ): this {
-    this.elems.forEach(elem => {
-      function handler(evt: HTMLElementEventMap[T]) {
+    for (const elem of this.elems) {
+      if (!(elem instanceof HTMLElement)) continue;
+      const handler = (evt: HTMLElementEventMap[T]) => {
         console.debug("[catalyx] event triggered", evt, elem);
         if (typeof targetOrFn === "string" && typeof fn === "function") {
           const $target = find(targetOrFn, elem);
-          const containsTarget = (el: HTMLElement) => {
+          const containsTarget = (el: BinderElement) => {
             if (!(evt.target instanceof Node)) return false;
             if (!el.contains(evt.target)) return false;
             return true;
           };
 
-          $target.elems.filter(containsTarget).forEach(elem => {
+          for (const elem of $target.elems.filter(containsTarget)) {
+            if (!(elem instanceof HTMLElement)) continue;
             const overload = {mainTarget: elem, key: Number(elem.getAttribute("data-key"))};
             fn(Object.assign(evt, overload), elem);
-          });
+          }
         } else if (typeof targetOrFn === "function") {
           const overload = {mainTarget: elem, key: Number(elem.getAttribute("data-key"))};
           targetOrFn(Object.assign(evt, overload), elem);
         }
-      }
+      };
 
       elem.addEventListener(evtType, handler);
 
@@ -151,7 +155,7 @@ export class Binder {
 
         elemObs.observe(document.body, {childList: true});
       }
-    });
+    }
 
     return this;
   }
@@ -192,3 +196,20 @@ export function parseStyle(str: string): HTMLStyleElement {
 
   return style;
 }
+
+export const bind = <T>(
+  data: BinderBindData<T>,
+  elems: BinderElement | BinderElement[],
+  fn?: BinderBindFn<T>,
+) => {
+  return new Binder(elems).bind(data, fn);
+};
+
+export const on = <T extends keyof GlobalEventHandlersEventMap>(
+  evtType: T,
+  elems: BinderElement | BinderElement[],
+  targetOrFn: string | BinderOnFn<T>,
+  fn?: BinderOnFn<T>,
+) => {
+  return new Binder(elems).on(evtType, targetOrFn, fn);
+};

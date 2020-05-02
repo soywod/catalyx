@@ -1,64 +1,69 @@
 import {BehaviorSubject} from "rxjs";
 import cn from "classnames";
 
-import {WebComponent, CustomElement} from "../web-component";
-
-import style from "./todo.scss";
+import {defineElement} from "../custom-elem";
+import {find} from "../dom-utils";
 
 type Task = {
   desc: string;
   done: boolean;
 };
 
-const tasks$ = new BehaviorSubject<Task[]>([]);
-const taskName$ = new BehaviorSubject<string | null>(null);
+defineElement(function demoTodo(elem) {
+  const tasks$ = new BehaviorSubject<Task[]>([]);
+  const shadow = elem.attachShadow({mode: "open"});
 
-@CustomElement("demo-todo")
-export default class extends WebComponent {
-  constructor() {
-    super({style});
-
-    this.find("form").on("submit", evt => {
-      evt.preventDefault();
-      if (taskName$.value) {
-        tasks$.next([...tasks$.value, {desc: taskName$.value, done: false}]);
-        taskName$.next(null);
+  shadow.innerHTML = `
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.8.2/css/bulma.min.css">
+    <style>
+      .has-line-through {
+        text-decoration: line-through;
       }
+    </style>
+    <form class="panel">
+      <div class="panel-heading">
+        Todo
+      </div>
+      <div class="panel-block">
+        <div class="control field has-addons">
+          <div class="control is-expanded">
+            <input class="input is-fullwidth" name="task" type="text">
+          </div>
+          <div class="control">
+            <button class="button" type="submit">Add</button>
+          </div>
+        </div>
+      </div>
+      <div id="tasks"></div>
+    </form>
+  `;
+
+  find("form", shadow).on("submit", evt => {
+    if (evt.target instanceof HTMLFormElement) {
+      evt.preventDefault();
+      const taskDesc = new FormData(evt.target).get("task");
+      const taskInput = evt.target.elements.namedItem("task");
+
+      if (taskDesc) {
+        tasks$.next([...tasks$.value, {desc: String(taskDesc), done: false}]);
+      }
+
+      if (taskInput instanceof HTMLInputElement) {
+        taskInput.value = "";
+      }
+    }
+  });
+
+  find("#tasks", shadow)
+    .bind(tasks$, task => {
+      const classes = cn("panel-block task", {"has-text-grey-lighter has-line-through": task.done});
+      return `<a class="${classes}">${task.desc}</div>`;
+    })
+    .on("click", ".task", evt => {
+      tasks$.next(tasks$.value.map((t, key) => (key === evt.key ? {...t, done: !t.done} : t)));
+    })
+    .on("contextmenu", ".task", evt => {
+      evt.preventDefault();
+      tasks$.next(tasks$.value.filter((_, key) => key !== evt.key));
     });
-
-    this.find("input")
-      .bind(taskName$, (taskName, elem) => {
-        if (elem instanceof HTMLInputElement) {
-          elem.value = taskName || "";
-        }
-      })
-      .on("change", evt => {
-        if (evt.target instanceof HTMLInputElement) {
-          taskName$.next(evt.target.value);
-        }
-      });
-
-    this.find(".tasks")
-      .bind(tasks$, task => {
-        const classes = cn("task", {done: task.done});
-        return `<div class="${classes}">${task.desc}</div>`;
-      })
-      .on("click", ".task", evt => {
-        tasks$.next(tasks$.value.map((t, key) => (key === evt.key ? {...t, done: !t.done} : t)));
-      })
-      .on("contextmenu", ".task", evt => {
-        evt.preventDefault();
-        tasks$.next(tasks$.value.filter((_, key) => key !== evt.key));
-      });
-  }
-
-  render() {
-    return `
-      <form>
-        <input type="text">
-        <button type="submit">Add</button>
-        <div class="tasks"></div>
-      </form>
-    `;
-  }
-}
+});
