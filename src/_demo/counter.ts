@@ -9,6 +9,11 @@ defineElement(function demoCounter(elem) {
 
   shadow.innerHTML = `
     <link rel="stylesheet" href="https://unpkg.com/bulma@0.8.2/css/bulma.min.css">
+    <style>
+      #counter {
+        transition: color 1s;
+      }
+    </style>
     <div class="panel">
       <div class="panel-heading">
         Counter
@@ -33,10 +38,17 @@ defineElement(function demoCounter(elem) {
   find("#add", shadow).on("click", () => counter$.next(counter$.value + 1));
   find("#counter", shadow).bind(counter$, (counter, elem) => {
     if (elem instanceof HTMLInputElement) {
-      elem.value = String(counter);
       elem.classList.remove("has-text-success", "has-text-danger");
-      if (counter > 0) elem.classList.add("has-text-success");
-      if (counter < 0) elem.classList.add("has-text-danger");
+
+      if (counter > 0) {
+        elem.value = `+${counter}`;
+        elem.classList.add("has-text-success");
+      } else if (counter < 0) {
+        elem.value = String(counter);
+        elem.classList.add("has-text-danger");
+      } else {
+        elem.value = "";
+      }
     }
   });
 });
