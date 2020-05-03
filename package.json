@@ -29,7 +29,7 @@
     "url": "https://github.com/soywod/catalyx/issues"
   },
   "types": "lib/index.d.ts",
-  "main": "lib/index.cjs.js",
+  "main": "lib/index.umd.js",
   "module": "lib/index.esm.js",
   "files": [
     "lib"

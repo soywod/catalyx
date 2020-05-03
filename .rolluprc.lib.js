@@ -11,7 +11,8 @@ export default {
   output: [
     {
       file: pkg.main,
-      format: "cjs",
+      name: pkg.name,
+      format: "umd",
       exports: "named",
       sourcemap: true,
     },
