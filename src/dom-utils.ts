@@ -173,30 +173,6 @@ export function find(selector: string, parent: ParentNode = document): Binder {
   );
 }
 
-export function parseHTML(str: string): HTMLElement {
-  const wrapper = document.createElement("template");
-  wrapper.innerHTML = str.trim();
-  const elem = wrapper.content.firstChild;
-
-  if (elem instanceof HTMLElement) {
-    return elem;
-  } else {
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = str.trim();
-    return wrapper;
-  }
-}
-
-export function parseStyle(str: string): HTMLStyleElement {
-  const style = parseHTML("<style>" + str.trim() + "</style>");
-
-  if (!(style instanceof HTMLStyleElement)) {
-    throw new Error("Styles must be a <style> element.");
-  }
-
-  return style;
-}
-
 export const bind = <T>(
   data: BinderBindData<T>,
   elems: BinderElement | BinderElement[],
@@ -213,3 +189,17 @@ export const on = <T extends keyof GlobalEventHandlersEventMap>(
 ) => {
   return new Binder(elems).on(evtType, targetOrFn, fn);
 };
+
+function parseHTML(str: string): HTMLElement {
+  const wrapper = document.createElement("template");
+  wrapper.innerHTML = str.trim();
+  const elem = wrapper.content.firstChild;
+
+  if (elem instanceof HTMLElement) {
+    return elem;
+  } else {
+    const wrapper = document.createElement("div");
+    wrapper.innerHTML = str.trim();
+    return wrapper;
+  }
+}

@@ -47,7 +47,7 @@ defineElement(function demoCounter(elem) {
         elem.value = String(counter);
         elem.classList.add("has-text-danger");
       } else {
-        elem.value = "";
+        elem.value = "0";
       }
     }
   });

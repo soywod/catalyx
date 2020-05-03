@@ -23,16 +23,17 @@ JavaScript utility to build reactive interfaces:
 - [Examples](#examples)
 - [Development](#development)
 - [Tests](#tests)
+- [Links](#links)
 - [Changelog](https://github.com/soywod/catalyx/blob/master/CHANGELOG.md)
 - [License](https://github.com/soywod/catalyx/blob/master/LICENSE)
 
 ## Motivation
 
-- [React](https://reactjs.org/) is a great JavaScript library. But the DOM abstraction is too strong. Over time, you forget how to interact with it. You end up being dependant on `React`, and not being able to code in pure `JavaScript`.
+- [React](https://reactjs.org/) is a great JavaScript library. But the DOM abstraction is too strong. Over time, you forget how to interact with it. You end up being dependant on `React`, and not being able anymore to code in pure `JavaScript`.
 - [Web Components](https://developer.mozilla.org/fr/docs/Web/Web_Components) are more and more supported by browsers. Missing features can be provided by powerful [polyfills](https://github.com/webcomponents/polyfills).
 - The [Observable pattern](https://en.wikipedia.org/wiki/Observer_pattern) is a strong pattern, especially with events. It makes it a good candidate for DOM manipulations.
 
-Catalyx emerged from this three statments: it's a small JavaScript utility built on the top of Web Components standards using the Observable pattern to reactively interact with the DOM.
+Catalyx emerged from these three statments: it's a small JavaScript utility built on the top of Web Components standards using the Observable pattern to reactively interact with the DOM.
 
 ```javascript
 // demo-counter.js
@@ -264,3 +265,13 @@ Tests are handled by [Jest](https://jestjs.io/).
 ```bash
 yarn test
 ```
+
+## Links
+
+- https://github.com/tc39/proposal-observable
+- https://webdevstudios.com/2019/02/19/observable-pattern-in-javascript/
+- https://www.polymer-project.org/
+- https://slimjs.com/
+- https://craftsmen.nl/polymer-is-dead-long-live-web-components/
+- https://github.com/hybridsjs/hybrids
+- https://dev.to/psfeng/dependency-injection-in-functional-programming-3gg4
