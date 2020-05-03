@@ -3,7 +3,7 @@
   "description": "JavaScript utility to build reactive interfaces",
   "author": "soywod <clement.douin@posteo.net>",
   "license": "MIT",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "private": false,
   "keywords": [
     "reactive",
