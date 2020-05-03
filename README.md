@@ -11,6 +11,9 @@ JavaScript utility to build reactive interfaces:
 ## Table of contents
 
 - [Motivation](#motivation)
+- [Installation](#installation)
+  - [CDN](#cdn)
+  - [NPM](#npm)
 - [Usage](#usage)
   - [`defineElement`](#defineelement)
   - [`find`](#find)
@@ -55,15 +58,29 @@ defineElement(demoCounter)
 
 ```html
 <!-- index.html -->
-<script type="module" src="./demo-counter.js"></script>
 <demo-counter></demo-counter>
 ```
 
 ## Installation
 
+### CDN
+
+```html
+<!-- Exposes the global variable `catalyx` -->
+<script src="https://unpkg.com/catalyx/lib/index.umd.js"></script>
+```
+
+### NPM
+
 ```bash
 yarn add catalyx
 npm install catalyx
+```
+
+Then:
+
+```javascript
+import {...} from "catalyx"
 ```
 
 ## Usage
