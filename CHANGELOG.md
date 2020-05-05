@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.0.15] - 2020-05-05
+
+### Changed
+
+- Change the purpose of Catalyx (a collection of native Web Components)
+
 ## [0.0.14] - 2020-05-03
 
 ### Changed
@@ -82,7 +88,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - First release
 
-[unreleased]: https://github.com/soywod/catalyx/compare/v0.0.14...HEAD
+[unreleased]: https://github.com/soywod/catalyx/compare/v0.0.15...HEAD
+[0.0.15]: https://github.com/soywod/catalyx/compare/v0.0.14...v0.0.15
 [0.0.14]: https://github.com/soywod/catalyx/compare/v0.0.13...v0.0.14
 [0.0.13]: https://github.com/soywod/catalyx/compare/v0.0.11...v0.0.13
 [0.0.11]: https://github.com/soywod/catalyx/compare/v0.0.10...v0.0.11
