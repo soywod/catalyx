@@ -5,11 +5,7 @@ import template from "./heading.html";
 export default class Heading extends HTMLElement {
   public constructor() {
     super();
-
-    this.attachShadow({mode: "open", delegatesFocus: true}).append(
-      parseStyle(style),
-      parseTemplate(template),
-    );
+    this.attachShadow({mode: "open"}).append(parseStyle(style), parseTemplate(template));
   }
 }
 

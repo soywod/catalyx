@@ -1,0 +1,5 @@
+pre {
+  background: var(--gray);
+  margin: 0;
+  padding: var(--spacing-sm);
+}

@@ -1,4 +1,73 @@
 :host {
+  align-items: center;
   color: var(--dark, Black);
-  display: block;
+  display: grid;
+  font-family: var(--font-family);
+  grid-template-areas:
+    "prefix heading suffix padder"
+    "prefix .       suffix padder";
+  grid-template-columns: auto auto auto minmax(0, 1fr);
+  margin: 0 0 0.5rem 0;
+}
+
+:host([separator]) {
+  border-bottom: 1px solid var(--gray);
+  padding-bottom: 0.25rem;
+}
+
+::slotted(h1),
+::slotted(h2),
+::slotted(h3),
+::slotted(h4),
+::slotted(h5),
+::slotted(h6) {
+  font-weight: 500;
+  grid-area: heading;
+  line-height: 1.2;
+  margin: 0;
+}
+
+::slotted([slot="prefix"]) {
+  grid-area: prefix;
+  margin-right: var(--spacing-sm);
+}
+
+::slotted([slot="suffix"]) {
+  grid-area: suffix;
+  margin-left: var(--spacing-sm);
+}
+
+::slotted([slot="padder"]) {
+  grid-area: padder;
+  justify-self: end;
+}
+
+::slotted([slot="subheading"]) {
+  font-size: 1rem;
+  font-weight: 400;
+  grid-column: 2;
+}
+
+::slotted(h1) {
+  font-size: 2.5rem;
+}
+
+::slotted(h2) {
+  font-size: 2rem;
+}
+
+::slotted(h3) {
+  font-size: 1.75rem;
+}
+
+::slotted(h4) {
+  font-size: 1.5rem;
+}
+
+::slotted(h5) {
+  font-size: 1.25rem;
+}
+
+::slotted(h6) {
+  font-size: 1rem;
 }
