@@ -6,17 +6,36 @@ import {terser} from "rollup-plugin-terser";
 import pkg from "./package.json";
 
 const extensions = [".ts"];
-const components = ["number-field"];
+const include = "src/**/*";
+const exclude = "node_modules/**";
+
+const output = file => ({
+  file,
+  exports: "named",
+  sourcemap: true,
+});
+
+const outputUMD = (file = "index") => ({
+  ...output(`lib/${file}.umd.js`),
+  name: pkg.name,
+  format: "umd",
+});
+
+const outputESM = (file = "index") => ({
+  ...output(`lib/${file}.esm.js`),
+  format: "es",
+});
+
 const plugins = [
   resolve({extensions}),
   babel({
-    include: ["src/**/*"],
-    exclude: "node_modules/**",
+    include,
+    exclude,
     extensions,
   }),
   string({
-    include: "src/**/*.css",
-    exclude: "node_modules/**",
+    include: include + ".css",
+    exclude,
   }),
   terser({
     output: {
@@ -25,44 +44,18 @@ const plugins = [
   }),
 ];
 
+const components = ["number-field"];
+
 export default components
   .map(component => ({
     input: `src/${component}`,
-    output: [
-      {
-        file: `lib/${component}/index.umd.js`,
-        name: pkg.name,
-        format: "umd",
-        exports: "named",
-        sourcemap: true,
-      },
-      {
-        file: `lib/${component}/index.esm.js`,
-        format: "es",
-        exports: "named",
-        sourcemap: true,
-      },
-    ],
+    output: [outputUMD(component), outputESM(component)],
     plugins,
   }))
   .concat([
     {
       input: "src",
-      output: [
-        {
-          file: pkg.main,
-          name: pkg.name,
-          format: "umd",
-          exports: "named",
-          sourcemap: true,
-        },
-        {
-          file: pkg.module,
-          format: "es",
-          exports: "named",
-          sourcemap: true,
-        },
-      ],
+      output: [outputUMD(), outputESM()],
       plugins,
     },
   ]);
