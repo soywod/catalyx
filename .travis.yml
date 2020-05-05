@@ -10,5 +10,5 @@ cache:
 install:
   - yarn install --frozen-lock file
 
-script:
-  - yarn test
+# script:
+#   - yarn test
