@@ -1,14 +1,14 @@
 # ⚗️ Catalyx [![Build Status](https://travis-ci.org/soywod/catalyx.svg?branch=master)](https://travis-ci.org/soywod/catalyx) [![npm](https://img.shields.io/npm/v/catalyx?label=npm)](https://www.npmjs.com/package/catalyx)
 
-Calaxy is a collection of native web components:
+Catalyx is a collection of native web components:
 
 ✔ based on **Web Components** standards<br>
-✔ without dependency<br>
-✔ written in pure `JavaScript`<br>
+✔ written in pure **JavaScript** (`0` dependency)<br>
 ✔ lightweight, performant and customizable<br>
 
 ## Atoms (core concepts)
 
+- [ ] Text
 - [ ] Field
 - [ ] Toggler
 - [ ] Button
@@ -18,6 +18,11 @@ Calaxy is a collection of native web components:
 
 ## Molecules
 
+- Text
+  - [ ] Title
+  - [ ] Paragraph
+  - [ ] List
+  - [ ] Block
 - Field
   - [ ] Free text field
   - [ ] Number field
