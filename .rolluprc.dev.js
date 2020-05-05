@@ -1,6 +1,7 @@
 import resolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import babel from "rollup-plugin-babel";
+import {string} from "rollup-plugin-string";
 import html from "rollup-plugin-generate-html-template";
 import serve from "rollup-plugin-serve";
 import livereload from "rollup-plugin-livereload";
@@ -18,6 +19,10 @@ export default {
     resolve({extensions}),
     babel({extensions, include: "src/**", exclude: "node_modules/**"}),
     commonjs({extensions}),
+    string({
+      include: "src/**/*.css",
+      exclude: "node_modules/**",
+    }),
     html({
       template: "src/_demo/index.html",
       target: `${buildDir}/index.html`,

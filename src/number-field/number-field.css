@@ -1,0 +1,80 @@
+:host {
+  border: var(--border, 1px solid Gainsboro);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 15px;
+  grid-template-rows: repeat(2, minmax(15px, 1fr));
+  transition: 150ms border;
+}
+
+:host(:focus) {
+  border-color: Silver;
+  outline: none;
+}
+
+:host(:hover) button {
+  opacity: 1;
+}
+
+:host(:focus) button {
+  color: Black;
+  opacity: 1;
+}
+
+::slotted([slot="prefix"]),
+::slotted([slot="suffix"]) {
+  padding: 0 5px;
+}
+
+input {
+  border: none;
+  grid-column: 1 / span 2;
+  grid-row: 1 / span 2;
+  padding: 5px 10px;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+input:focus {
+  outline: none;
+}
+
+button {
+  background: none;
+  border: none;
+  color: Silver;
+  cursor: pointer;
+  font-size: 10px;
+  grid-column: 2;
+  justify-self: stretch;
+  opacity: 0;
+  padding: 0;
+  transition-duration: 150ms;
+  transition-property: color, background, opacity;
+}
+
+button:hover {
+  background: Gainsboro;
+  color: Black;
+}
+
+button:focus {
+  outline: none;
+}
+
+#inc {
+  grid-row: 1;
+  transform-origin: top right;
+}
+
+#dec {
+  grid-row: 2;
+  transform-origin: bottom right;
+}
