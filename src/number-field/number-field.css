@@ -1,32 +1,45 @@
 :host {
-  border: var(--border, 1px solid Gainsboro);
+  border: 1px solid var(--gray, Gainsboro);
+  border-radius: var(--border-radius, 4px);
   display: grid;
   grid-template-columns: minmax(0, 1fr) 15px;
   grid-template-rows: repeat(2, minmax(15px, 1fr));
-  transition: 150ms border;
+  transition: 125ms border;
 }
 
-:host(:focus) {
-  border-color: Silver;
-  outline: none;
+:host(:hover) {
+  border: 1px solid var(--gray-dark, Silver);
 }
 
 :host(:hover) button {
+  color: var(--gray, Gainsboro);
   opacity: 1;
+}
+
+:host(:focus) {
+  border: 1px solid var(--primary, DodgerBlue);
+  outline: none;
 }
 
 :host(:focus) button {
-  color: Black;
+  color: var(--gray-dark, Silver);
+  cursor: pointer;
   opacity: 1;
 }
 
-::slotted([slot="prefix"]),
-::slotted([slot="suffix"]) {
-  padding: 0 5px;
+:host(:focus) button:hover {
+  color: var(--dark, DarkSlateGray);
+}
+
+:host(:focus) button:focus {
+  outline: none;
 }
 
 input {
   border: none;
+  border-radius: var(--border-radius, 4px);
+  color: var(--dark, DarkSlateGray);
+  font-size: var(--font-size-md, 14px);
   grid-column: 1 / span 2;
   grid-row: 1 / span 2;
   padding: 5px 10px;
@@ -49,32 +62,22 @@ input:focus {
 button {
   background: none;
   border: none;
-  color: Silver;
-  cursor: pointer;
-  font-size: 10px;
+  color: var(--gray-dark, Silver);
+  font-size: var(--font-size-sm, 10px);
   grid-column: 2;
   justify-self: stretch;
   opacity: 0;
   padding: 0;
-  transition-duration: 150ms;
+  transition-duration: 125ms;
   transition-property: color, background, opacity;
 }
 
-button:hover {
-  background: Gainsboro;
-  color: Black;
-}
-
-button:focus {
-  outline: none;
-}
-
 #inc {
+  border-top-right-radius: var(--border-radius, 4px);
   grid-row: 1;
-  transform-origin: top right;
 }
 
 #dec {
+  border-bottom-right-radius: var(--border-radius, 4px);
   grid-row: 2;
-  transform-origin: bottom right;
 }
