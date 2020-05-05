@@ -52,3 +52,4 @@ Catalyx is a collection of native web components:
 - [Various way of styling a web component](https://www.smashingmagazine.com/2016/12/styling-web-components-using-a-shared-style-sheet/)
 - [Awesome Google doc about Web Components](https://developers.google.com/web/fundamentals/web-components)
 - [List of HTML colors](https://en.wikipedia.org/wiki/Web_colors)
+- [Web Components and SEO](https://medium.com/patternfly-elements/web-components-and-seo-58227413e072)

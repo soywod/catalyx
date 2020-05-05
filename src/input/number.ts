@@ -1,16 +1,12 @@
-import style from "./number-field.css";
-
-const template = `
-  <input id="input" part="input" type="number" inputmode="decimal">
-  <button id="inc" part="increment" tabindex="-1">&#9650;</button>
-  <button id="dec" part="decrement" tabindex="-1">&#9660;</button>
-`;
+import {parseStyle, parseTemplate} from "../dom-utils";
+import style from "./number.css";
+import template from "./number.html";
 
 type NumberFieldChangeEvent = Event & {
   value: number | undefined;
 };
 
-export default class NumberField extends HTMLElement {
+export default class InputNumber extends HTMLElement {
   private _intl: Intl.NumberFormat;
   private _input: HTMLInputElement;
   private _inc: HTMLButtonElement;
@@ -21,9 +17,9 @@ export default class NumberField extends HTMLElement {
     super();
 
     const shadow = this.attachShadow({mode: "open", delegatesFocus: true});
-    shadow.innerHTML = `<style>${style}</style>` + template;
+    shadow.append(parseStyle(style), parseTemplate(template));
 
-    const locale = this.getAttribute("locale") || "en-US";
+    const locale = this.getAttribute("locale") || navigator.language;
     const type = this.getAttribute("type") || "decimal";
     const currency = this.getAttribute("currency") || "USD";
     this._intl = new Intl.NumberFormat(locale, {style: type, currency});
@@ -33,11 +29,11 @@ export default class NumberField extends HTMLElement {
     this._input = input;
 
     const inc = shadow.getElementById("inc");
-    if (!(inc instanceof HTMLButtonElement)) throw new Error("Inc button not found.");
+    if (!(inc instanceof HTMLButtonElement)) throw new Error("Increment button not found.");
     this._inc = inc;
 
     const dec = shadow.getElementById("dec");
-    if (!(dec instanceof HTMLButtonElement)) throw new Error("Dec button not found.");
+    if (!(dec instanceof HTMLButtonElement)) throw new Error("Decrement button not found.");
     this._dec = dec;
 
     this._handleWheel = this._handleWheel.bind(this);
@@ -154,4 +150,4 @@ export default class NumberField extends HTMLElement {
   }
 }
 
-customElements.define("number-field", NumberField);
+customElements.define("cx-input-number", InputNumber);

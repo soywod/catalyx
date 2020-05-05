@@ -28,7 +28,7 @@
 }
 
 :host(:focus) button:hover {
-  color: var(--dark, DarkSlateGray);
+  color: var(--dark, Black);
 }
 
 :host(:focus) button:focus {
@@ -38,7 +38,7 @@
 input {
   border: none;
   border-radius: var(--border-radius, 4px);
-  color: var(--dark, DarkSlateGray);
+  color: var(--dark, Black);
   font-size: var(--font-size-md, 14px);
   grid-column: 1 / span 2;
   grid-row: 1 / span 2;

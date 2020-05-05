@@ -32,5 +32,5 @@ export const plugins = (plugins = []) =>
   [
     resolve({extensions}),
     babel({include, exclude, extensions}),
-    string({include: include + ".css", exclude}),
+    string({include: include + ".{html|css}", exclude}),
   ].concat(plugins);
