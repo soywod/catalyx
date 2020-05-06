@@ -1,24 +1,7 @@
 import {parseStyle, parseTemplate} from "../dom-utils";
-import {getKeyFromKeyboardEvent} from "../kb-utils";
+import {getKeyFromInputEvent} from "../kb-utils";
 import style from "./number.css";
 import template from "./number.html";
-
-const IGNORED_KEYS = [
-  "Alt",
-  "ArrowLeft",
-  "ArrowRight",
-  "Backspace",
-  "Control",
-  "Delete",
-  "Enter",
-  "Meta",
-  "Shift",
-  "Tab",
-];
-
-/* type NumberFieldChangeEvent = Event & { */
-/*   value: number | undefined; */
-/* }; */
 
 function getPrecisionFromStep(step: number) {
   const log = Math.min(step, 1);
@@ -64,9 +47,9 @@ export default class InputNumber extends HTMLElement {
     this._dec = dec;
 
     this._handleWheel = this._handleWheel.bind(this);
-    this._handleKeyDown = this._handleKeyDown.bind(this);
     this._handleFocus = this._handleFocus.bind(this);
     this._handleBlur = this._handleBlur.bind(this);
+    this._handleInput = this._handleInput.bind(this);
     this._handleInc = this._handleInc.bind(this);
     this._handleDec = this._handleDec.bind(this);
   }
@@ -75,7 +58,7 @@ export default class InputNumber extends HTMLElement {
     this.addEventListener("wheel", this._handleWheel);
     this.addEventListener("focus", this._handleFocus);
     this.addEventListener("blur", this._handleBlur);
-    this.addEventListener("keydown", this._handleKeyDown);
+    this._input.addEventListener("input", this._handleInput);
     this._inc.addEventListener("mousedown", this._handleInc);
     this._dec.addEventListener("mousedown", this._handleDec);
   }
@@ -84,7 +67,7 @@ export default class InputNumber extends HTMLElement {
     this.removeEventListener("wheel", this._handleWheel);
     this.removeEventListener("focus", this._handleFocus);
     this.removeEventListener("blur", this._handleBlur);
-    this.removeEventListener("keydown", this._handleKeyDown);
+    this._input.removeEventListener("input", this._handleInput);
     this._inc.removeEventListener("mousedown", this._handleInc);
     this._dec.removeEventListener("mousedown", this._handleDec);
   }
@@ -95,36 +78,6 @@ export default class InputNumber extends HTMLElement {
 
   public set intl(intl: Intl.NumberFormat) {
     this._intl = intl;
-  }
-
-  private _handleKeyDown(evt: KeyboardEvent) {
-    const key = getKeyFromKeyboardEvent(evt).replace(/,/g, ".");
-
-    if (IGNORED_KEYS.includes(key) || evt.ctrlKey || evt.altKey || evt.metaKey) {
-      return;
-    }
-
-    if (key === "ArrowDown") {
-      evt.preventDefault();
-      return this._handleDec();
-    }
-
-    if (key === "ArrowUp") {
-      evt.preventDefault();
-      return this._handleInc();
-    }
-
-    if (!/[0-9.]+/.test(key)) {
-      return evt.preventDefault();
-    }
-
-    if (key === ".") {
-      evt.preventDefault();
-
-      if (!this._input.value.includes(".")) {
-        this._input.value += ".";
-      }
-    }
   }
 
   private _handleWheel(evt: WheelEvent) {
@@ -149,6 +102,35 @@ export default class InputNumber extends HTMLElement {
     this._rawVal = this._input.value;
     this._val = parseFloat(this._rawVal) || 0;
     this._input.value = this._rawVal === "" ? "" : this.intl.format(this._val);
+  }
+
+  private _handleInput(evt: Event) {
+    if (evt instanceof InputEvent) {
+      const key = getKeyFromInputEvent(evt);
+
+      if (evt.inputType === "deleteContentBackward") {
+        const caretPos = this._input.selectionStart || 0;
+        this._rawVal = this._input.value;
+        this._input.setSelectionRange(caretPos, caretPos);
+        return;
+      }
+
+      if (!/[0-9.]+/.test(key)) {
+        const caretPos = this._input.selectionStart || 0;
+        this._input.value = this._rawVal;
+        this._input.setSelectionRange(caretPos, caretPos - 1);
+        return;
+      }
+
+      if (key === "." && this._rawVal.includes(".")) {
+        const caretPos = this._input.selectionStart || 0;
+        this._input.value = this._rawVal;
+        this._input.setSelectionRange(caretPos, caretPos - 1);
+        return;
+      }
+
+      this._rawVal = this._input.value;
+    }
   }
 
   private _handleDec(evt?: Event) {
