@@ -12,14 +12,6 @@
   border: 1px solid var(--gray-dark);
 }
 
-:host(:hover) button {
-  opacity: 1;
-}
-
-:host(:hover) button:hover {
-  color: var(--dark);
-}
-
 :host(:focus) {
   border: 1px solid var(--primary);
   outline: none;
@@ -28,6 +20,11 @@
 :host(:focus) button {
   color: var(--gray-dark);
   opacity: 1;
+  pointer-events: initial;
+}
+
+:host(:focus) button:hover {
+  color: var(--dark);
 }
 
 input {
@@ -66,12 +63,9 @@ button {
   line-height: var(--line-height-sm);
   opacity: 0;
   padding: 0;
+  pointer-events: none;
   transition-duration: 125ms;
   transition-property: color, background, opacity;
-}
-
-button:hover {
-  color: var(--dark);
 }
 
 button:focus {

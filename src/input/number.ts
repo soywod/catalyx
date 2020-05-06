@@ -1,17 +1,38 @@
 import {parseStyle, parseTemplate} from "../dom-utils";
+import {getKeyFromKeyboardEvent} from "../kb-utils";
 import style from "./number.css";
 import template from "./number.html";
 
-type NumberFieldChangeEvent = Event & {
-  value: number | undefined;
-};
+const IGNORED_KEYS = [
+  "Alt",
+  "ArrowLeft",
+  "ArrowRight",
+  "Backspace",
+  "Control",
+  "Delete",
+  "Enter",
+  "Meta",
+  "Shift",
+  "Tab",
+];
+
+/* type NumberFieldChangeEvent = Event & { */
+/*   value: number | undefined; */
+/* }; */
+
+function getPrecisionFromStep(step: number) {
+  const log = Math.min(step, 1);
+  return Math.abs(Math.floor(Math.log(log) / Math.log(10)));
+}
 
 export default class InputNumber extends HTMLElement {
   private _intl: Intl.NumberFormat;
   private _input: HTMLInputElement;
   private _inc: HTMLButtonElement;
   private _dec: HTMLButtonElement;
-  private _val?: number;
+
+  private _rawVal = "";
+  private _val = 0;
 
   public constructor() {
     super();
@@ -22,7 +43,13 @@ export default class InputNumber extends HTMLElement {
     const locale = this.getAttribute("locale") || navigator.language;
     const type = this.getAttribute("type") || "decimal";
     const currency = this.getAttribute("currency") || "USD";
-    this._intl = new Intl.NumberFormat(locale, {style: type, currency});
+    const precision = getPrecisionFromStep(Number(this.getAttribute("step") || 1));
+    this._intl = new Intl.NumberFormat(locale, {
+      style: type,
+      currency,
+      minimumFractionDigits: precision,
+      maximumFractionDigits: precision,
+    });
 
     const input = shadow.getElementById("input");
     if (!(input instanceof HTMLInputElement)) throw new Error("Input not found.");
@@ -40,47 +67,26 @@ export default class InputNumber extends HTMLElement {
     this._handleKeyDown = this._handleKeyDown.bind(this);
     this._handleFocus = this._handleFocus.bind(this);
     this._handleBlur = this._handleBlur.bind(this);
-    this._handleChange = this._handleChange.bind(this);
     this._handleInc = this._handleInc.bind(this);
     this._handleDec = this._handleDec.bind(this);
   }
 
   public connectedCallback() {
     this.addEventListener("wheel", this._handleWheel);
+    this.addEventListener("focus", this._handleFocus);
+    this.addEventListener("blur", this._handleBlur);
     this.addEventListener("keydown", this._handleKeyDown);
-    this._input.addEventListener("focus", this._handleFocus);
-    this._input.addEventListener("blur", this._handleBlur);
-    this._input.addEventListener("change", this._handleChange);
     this._inc.addEventListener("mousedown", this._handleInc);
     this._dec.addEventListener("mousedown", this._handleDec);
   }
 
   public disconnectedCallback() {
     this.removeEventListener("wheel", this._handleWheel);
+    this.removeEventListener("focus", this._handleFocus);
+    this.removeEventListener("blur", this._handleBlur);
     this.removeEventListener("keydown", this._handleKeyDown);
-    this._input.removeEventListener("focus", this._handleFocus);
-    this._input.removeEventListener("blur", this._handleBlur);
-    this._input.removeEventListener("change", this._handleChange);
     this._inc.removeEventListener("mousedown", this._handleInc);
     this._dec.removeEventListener("mousedown", this._handleDec);
-  }
-
-  public get value() {
-    return this._val;
-  }
-
-  public set value(val: number | undefined) {
-    this._val = val;
-    switch (this._input.getAttribute("type")) {
-      case "number":
-        this._input.value = val === undefined ? "" : String(val);
-        break;
-
-      case "text":
-      default:
-        this._input.value = val === undefined ? "" : this._intl.format(val);
-        break;
-    }
   }
 
   public get intl() {
@@ -92,16 +98,40 @@ export default class InputNumber extends HTMLElement {
   }
 
   private _handleKeyDown(evt: KeyboardEvent) {
-    if (evt.key === "ArrowUp" || evt.which === 38) {
+    const key = getKeyFromKeyboardEvent(evt).replace(/,/g, ".");
+
+    if (IGNORED_KEYS.includes(key) || evt.ctrlKey || evt.altKey || evt.metaKey) {
+      return;
+    }
+
+    if (key === "ArrowDown") {
       evt.preventDefault();
-      this._handleInc();
-    } else if (evt.key === "ArrowDown" || evt.which === 40) {
+      return this._handleDec();
+    }
+
+    if (key === "ArrowUp") {
       evt.preventDefault();
-      this._handleDec();
+      return this._handleInc();
+    }
+
+    if (!/[0-9.]+/.test(key)) {
+      return evt.preventDefault();
+    }
+
+    if (key === ".") {
+      evt.preventDefault();
+
+      if (!this._input.value.includes(".")) {
+        this._input.value += ".";
+      }
     }
   }
 
   private _handleWheel(evt: WheelEvent) {
+    if (!(document.activeElement instanceof HTMLElement)) return;
+    if (!(evt.target instanceof HTMLElement)) return;
+    if (!document.activeElement.isEqualNode(evt.target)) return;
+
     evt.preventDefault();
 
     if (evt.deltaY < 0) {
@@ -112,41 +142,31 @@ export default class InputNumber extends HTMLElement {
   }
 
   private _handleFocus() {
-    this._input.value = this._val ? String(this._val) : "";
-    this._input.setAttribute("type", "number");
+    this._input.value = this._rawVal;
   }
 
   private _handleBlur() {
-    this._input.setAttribute("type", "text");
-    this._input.value = this._val ? this._intl.format(this._val) : "";
+    this._rawVal = this._input.value;
+    this._val = parseFloat(this._rawVal) || 0;
+    this._input.value = this._rawVal === "" ? "" : this.intl.format(this._val);
   }
 
-  private _handleChange(evt: Event) {
-    if (evt.target instanceof HTMLInputElement) {
-      const min = Number(this.getAttribute("min") || -Infinity);
-      const max = Number(this.getAttribute("max") || Infinity);
-      this.value = Math.max(min, Math.min(Number(evt.target.value), max));
-      const changeEvt: NumberFieldChangeEvent = Object.assign(
-        new Event("change", {bubbles: true, composed: true}),
-        {value: this.value},
-      );
-
-      this.dispatchEvent(changeEvt);
-    }
-  }
-
-  private _handleDec() {
+  private _handleDec(evt?: Event) {
+    evt && evt.preventDefault();
     const min = Number(this.getAttribute("min") || -Infinity);
     const step = Number(this.getAttribute("step") || 1);
-    const numVal = this.value || 0;
-    this.value = Number(Math.max(min, numVal - step).toFixed(2));
+    const val = parseFloat(this._input.value) || 0;
+    const precision = getPrecisionFromStep(step);
+    this._input.value = Number(Math.max(min, val - step)).toFixed(precision);
   }
 
-  private _handleInc() {
+  private _handleInc(evt?: Event) {
+    evt && evt.preventDefault();
     const max = Number(this.getAttribute("max") || Infinity);
     const step = Number(this.getAttribute("step") || 1);
-    const numVal = this.value || 0;
-    this.value = Number(Math.min(numVal + step, max).toFixed(2));
+    const val = parseFloat(this._input.value) || 0;
+    const precision = getPrecisionFromStep(step);
+    this._input.value = Number(Math.min(val + step, max)).toFixed(precision);
   }
 }
 
