@@ -1,5 +1,5 @@
-import {headingDemo} from "../heading/_demo";
-import inputs from "../input/_demo";
+import {heading} from "../heading/_demo";
+import {number} from "../input/_demo";
 
 import "../table";
 import "../code";
@@ -14,8 +14,9 @@ customElements.define(
           <h1>Catalyx</h1>
         </cx-heading>
 
-        ${headingDemo}
-        ${inputs}
+        ${heading}
+
+        ${number}
       `;
     }
   },

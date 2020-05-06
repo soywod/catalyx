@@ -1,47 +1,43 @@
 :host {
-  border: 1px solid var(--gray, Gainsboro);
-  border-radius: var(--border-radius, 4px);
+  border: 1px solid var(--gray);
+  border-radius: var(--border-radius);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 15px;
-  grid-template-rows: repeat(2, minmax(15px, 1fr));
+  grid-template-columns: minmax(0, 1fr) var(--spacing-md);
+  grid-template-rows: repeat(2, minmax(var(--spacing-md), 1fr));
   transition: 125ms border;
+  width: 100%;
 }
 
 :host(:hover) {
-  border: 1px solid var(--gray-dark, Silver);
+  border: 1px solid var(--gray-dark);
 }
 
 :host(:hover) button {
-  color: var(--gray, Gainsboro);
   opacity: 1;
 }
 
+:host(:hover) button:hover {
+  color: var(--dark);
+}
+
 :host(:focus) {
-  border: 1px solid var(--primary, DodgerBlue);
+  border: 1px solid var(--primary);
   outline: none;
 }
 
 :host(:focus) button {
-  color: var(--gray-dark, Silver);
-  cursor: pointer;
+  color: var(--gray-dark);
   opacity: 1;
-}
-
-:host(:focus) button:hover {
-  color: var(--dark, Black);
-}
-
-:host(:focus) button:focus {
-  outline: none;
 }
 
 input {
   border: none;
-  border-radius: var(--border-radius, 4px);
-  color: var(--dark, Black);
-  font-size: var(--font-size-md, 14px);
+  border-radius: var(--border-radius);
+  color: var(--dark);
+  font-size: var(--font-size-md);
   grid-column: 1 / span 2;
   grid-row: 1 / span 2;
+  line-height: var(--line-height-md);
   padding: 5px 10px;
 }
 
@@ -62,22 +58,32 @@ input:focus {
 button {
   background: none;
   border: none;
-  color: var(--gray-dark, Silver);
-  font-size: var(--font-size-sm, 10px);
+  color: var(--gray);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
   grid-column: 2;
   justify-self: stretch;
+  line-height: var(--line-height-sm);
   opacity: 0;
   padding: 0;
   transition-duration: 125ms;
   transition-property: color, background, opacity;
 }
 
+button:hover {
+  color: var(--dark);
+}
+
+button:focus {
+  outline: none;
+}
+
 #inc {
-  border-top-right-radius: var(--border-radius, 4px);
+  border-top-right-radius: var(--border-radius);
   grid-row: 1;
 }
 
 #dec {
-  border-bottom-right-radius: var(--border-radius, 4px);
+  border-bottom-right-radius: var(--border-radius);
   grid-row: 2;
 }

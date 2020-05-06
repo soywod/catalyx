@@ -1,2 +1,2 @@
 import "../heading";
-export {default as headingDemo} from "./heading.html";
+export {default as heading} from "./heading.html";

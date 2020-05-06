@@ -28,6 +28,7 @@
 }
 
 ::slotted(cx-table-cell[header]) {
+  border-bottom-width: 2px;
   font-weight: bold;
 }
 

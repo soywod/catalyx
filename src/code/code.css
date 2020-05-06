@@ -4,7 +4,8 @@
 }
 
 pre {
-  background: var(--gray);
+  background: var(--gray-light);
+  border-radius: var(--border-radius);
   margin: 0;
   padding: var(--spacing-sm);
 }

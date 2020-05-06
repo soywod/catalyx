@@ -1,19 +1,19 @@
 :host {
   align-items: center;
-  color: var(--dark, Black);
+  color: var(--dark);
   display: grid;
   font-family: var(--font-family);
   grid-template-areas:
     "prefix heading suffix padder"
     "prefix .       suffix padder";
   grid-template-columns: auto auto auto minmax(0, 1fr);
-  margin: 0 0 0.5rem 0;
+  margin: 0 0 var(--spacing-md) 0;
   width: 100%;
 }
 
 :host([separator]) {
   border-bottom: 1px solid var(--gray);
-  padding-bottom: 0.25rem;
+  padding-bottom: var(--spacing-xs);
 }
 
 ::slotted(h1),
@@ -24,7 +24,7 @@
 ::slotted(h6) {
   font-weight: 500;
   grid-area: heading;
-  line-height: 1.2;
+  line-height: var(--line-height-md);
   margin: 0;
 }
 
@@ -44,7 +44,8 @@
 }
 
 ::slotted([slot="subheading"]) {
-  font-size: 1rem;
+  color: var(--gray-dark);
+  font-size: var(--font-size-md);
   font-weight: 400;
   grid-column: 2;
 }

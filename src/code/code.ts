@@ -6,7 +6,7 @@ export default class Code extends HTMLElement {
     super();
     const pre = document.createElement("pre");
     const code = document.createElement("code");
-    const chunks = this.innerHTML.trim().split(/\r?\n/);
+    const chunks = this.innerHTML.trim().replace(/=""/g, "").split(/\r?\n/);
 
     for (let i = 0; i < chunks.length; i++) {
       code.append(chunks[i], document.createElement("br"));
