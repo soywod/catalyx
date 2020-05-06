@@ -12,18 +12,18 @@
   border: 1px solid var(--gray-dark);
 }
 
-:host(:focus) {
+:host(:focus-within) {
   border: 1px solid var(--primary);
   outline: none;
 }
 
-:host(:focus) button {
+:host(:focus-within) button {
   color: var(--gray-dark);
   opacity: 1;
   pointer-events: initial;
 }
 
-:host(:focus) button:hover {
+:host(:focus-within) button:hover {
   color: var(--dark);
 }
 
