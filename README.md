@@ -6,41 +6,36 @@ Catalyx is a collection of native web components:
 ✔ written in pure **JavaScript** (`0` dependency)<br>
 ✔ lightweight, performant and customizable<br>
 
-## Atoms (core concepts)
+## Inputs
 
 - [ ] Text
-- [ ] Field
-- [ ] Toggler
+- [X] Number
+- [ ] Email
+- [ ] Phone
+- [ ] Password
+- [ ] Datetime
+- [ ] Checkbox
+- [ ] Switch
+- [ ] Radio
 - [ ] Button
-- [ ] Routing engine
+
+## Typos
+
+- [X] Heading
+- [ ] Paragraph
+
+## Layouts
+
+- [ ] Table
+- [ ] List
+- [ ] Grid
+- [ ] Media query
+
+## Engines
+
 - [ ] Form engine
+- [ ] Routing engine
 - [ ] Floating element positioning engine (popper.js like)
-
-## Molecules
-
-- Text
-  - [ ] Title
-  - [ ] Paragraph
-  - [ ] List
-  - [ ] Block
-- Field
-  - [ ] Free text field
-  - [ ] Number field
-  - [ ] Email field
-  - [ ] Phone field
-  - [ ] Password field
-  - [ ] Datetime field
-- Toggler
-  - [ ] Checkbox
-  - [ ] Switch
-  - [ ] Radio
-- Button
-  - [ ] Button
-  - [ ] Submit
-  - [ ] Group
-- Routing engine
-- Form engine
-- Floating element positioning engine (popper.js like)
   - [ ] Tooltip
   - [ ] Popover
   - [ ] Modal
