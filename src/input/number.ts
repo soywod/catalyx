@@ -116,7 +116,7 @@ export default class InputNumber extends HTMLElement {
         return;
       }
 
-      const val = parseFloat(this._input.value);
+      const val = parseFloat(this._input.value) || 0;
       const minusSignPattern = this._min < 0 ? "-?" : "";
       const fractionPattern = this._precision === 0 ? "" : `\\.?\\d{0,${this._precision}}`;
       const numPattern = `^${minusSignPattern}\\d*?${fractionPattern}$`;
@@ -135,7 +135,6 @@ export default class InputNumber extends HTMLElement {
 
   private _handleKeyDown = (evt: KeyboardEvent) => {
     if (evt.key === "ArrowUp") {
-      evt.preventDefault();
       this._handleInc();
     } else if (evt.key === "ArrowDown") {
       evt.preventDefault();
