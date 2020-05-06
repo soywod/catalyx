@@ -1,3 +1,8 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
 pre {
   background: var(--gray);
   margin: 0;

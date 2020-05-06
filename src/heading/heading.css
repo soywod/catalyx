@@ -8,6 +8,7 @@
     "prefix .       suffix padder";
   grid-template-columns: auto auto auto minmax(0, 1fr);
   margin: 0 0 0.5rem 0;
+  width: 100%;
 }
 
 :host([separator]) {

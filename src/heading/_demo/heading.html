@@ -1,0 +1,128 @@
+<cx-heading>
+  <h2>Headings</h2>
+</cx-heading>
+
+<cx-heading>
+  <h3>Attributes</h3>
+</cx-heading>
+
+<cx-table style="grid-template-columns: repeat(3, auto) 1fr">
+  <cx-table-cell header>Name</cx-table-cell>
+  <cx-table-cell header>Description</cx-table-cell>
+  <cx-table-cell header>Usage</cx-table-cell>
+  <cx-table-cell header>Example</cx-table-cell>
+
+  <cx-table-cell>
+    <code>separator</code>
+  </cx-table-cell>
+  <cx-table-cell>
+    Add a bottom separator to the heading.
+  </cx-table-cell>
+  <cx-table-cell>
+    <cx-code>
+<cx-heading separator>
+  <h3>Heading</h3>
+</cx-heading>
+    </cx-code>
+  </cx-table-cell>
+  <cx-table-cell>
+    <cx-heading separator>
+      <h3>Heading</h3>
+    </cx-heading>
+  </cx-table-cell>
+</cx-table>
+
+<cx-heading>
+  <h3>Slots</h3>
+</cx-heading>
+
+<cx-table style="grid-template-columns: repeat(3, auto) 1fr">
+  <cx-table-cell header>Name</cx-table-cell>
+  <cx-table-cell header>Description</cx-table-cell>
+  <cx-table-cell header>Usage</cx-table-cell>
+  <cx-table-cell header>Example</cx-table-cell>
+
+  <cx-table-cell>
+    <code>prefix</code>
+  </cx-table-cell>
+  <cx-table-cell>
+    Add a prefix to the heading.
+  </cx-table-cell>
+  <cx-table-cell>
+    <cx-code>
+<cx-heading>
+  <span slot="prefix">😀</span>
+  <h3>Heading</h3>
+</cx-heading>
+    </cx-code>
+  </cx-table-cell>
+  <cx-table-cell>
+    <cx-heading>
+      <span slot="prefix">😀</span>
+      <h3>Heading</h3>
+    </cx-heading>
+  </cx-table-cell>
+
+  <cx-table-cell>
+    <code>suffix</code>
+  </cx-table-cell>
+  <cx-table-cell>
+    Add a suffix to the heading.
+  </cx-table-cell>
+  <cx-table-cell>
+    <cx-code>
+<cx-heading>
+  <h3>Heading</h3>
+  <span slot="suffix">😀</span>
+</cx-heading>
+    </cx-code>
+  </cx-table-cell>
+  <cx-table-cell>
+    <cx-heading>
+      <h3>Heading</h3>
+      <span slot="suffix">😀</span>
+    </cx-heading>
+  </cx-table-cell>
+
+  <cx-table-cell>
+    <code>padder</code>
+  </cx-table-cell>
+  <cx-table-cell>
+    Add a padder to the right side of the heading.
+  </cx-table-cell>
+  <cx-table-cell>
+    <cx-code>
+<cx-heading>
+  <h3>Heading</h3>
+  <span slot="padder">😀</span>
+</cx-heading>
+    </cx-code>
+  </cx-table-cell>
+  <cx-table-cell>
+    <cx-heading>
+      <h3>Heading</h3>
+      <span slot="padder">😀</span>
+    </cx-heading>
+  </cx-table-cell>
+
+  <cx-table-cell>
+    <code>subheading</code>
+  </cx-table-cell>
+  <cx-table-cell>
+    Attach a subheading below the heading.
+  </cx-table-cell>
+  <cx-table-cell>
+    <cx-code>
+<cx-heading>
+  <h3>Heading</h3>
+  <div slot="subheading">Subheading</div>
+</cx-heading>
+    </cx-code>
+  </cx-table-cell>
+  <cx-table-cell>
+    <cx-heading>
+      <h3>Heading</h3>
+      <div slot="subheading">Subheading</div>
+    </cx-heading>
+  </cx-table-cell>
+</cx-table>

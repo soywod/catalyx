@@ -7,5 +7,6 @@ module.exports = {
     "order/order": ["custom-properties", "declarations"],
     "order/properties-alphabetical-order": true,
     "prettier/prettier": true,
+    "selector-type-no-unknown": false,
   },
 };

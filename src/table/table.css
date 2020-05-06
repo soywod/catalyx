@@ -1,0 +1,39 @@
+:host {
+  align-items: stretch;
+  display: grid;
+  justify-items: stretch;
+  margin-bottom: var(--spacing-md);
+  overflow-x: auto;
+  width: 100%;
+}
+
+:host([size="xs"]) ::slotted(cx-table-cell) {
+  padding: var(--spacing-xs);
+}
+
+:host([size="sm"]) ::slotted(cx-table-cell) {
+  padding: var(--spacing-sm);
+}
+
+:host([size="md"]) ::slotted(cx-table-cell) {
+  padding: var(--spacing-md);
+}
+
+:host([size="lg"]) ::slotted(cx-table-cell) {
+  padding: var(--spacing-lg);
+}
+
+:host([size="xl"]) ::slotted(cx-table-cell) {
+  padding: var(--spacing-xl);
+}
+
+::slotted(cx-table-cell[header]) {
+  font-weight: bold;
+}
+
+::slotted(cx-table-cell) {
+  align-items: center;
+  border-bottom: 1px solid var(--gray);
+  display: flex;
+  padding: var(--spacing-sm);
+}
