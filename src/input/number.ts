@@ -3,17 +3,17 @@ import style from "./number.css";
 import template from "./number.html";
 
 export default class InputNumber extends HTMLElement {
-  private _input: HTMLInputElement;
-  private _warning: HTMLSpanElement;
-  private _inc: HTMLButtonElement;
-  private _dec: HTMLButtonElement;
+  protected _input: HTMLInputElement;
+  protected _warning: HTMLSpanElement;
+  protected _inc: HTMLButtonElement;
+  protected _dec: HTMLButtonElement;
 
-  private _min = -Infinity;
-  private _max = Infinity;
-  private _step = 1;
-  private _precision = 0;
+  protected _min = -Infinity;
+  protected _max = Infinity;
+  protected _step = 1;
+  protected _precision = 0;
 
-  public constructor() {
+  constructor() {
     super();
 
     const shadow = this.attachShadow({mode: "open", delegatesFocus: true});
@@ -37,6 +37,10 @@ export default class InputNumber extends HTMLElement {
 
     if (this.hasAttribute("required")) {
       this._input.setAttribute("required", "");
+    }
+
+    if (this.hasAttribute("placeholder")) {
+      this._input.setAttribute("placeholder", this.getAttribute("placeholder") || "");
     }
 
     if (this.hasAttribute("min")) {
@@ -66,7 +70,7 @@ export default class InputNumber extends HTMLElement {
     this._precision = Math.abs(Math.floor(Math.log(Math.min(this._step, 1)) / Math.log(10)));
   }
 
-  public connectedCallback() {
+  connectedCallback() {
     this.addEventListener("wheel", this._handleWheel);
     this._input.addEventListener("input", this._handleInput);
     this._input.addEventListener("keydown", this._handleKeyDown);
@@ -74,7 +78,7 @@ export default class InputNumber extends HTMLElement {
     this._dec.addEventListener("mousedown", this._handleDec);
   }
 
-  public disconnectedCallback() {
+  disconnectedCallback() {
     this.removeEventListener("wheel", this._handleWheel);
     this._input.removeEventListener("input", this._handleInput);
     this._input.removeEventListener("keydown", this._handleKeyDown);

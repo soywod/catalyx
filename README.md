@@ -10,6 +10,7 @@ Catalyx is a collection of native web components:
 
 - [Roadmap to `v1`](#roadmap-to-v1)
 - [Inputs](#inputs)
+  - [Currency](#currency)
   - [Number](#number)
 - [Changelog](https://github.com/soywod/catalyx/blob/master/CHANGELOG.md)
 - [License](https://github.com/soywod/catalyx/blob/master/LICENSE)
@@ -19,6 +20,7 @@ Catalyx is a collection of native web components:
 - [ ] Inputs
   - [ ] Button / reset / submit
   - [ ] Checkbox
+  - [X] Currency
   - [ ] Color
   - [ ] Datetime
   - [ ] Email
@@ -51,19 +53,39 @@ Catalyx is a collection of native web components:
 
 ### Number
 
-*Size: 5.5kB*
+*Size: 7kB*
 
-Control for entering a number. Authorized chars: `-.0123456789`. The value can be incremented and decremented via the input (right buttons), via the keyboard (top and bottom arrow), and via the mouse (wheel). The value is formatted (on blur) by [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat#Using_locales).
+Control for entering a number. Authorized chars: `-.0123456789`. The value can be incremented and decremented via the input (right buttons), via the keyboard (top and bottom arrow), and via the mouse (wheel).
 
 #### Attributes
 
 Name|Description|Example
 ---|---|---
-`min`|Minimum value to accept.|`<cx-input-number min="0"></cx-input-number>`
-`max`|Maximum value to accept.|`<cx-input-number max="100"></cx-input-number>`
-`step`|Granularity that the value must adhere to. Also restrict the fractional part: `step >= 1` means only integers, `step >= 0.01` means only 2 fractional digits and so on.|`<cx-input-number step="0.1"></cx-input-number>`
+`required`|Required value.|`<cx-input-number required></cx-input-number>`
+`min`|Minimum value.|`<cx-input-number min="0"></cx-input-number>`
+`max`|Maximum value.|`<cx-input-number max="100"></cx-input-number>`
+`step`|Incremental values.|`<cx-input-number step="0.1"></cx-input-number>`
 
 #### Properties
+
+### Currency
+
+*Size: 8kB*
+
+Control for entering a currency. Inherits from [InputNumber](#number). The value is formatted (on blur) by [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat#Using_locales).
+
+#### Attributes
+
+Name|Description|Example
+---|---|---
+`currency`|ISO 4217 currency code.|`<cx-input-currency currency="USD"></cx-input-currency>`
+`locale`|BCP 47 language identifier.|`<cx-input-currency locale="fr-FR"></cx-input-currency>`
+
+#### Properties
+
+Name|Description|Example
+---|---|---
+`intl`|Custom instance of [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat).|`elem.intl = new Intl.NumberFormat()`
 
 ## Links
 

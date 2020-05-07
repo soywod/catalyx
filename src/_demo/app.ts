@@ -1,5 +1,5 @@
 import {heading} from "../heading/_demo";
-import {number} from "../input/_demo";
+import {input} from "../input/_demo";
 
 import "../table";
 import "../code";
@@ -10,13 +10,12 @@ customElements.define(
     constructor() {
       super();
       this.innerHTML = `
-        <cx-heading>
+        <cx-heading separator>
           <h1>Catalyx</h1>
         </cx-heading>
 
         ${heading}
-
-        ${number}
+        ${input}
       `;
     }
   },

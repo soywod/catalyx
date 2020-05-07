@@ -9,6 +9,7 @@
     "input dec";
   grid-template-columns: minmax(0, 1fr) var(--spacing-lg);
   grid-template-rows: repeat(2, minmax(8px, auto));
+  margin-bottom: var(--spacing-sm);
   position: relative;
   transition-duration: 125ms;
   transition-property: background, border, box-shadow;
@@ -57,8 +58,8 @@ input {
   color: var(--dark);
   font-size: var(--font-size-md);
   grid-area: input;
-  line-height: var(--line-height-md);
-  padding: 5px 10px;
+  line-height: var(--line-height-sm);
+  padding: var(--spacing-sm);
 }
 
 input::-webkit-outer-spin-button,

@@ -3,7 +3,7 @@ import {terser} from "rollup-plugin-terser";
 import {output, plugins} from "./.rolluprc.common.js";
 
 const minify = terser({output: {comments: () => false}});
-const components = ["input/number"];
+const components = ["input/number", "input/currency"];
 
 export default components
   .map(component => ({

@@ -1,140 +1,15 @@
 <cx-heading>
-  <h2>Inputs</h2>
-  <div slot="subheading">
-    Enhanced input type number. Value is formatted on blur via <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat#Using_locales"><code>Intl.NumberFormat</code></a>.
-  </div>
+  <h4>Number</h4>
 </cx-heading>
 
-<cx-heading>
-  <h3>Attributes</h3>
-</cx-heading>
+<cx-input-number placeholder="Required" required></cx-input-number>
+<cx-input-number placeholder="Min" min="0"></cx-input-number>
+<cx-input-number placeholder="Max" max="100"></cx-input-number>
+<cx-input-number placeholder="Step" step="0.01"></cx-input-number>
 
-<cx-table style="grid-template-columns: repeat(3, auto) minmax(300px, 1fr)">
-  <cx-table-cell header>Name</cx-table-cell>
-  <cx-table-cell header>Description</cx-table-cell>
-  <cx-table-cell header>Usage</cx-table-cell>
-  <cx-table-cell header>Example</cx-table-cell>
-
-  <cx-table-cell>
-    <code>min</code>
-  </cx-table-cell>
-  <cx-table-cell>
-    Minimum value allowed.
-  </cx-table-cell>
-  <cx-table-cell>
-    <cx-code>
-<cx-input-number min="0" required></cx-input-number>
-    </cx-code>
-  </cx-table-cell>
-  <cx-table-cell>
-    <cx-input-number min="0" required></cx-input-number>
-  </cx-table-cell>
-
-  <cx-table-cell>
-    <code>max</code>
-  </cx-table-cell>
-  <cx-table-cell>
-    Maximum value allowed.
-  </cx-table-cell>
-  <cx-table-cell>
-    <cx-code>
-<cx-input-number max="100"></cx-input-number>
-    </cx-code>
-  </cx-table-cell>
-  <cx-table-cell>
-    <cx-input-number max="100"></cx-input-number>
-  </cx-table-cell>
-
-  <cx-table-cell>
-    <code>step</code>
-  </cx-table-cell>
-  <cx-table-cell>
-    Default step used on increment and decrement.
-  </cx-table-cell>
-  <cx-table-cell>
-    <cx-code>
-<cx-input-number step="0.1"></cx-input-number>
-    </cx-code>
-  </cx-table-cell>
-  <cx-table-cell>
-    <cx-input-number step="0.1"></cx-input-number>
-  </cx-table-cell>
-
-  <cx-table-cell>
-    <code>locale</code>
-  </cx-table-cell>
-  <cx-table-cell>
-    Intl locale used to format the value.
-  </cx-table-cell>
-  <cx-table-cell>
-    <cx-code>
-<cx-input-number locale="fr-FR"></cx-input-number>
-    </cx-code>
-  </cx-table-cell>
-  <cx-table-cell>
-    <cx-input-number locale="fr-FR"></cx-input-number>
-  </cx-table-cell>
-
-  <cx-table-cell>
-    <code>type</code>
-  </cx-table-cell>
-  <cx-table-cell>
-    <div>
-      Intl style. Possible values: <code>decimal</code> (default), <code>percent</code>, <code>currency</code>.
-    </div>
-  </cx-table-cell>
-  <cx-table-cell>
-    <cx-code>
-<cx-input-number type="decimal"></cx-input-number>
-    </cx-code>
-  </cx-table-cell>
-  <cx-table-cell>
-    <cx-input-number type="decimal"></cx-input-number>
-  </cx-table-cell>
-
-  <cx-table-cell>
-    <code>currency</code>
-  </cx-table-cell>
-  <cx-table-cell>
-    <div>
-      Intl currency. The type should be set to currency. Possible values: see <a href="https://www.currency-iso.org/dam/downloads/lists/list_one.xml">currency-iso.org</a>.
-    </div>
-  </cx-table-cell>
-  <cx-table-cell>
-    <cx-code>
-<cx-input-number type="currency" currency="EUR"></cx-input-number>
-    </cx-code>
-  </cx-table-cell>
-  <cx-table-cell>
-    <cx-input-number type="currency" currency="EUR"></cx-input-number>
-  </cx-table-cell>
-</cx-table>
-
-<cx-heading>
-  <h3>Properties</h3>
-</cx-heading>
-
-<cx-table style="grid-template-columns: repeat(3, auto) minmax(300px, 1fr)">
-  <cx-table-cell header>Name</cx-table-cell>
-  <cx-table-cell header>Description</cx-table-cell>
-  <cx-table-cell header>Usage</cx-table-cell>
-  <cx-table-cell header>Example</cx-table-cell>
-
-  <cx-table-cell>
-    <code>intl</code>
-  </cx-table-cell>
-  <cx-table-cell>
-    <div>
-      Custom <code>Intl.NumberFormat</code> instance.
-    </div>
-  </cx-table-cell>
-  <cx-table-cell>
-    <cx-code>
-const elem = document.querySelector("cx-input-number");
-elem.intl = new Intl.NumberFormat("en-US", {style: "currency", currency: "CNY"});
-    </cx-code>
-  </cx-table-cell>
-  <cx-table-cell>
-    <cx-input-number locale="en-US" type="currency" currency="CNY"></cx-input-number>
-  </cx-table-cell>
-</cx-table>
+<cx-code>
+<cx-input-number placeholder="Required" required></cx-input-number>
+<cx-input-number placeholder="Min" min="0"></cx-input-number>
+<cx-input-number placeholder="Max" max="100"></cx-input-number>
+<cx-input-number placeholder="Step" step="0.01"></cx-input-number>
+</cx-code>

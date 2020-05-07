@@ -7,7 +7,7 @@
     "prefix heading suffix padder"
     "prefix .       suffix padder";
   grid-template-columns: auto auto auto minmax(0, 1fr);
-  margin: 0 0 var(--spacing-md) 0;
+  margin: var(--spacing-md) 0;
   width: 100%;
 }
 
