@@ -6,7 +6,7 @@ import livereload from "rollup-plugin-livereload";
 import {buildDir, extensions, outputESM, plugins} from "./.rolluprc.common.js";
 
 export default {
-  input: "src/_demo/app.ts",
+  input: "src/_demo/demo.ts",
   output: outputESM(),
   plugins: plugins([
     commonjs({extensions}),

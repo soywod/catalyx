@@ -1,0 +1,73 @@
+<cx-heading separator>
+  <h1>Catalyx</h1>
+</cx-heading>
+
+<cx-heading separator>
+  <h2>Headings</h2>
+</cx-heading>
+
+<cx-heading>
+  <span slot="prefix">😀</span>
+  <h4>Prefix</h4>
+</cx-heading>
+<cx-heading>
+  <h4>Suffix</h4>
+  <span slot="suffix">😀</span>
+</cx-heading>
+<cx-heading>
+  <h4>Padder</h4>
+  <span slot="padder">😀</span>
+</cx-heading>
+<cx-heading>
+  <h4>Subheading</h4>
+  <div slot="subheading">Subheading</div>
+</cx-heading>
+<cx-heading separator>
+  <h4>Separator</h4>
+</cx-heading>
+
+<cx-code>
+<cx-heading>
+  <span slot="prefix">😀</span>
+  <h4>Prefix</h4>
+</cx-heading>
+<cx-heading>
+  <h4>Suffix</h4>
+  <span slot="suffix">😀</span>
+</cx-heading>
+<cx-heading>
+  <h4>Padder</h4>
+  <span slot="padder">😀</span>
+</cx-heading>
+<cx-heading>
+  <h4>Subheading</h4>
+  <div slot="subheading">Subheading</div>
+</cx-heading>
+<cx-heading separator>
+  <h4>Separator</h4>
+</cx-heading>
+</cx-code>
+
+<cx-heading>
+  <h4>Number</h4>
+</cx-heading>
+
+<cx-input-number placeholder="Required" required></cx-input-number>
+<cx-input-number placeholder="Min" min="0"></cx-input-number>
+<cx-input-number placeholder="Max" max="100"></cx-input-number>
+<cx-input-number placeholder="Step" step="0.01"></cx-input-number>
+<cx-input-number id="currency" placeholder="Currency" step="0.01"></cx-input-number>
+<cx-input-number id="percent" placeholder="Percent" min="0" max="1" step="0.01"></cx-input-number>
+
+<cx-code>
+<cx-input-number placeholder="Required" required></cx-input-number>
+<cx-input-number placeholder="Min" min="0"></cx-input-number>
+<cx-input-number placeholder="Max" max="100"></cx-input-number>
+<cx-input-number placeholder="Step" step="0.01"></cx-input-number>
+<cx-input-number id="currency" placeholder="Currency" step="0.01"></cx-input-number>
+<cx-input-number id="percent" placeholder="Percent" min="0" max="1" step="0.01"></cx-input-number>
+<script>
+  document.getElementById("currency").intl = new Intl.NumberFormat("fr-FR", {style: "currency", currency: "EUR"})
+  document.getElementById("percent").intl = new Intl.NumberFormat("fr-FR", {style: "percent", useGrouping: true})
+</script>
+</cx-code>

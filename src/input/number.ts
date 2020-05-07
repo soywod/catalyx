@@ -2,16 +2,18 @@ import {parseStyle, parseTemplate} from "../dom-utils";
 import style from "./number.css";
 import template from "./number.html";
 
-export default class InputNumber extends HTMLElement {
-  protected _input: HTMLInputElement;
-  protected _warning: HTMLSpanElement;
-  protected _inc: HTMLButtonElement;
-  protected _dec: HTMLButtonElement;
+export class InputNumber extends HTMLElement {
+  private _intl?: Intl.NumberFormat;
+  private _input: HTMLInputElement;
+  private _warning: HTMLSpanElement;
+  private _inc: HTMLButtonElement;
+  private _dec: HTMLButtonElement;
 
-  protected _min = -Infinity;
-  protected _max = Infinity;
-  protected _step = 1;
-  protected _precision = 0;
+  private _min = -Infinity;
+  private _max = Infinity;
+  private _step = 1;
+  private _precision = 0;
+  private _prevVal = "";
 
   constructor() {
     super();
@@ -74,6 +76,8 @@ export default class InputNumber extends HTMLElement {
     this.addEventListener("wheel", this._handleWheel);
     this._input.addEventListener("input", this._handleInput);
     this._input.addEventListener("keydown", this._handleKeyDown);
+    this._input.addEventListener("focus", this._handleFocus);
+    this._input.addEventListener("blur", this._handleBlur);
     this._inc.addEventListener("mousedown", this._handleInc);
     this._dec.addEventListener("mousedown", this._handleDec);
   }
@@ -82,6 +86,8 @@ export default class InputNumber extends HTMLElement {
     this.removeEventListener("wheel", this._handleWheel);
     this._input.removeEventListener("input", this._handleInput);
     this._input.removeEventListener("keydown", this._handleKeyDown);
+    this._input.removeEventListener("focus", this._handleFocus);
+    this._input.removeEventListener("blur", this._handleBlur);
     this._inc.removeEventListener("mousedown", this._handleInc);
     this._dec.removeEventListener("mousedown", this._handleDec);
   }
@@ -111,7 +117,7 @@ export default class InputNumber extends HTMLElement {
       }
 
       const num = parseFloat(this._input.value);
-      if (isNaN(num)) {
+      if (this._input.value && isNaN(num)) {
         throw new Error(this._input.validationMessage);
       }
 
@@ -135,6 +141,22 @@ export default class InputNumber extends HTMLElement {
     }
   };
 
+  private _handleFocus = () => {
+    if (this._intl && this._input.checkValidity()) {
+      this._input.value = this._prevVal;
+      this._input.type = "number";
+    }
+  };
+
+  private _handleBlur = () => {
+    if (this._intl && this._input.checkValidity()) {
+      this._prevVal = this._input.value;
+      this._input.type = "text";
+      const val = parseFloat(this._prevVal);
+      this._input.value = isNaN(val) ? "" : this._intl.format(val);
+    }
+  };
+
   private _handleDec = (evt?: Event) => {
     evt && evt.preventDefault();
     const val = parseFloat(this._input.value) || 0;
@@ -146,6 +168,14 @@ export default class InputNumber extends HTMLElement {
     const val = parseFloat(this._input.value) || 0;
     this._input.value = Number(Math.min(val + this._step, this._max)).toFixed(this._precision);
   };
+
+  get intl() {
+    return this._intl;
+  }
+
+  set intl(intl: Intl.NumberFormat | undefined) {
+    this._intl = intl;
+  }
 }
 
 customElements.define("cx-input-number", InputNumber);
