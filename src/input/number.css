@@ -1,19 +1,28 @@
 :host {
+  background: var(--light);
   border: 1px solid var(--gray);
   border-radius: var(--border-radius);
   display: grid;
-  grid-template-columns: minmax(0, 1fr) var(--spacing-md);
-  grid-template-rows: repeat(2, minmax(var(--spacing-md), 1fr));
-  transition: 125ms border;
+  grid-gap: 1px;
+  grid-template-areas:
+    "input inc"
+    "input dec";
+  grid-template-columns: minmax(0, 1fr) var(--spacing-lg);
+  grid-template-rows: repeat(2, minmax(8px, auto));
+  position: relative;
+  transition-duration: 125ms;
+  transition-property: background, border, box-shadow;
   width: 100%;
 }
 
 :host(:hover) {
-  border: 1px solid var(--gray-dark);
+  border: 1px solid var(--primary);
 }
 
 :host(:focus-within) {
+  background: var(--gray);
   border: 1px solid var(--primary);
+  box-shadow: 0 0 0 2px var(--primary-shadow);
   outline: none;
 }
 
@@ -27,13 +36,27 @@
   color: var(--dark);
 }
 
+:host([invalid]) {
+  background: var(--light);
+  border: 1px solid var(--error);
+  box-shadow: 0 0 0 2px var(--error-shadow);
+}
+
+:host([invalid]) #warning {
+  opacity: 1;
+}
+
+:host([invalid]) button {
+  opacity: 0;
+  pointer-events: none;
+}
+
 input {
   border: none;
-  border-radius: var(--border-radius);
+  border-radius: var(--border-radius) 0 0 var(--border-radius);
   color: var(--dark);
   font-size: var(--font-size-md);
-  grid-column: 1 / span 2;
-  grid-row: 1 / span 2;
+  grid-area: input;
   line-height: var(--line-height-md);
   padding: 5px 10px;
 }
@@ -54,11 +77,10 @@ input:focus {
 
 button {
   background: none;
+  background: var(--light);
   border: none;
   color: var(--gray);
   cursor: pointer;
-  font-size: var(--font-size-sm);
-  grid-column: 2;
   justify-self: stretch;
   line-height: var(--line-height-sm);
   opacity: 0;
@@ -72,12 +94,32 @@ button:focus {
   outline: none;
 }
 
+button svg {
+  height: var(--font-size-xs);
+  width: var(--font-size-xs);
+}
+
 #inc {
   border-top-right-radius: var(--border-radius);
-  grid-row: 1;
+  grid-area: inc;
 }
 
 #dec {
   border-bottom-right-radius: var(--border-radius);
-  grid-row: 2;
+  grid-area: dec;
+}
+
+#warning {
+  display: flex;
+  left: calc(-0.5 * var(--spacing-md));
+  opacity: 0;
+  position: absolute;
+  top: calc(-0.5 * var(--spacing-md));
+  transition: 125ms opacity;
+}
+
+#warning svg {
+  fill: var(--error);
+  height: var(--font-size-md);
+  width: var(--font-size-md);
 }

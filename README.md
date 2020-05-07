@@ -51,7 +51,7 @@ Catalyx is a collection of native web components:
 
 ### Number
 
-*Size: 5kB*
+*Size: 5.5kB*
 
 Control for entering a number. Authorized chars: `-.0123456789`. The value can be incremented and decremented via the input (right buttons), via the keyboard (top and bottom arrow), and via the mouse (wheel). The value is formatted (on blur) by [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat#Using_locales).
 
@@ -61,7 +61,7 @@ Name|Description|Example
 ---|---|---
 `min`|Minimum value to accept.|`<cx-input-number min="0"></cx-input-number>`
 `max`|Maximum value to accept.|`<cx-input-number max="100"></cx-input-number>`
-`step`|Granularity that the value must adhere to. Also restrict the fractional part: `step >= 1` means only integers. `step >= 0.01` means only 2 fractional digits.|`<cx-input-number step="0.1"></cx-input-number>`
+`step`|Granularity that the value must adhere to. Also restrict the fractional part: `step >= 1` means only integers, `step >= 0.01` means only 2 fractional digits and so on.|`<cx-input-number step="0.1"></cx-input-number>`
 
 #### Properties
 
