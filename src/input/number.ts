@@ -1,11 +1,11 @@
-import {parseStyle, parseTemplate} from "../dom-utils";
 import style from "./number.css";
-import template from "./number.html";
+import numberTemplate from "./number.html";
+import signTemplate from "./sign.html";
 
-export class InputNumber extends HTMLElement {
+import {Input} from "./input";
+
+export class InputNumber extends Input {
   private _intl?: Intl.NumberFormat;
-  private _input: HTMLInputElement;
-  private _warning: HTMLSpanElement;
   private _inc: HTMLButtonElement;
   private _dec: HTMLButtonElement;
 
@@ -16,53 +16,23 @@ export class InputNumber extends HTMLElement {
   private _prevVal = "";
 
   constructor() {
-    super();
+    super(style, numberTemplate + signTemplate);
 
-    const shadow = this.attachShadow({mode: "open", delegatesFocus: true});
-    shadow.append(parseStyle(style), parseTemplate(template));
+    if (!this.shadowRoot) {
+      throw new Error("Shadow root not initialized");
+    }
 
-    const input = shadow.getElementById("input");
-    if (!(input instanceof HTMLInputElement)) throw new Error("Input not found.");
-    this._input = input;
-
-    const warning = shadow.getElementById("warning");
-    if (!(warning instanceof HTMLSpanElement)) throw new Error("Warning icon not found.");
-    this._warning = warning;
-
-    const inc = shadow.getElementById("inc");
+    const inc = this.shadowRoot.getElementById("inc");
     if (!(inc instanceof HTMLButtonElement)) throw new Error("Increment button not found.");
     this._inc = inc;
 
-    const dec = shadow.getElementById("dec");
+    const dec = this.shadowRoot.getElementById("dec");
     if (!(dec instanceof HTMLButtonElement)) throw new Error("Decrement button not found.");
     this._dec = dec;
 
-    if (this.hasAttribute("required")) {
-      this._input.setAttribute("required", "");
-    }
-
-    if (this.hasAttribute("placeholder")) {
-      this._input.setAttribute("placeholder", this.getAttribute("placeholder") || "");
-    }
-
-    if (this.hasAttribute("min")) {
-      const min = this.getAttribute("min");
-      this._input.setAttribute("min", min || "");
-      this._min = Number(min || -Infinity);
-    }
-
-    if (this.hasAttribute("max")) {
-      const max = this.getAttribute("max");
-      this._input.setAttribute("max", max || "");
-      this._max = Number(max || Infinity);
-    }
-
-    if (this.hasAttribute("step")) {
-      const step = this.getAttribute("step");
-      this._input.setAttribute("step", step || "");
-      this._step = Number(step || 1);
-    }
-
+    this._min = Number(this.getAttribute("min") || -Infinity);
+    this._max = Number(this.getAttribute("max") || Infinity);
+    this._step = Number(this.getAttribute("step") || 1);
     // https://stackoverflow.com/questions/31001901/how-to-count-the-number-of-zero-decimals-in-javascript#answer-31002148
     // Count the number of decimals
     // n >= 0 => 0
@@ -73,61 +43,29 @@ export class InputNumber extends HTMLElement {
   }
 
   connectedCallback() {
-    this.addEventListener("wheel", this._handleWheel);
-    this._input.addEventListener("input", this._handleInput);
+    this._input.addEventListener("input", this._validate);
     this._input.addEventListener("keydown", this._handleKeyDown);
     this._input.addEventListener("focus", this._handleFocus);
     this._input.addEventListener("blur", this._handleBlur);
     this._inc.addEventListener("mousedown", this._handleInc);
     this._dec.addEventListener("mousedown", this._handleDec);
+    this.addEventListener("wheel", this._handleWheel);
   }
 
   disconnectedCallback() {
-    this.removeEventListener("wheel", this._handleWheel);
-    this._input.removeEventListener("input", this._handleInput);
+    this._input.removeEventListener("input", this._validate);
     this._input.removeEventListener("keydown", this._handleKeyDown);
     this._input.removeEventListener("focus", this._handleFocus);
     this._input.removeEventListener("blur", this._handleBlur);
     this._inc.removeEventListener("mousedown", this._handleInc);
     this._dec.removeEventListener("mousedown", this._handleDec);
+    this.removeEventListener("wheel", this._handleWheel);
   }
 
-  private _handleWheel = (evt: WheelEvent) => {
-    if (!(document.activeElement instanceof HTMLElement)) return;
-    if (!(evt.target instanceof HTMLElement)) return;
-    if (!document.activeElement.isEqualNode(evt.target)) return;
-
-    evt.preventDefault();
-
-    if (evt.deltaY < 0) {
-      this._handleInc();
-    } else {
-      this._handleDec();
-    }
-  };
-
-  private _handleInput = (evt: Event) => {
-    try {
-      if (!(evt.target instanceof HTMLInputElement)) {
-        throw new Error("Target is not a HTMLInputElement.");
-      }
-
-      if (!evt.target.checkValidity()) {
-        throw new Error(this._input.validationMessage);
-      }
-
-      const num = parseFloat(this._input.value);
-      if (this._input.value && isNaN(num)) {
-        throw new Error(this._input.validationMessage);
-      }
-
-      this.removeAttribute("invalid");
-      this.setAttribute("valid", "");
-      this._warning.removeAttribute("title");
-    } catch (err) {
-      this.removeAttribute("valid");
-      this.setAttribute("invalid", "");
-      this._warning.setAttribute("title", err.message);
+  protected _postValidate = () => {
+    const num = parseFloat(this._input.value);
+    if (this._input.value && isNaN(num)) {
+      throw new Error(this._input.validationMessage);
     }
   };
 
@@ -167,6 +105,20 @@ export class InputNumber extends HTMLElement {
     evt && evt.preventDefault();
     const val = parseFloat(this._input.value) || 0;
     this._input.value = Number(Math.min(val + this._step, this._max)).toFixed(this._precision);
+  };
+
+  private _handleWheel = (evt: WheelEvent) => {
+    if (!(document.activeElement instanceof HTMLElement)) return;
+    if (!(evt.target instanceof HTMLElement)) return;
+    if (!document.activeElement.isEqualNode(evt.target)) return;
+
+    evt.preventDefault();
+
+    if (evt.deltaY < 0) {
+      this._handleInc();
+    } else {
+      this._handleDec();
+    }
   };
 
   get intl() {

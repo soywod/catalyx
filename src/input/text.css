@@ -3,12 +3,6 @@
   border: 1px solid var(--gray);
   border-radius: var(--border-radius);
   display: grid;
-  grid-gap: 1px;
-  grid-template-areas:
-    "input inc"
-    "input dec";
-  grid-template-columns: minmax(0, 1fr) var(--spacing-lg);
-  grid-template-rows: repeat(2, minmax(8px, auto));
   margin-bottom: var(--spacing-sm);
   position: relative;
   transition-duration: 125ms;
@@ -25,16 +19,6 @@
   border: 1px solid var(--primary);
   box-shadow: 0 0 0 2px var(--primary-shadow);
   outline: none;
-}
-
-:host(:focus-within) button {
-  color: var(--gray-dark);
-  opacity: 1;
-  pointer-events: initial;
-}
-
-:host(:focus-within) button:hover {
-  color: var(--dark);
 }
 
 :host([invalid]) {
@@ -57,57 +41,12 @@ input {
   border-radius: var(--border-radius) 0 0 var(--border-radius);
   color: var(--dark);
   font-size: var(--font-size-md);
-  grid-area: input;
   line-height: var(--line-height-sm);
   padding: var(--spacing-sm);
 }
 
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
 input:focus {
   outline: none;
-}
-
-button {
-  background: none;
-  background: var(--light);
-  border: none;
-  color: var(--gray);
-  cursor: pointer;
-  justify-self: stretch;
-  line-height: var(--line-height-sm);
-  opacity: 0;
-  padding: 0;
-  pointer-events: none;
-  transition-duration: 125ms;
-  transition-property: color, background, opacity;
-}
-
-button:focus {
-  outline: none;
-}
-
-button svg {
-  height: var(--font-size-xs);
-  width: var(--font-size-xs);
-}
-
-#inc {
-  border-top-right-radius: var(--border-radius);
-  grid-area: inc;
-}
-
-#dec {
-  border-bottom-right-radius: var(--border-radius);
-  grid-area: dec;
 }
 
 #sign {

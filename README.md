@@ -10,6 +10,7 @@ Catalyx is a collection of native web components:
 
 - [Roadmap to `v1`](#roadmap-to-v1)
 - [Inputs](#inputs)
+  - [Text](#text)
   - [Number](#number)
 - [Typos](#typos)
   - [Heading](#heading)
@@ -19,18 +20,18 @@ Catalyx is a collection of native web components:
 ## Roadmap to `v1`
 
 - [ ] Inputs
-  - [ ] Button / reset / submit
-  - [ ] Checkbox
-  - [ ] Color
-  - [ ] Datetime
-  - [ ] Email
-  - [ ] File
+  - [X] Text
   - [X] Number
   - [ ] Password
   - [ ] Phone
+  - [ ] Email
+  - [ ] Datetime
+  - [ ] Button
+  - [ ] Checkbox
+  - [ ] Color
+  - [ ] File
   - [ ] Radio
   - [ ] Switch
-  - [ ] Text
 - [ ]  Typos
   - [X] Heading
   - [ ] Paragraph
@@ -51,20 +52,33 @@ Catalyx is a collection of native web components:
 
 ## Inputs
 
-### Number
+### Text
 
-*Size: 7.6kB*
+Control for entering text.
 
-Control for entering a number. Authorized chars: `-.0123456789`. The value can be incremented and decremented via the input (right buttons), via the keyboard (top and bottom arrow), and via the mouse (wheel). The value can be formatted (on blur) by [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat#Using_locales).
+#### Usage
+
+```html
+<cx-input-text></cx-input-text>
+```
 
 #### Attributes
 
-Name|Description|Example
----|---|---
-`required`|Required value.|`<cx-input-number required></cx-input-number>`
-`min`|Minimum value.|`<cx-input-number min="0"></cx-input-number>`
-`max`|Maximum value.|`<cx-input-number max="100"></cx-input-number>`
-`step`|Incremental values.|`<cx-input-number step="0.1"></cx-input-number>`
+Accept all `<input type="text">` and `<textarea></textarea>` attributes combined.
+
+### Number
+
+Control for entering number. The value can be incremented and decremented via the input (right buttons), via the keyboard (top and bottom arrow), and via the mouse (wheel). The value can be formatted (on blur) by [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat#Using_locales).
+
+#### Usage
+
+```html
+<cx-input-number></cx-input-number>
+```
+
+#### Attributes
+
+Accept all `<input type="number">` attributes.
 
 #### Properties
 
