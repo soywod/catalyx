@@ -4,6 +4,7 @@
   border-radius: var(--border-radius);
   cursor: text;
   display: grid;
+  grid-template-areas: "input";
   margin-bottom: var(--spacing-sm);
   position: relative;
   transition-duration: 125ms;
@@ -16,7 +17,6 @@
 }
 
 :host(:focus-within) {
-  background: var(--gray);
   border: 1px solid var(--primary);
   box-shadow: 0 0 0 2px var(--primary-shadow);
   outline: none;
@@ -32,16 +32,17 @@
   opacity: 1;
 }
 
-input {
+#input {
   border: none;
   border-radius: var(--border-radius) 0 0 var(--border-radius);
   color: var(--dark);
   font-size: var(--font-size-md);
+  grid-area: input;
   line-height: var(--line-height-sm);
   padding: var(--spacing-sm);
 }
 
-input:focus {
+#input:focus {
   outline: none;
 }
 

@@ -1,7 +1,7 @@
 import template from "./demo.html";
 
 import "../heading";
-import {InputNumber} from "../input";
+import {NumberInput} from "../input";
 import "../code";
 
 customElements.define(
@@ -12,7 +12,7 @@ customElements.define(
       this.innerHTML = template;
 
       const currency = this.querySelector("#currency");
-      if (currency instanceof InputNumber) {
+      if (currency instanceof NumberInput) {
         currency.intl = new Intl.NumberFormat("fr-FR", {
           style: "currency",
           currency: "EUR",
@@ -20,7 +20,7 @@ customElements.define(
       }
 
       const percent = this.querySelector("#percent");
-      if (percent instanceof InputNumber) {
+      if (percent instanceof NumberInput) {
         percent.intl = new Intl.NumberFormat("fr-FR", {
           style: "percent",
         });

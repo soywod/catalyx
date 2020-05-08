@@ -1,17 +1,20 @@
 import {parseStyle, parseTemplate} from "../dom-utils";
+import textStyle from "./text.css";
+import textAreaStyle from "./text-area.css";
+import template from "./text-area.html";
+import iconError from "./icon-error.html";
 
-export abstract class Input extends HTMLElement {
-  protected _input: HTMLInputElement;
+export class TextArea extends HTMLElement {
+  protected _input: HTMLTextAreaElement;
   protected _error: HTMLSpanElement;
 
-  constructor(style: string, template: string) {
+  constructor() {
     super();
-
     const shadow = this.attachShadow({mode: "open", delegatesFocus: true});
-    shadow.append(parseStyle(style), parseTemplate(template));
+    shadow.append(parseStyle(textStyle + textAreaStyle), parseTemplate(template + iconError));
 
     const input = shadow.getElementById("input");
-    if (!(input instanceof HTMLInputElement)) throw new Error("Input not found.");
+    if (!(input instanceof HTMLTextAreaElement)) throw new Error("Input not found.");
     this._input = input;
 
     const error = shadow.getElementById("error");
@@ -19,19 +22,23 @@ export abstract class Input extends HTMLElement {
     this._error = error;
 
     Array.from(this.attributes).forEach(attr => {
-      if (!["id", "part"].includes(attr.name)) {
-        this._input.setAttribute(attr.name, attr.value);
-      }
+      this._input.setAttribute(attr.name, attr.value);
     });
   }
 
-  protected _validate = () => {
+  connectedCallback() {
+    this._input.addEventListener("input", this._validate);
+  }
+
+  disconnectedCallback() {
+    this._input.removeEventListener("input", this._validate);
+  }
+
+  private _validate = () => {
     try {
       if (!this._input.checkValidity()) {
         throw new Error(this._input.validationMessage);
       }
-
-      this._postValidate();
 
       this.removeAttribute("invalid");
       this.setAttribute("valid", "");
@@ -42,8 +49,6 @@ export abstract class Input extends HTMLElement {
       this._error.setAttribute("title", err.message);
     }
   };
-
-  protected _postValidate = () => {
-    //
-  };
 }
+
+customElements.define("cx-text-area", TextArea);

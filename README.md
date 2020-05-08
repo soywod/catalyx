@@ -11,6 +11,7 @@ Catalyx is a collection of native web components:
 - [Roadmap to `v1`](#roadmap-to-v1)
 - [Inputs](#inputs)
   - [Text](#text)
+  - [Text area](#text-area)
   - [Number](#number)
   - [Password](#password)
 - [Typos](#typos)
@@ -22,6 +23,7 @@ Catalyx is a collection of native web components:
 
 - [ ] Inputs
   - [X] Text
+  - [X] Text area
   - [X] Number
   - [X] Password
   - [ ] Phone
@@ -60,12 +62,26 @@ Control for entering text.
 #### Usage
 
 ```html
-<cx-input-text></cx-input-text>
+<cx-text-input></cx-text-input>
 ```
 
 #### Attributes
 
-Accept all `<input type="text">` and `<textarea></textarea>` attributes combined.
+Accept all `<input type="text">` attributes.
+
+### Text area
+
+Control for entering multilined text.
+
+#### Usage
+
+```html
+<cx-text-area></cx-text-area>
+```
+
+#### Attributes
+
+Accept all `<textarea>` attributes.
 
 ### Number
 
@@ -74,7 +90,7 @@ Control for entering number. The value can be incremented and decremented via th
 #### Usage
 
 ```html
-<cx-input-number></cx-input-number>
+<cx-number-input></cx-number-input>
 ```
 
 #### Attributes
@@ -94,7 +110,7 @@ Control for entering password. The password can be shown or hidden with the togg
 #### Usage
 
 ```html
-<cx-input-password></cx-input-password>
+<cx-password-input></cx-password-input>
 ```
 
 #### Attributes

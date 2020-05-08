@@ -3,7 +3,7 @@ import style from "./text.css";
 import template from "./text.html";
 import iconError from "./icon-error.html";
 
-export class InputText extends Input {
+export class TextInput extends Input {
   constructor() {
     super(style, template + iconError);
   }
@@ -17,4 +17,4 @@ export class InputText extends Input {
   }
 }
 
-customElements.define("cx-input-text", InputText);
+customElements.define("cx-text-input", TextInput);

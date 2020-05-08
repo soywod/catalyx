@@ -1,20 +1,21 @@
 import {Input} from "./input";
-import style from "./password.css";
+import textStyle from "./text.css";
+import passwordStyle from "./password.css";
 import template from "./password.html";
 import iconError from "./icon-error.html";
 import iconVisible from "./icon-visible.html";
 import iconHidden from "./icon-hidden.html";
 
-export class InputPassword extends Input {
+export class PasswordInput extends Input {
   _toggler: HTMLSpanElement;
 
   constructor() {
-    super(style, template + iconError);
+    super(textStyle + passwordStyle, template + iconError);
 
     const toggler = this.shadowRoot && this.shadowRoot.getElementById("toggler");
     if (!(toggler instanceof HTMLButtonElement)) throw new Error("Toggler not found.");
     this._toggler = toggler;
-    this._toggler.innerHTML = iconHidden;
+    this._toggler.innerHTML = iconVisible;
   }
 
   connectedCallback() {
@@ -31,13 +32,13 @@ export class InputPassword extends Input {
     evt.preventDefault();
 
     if (this._input.type === "text") {
-      this._toggler.innerHTML = iconHidden;
+      this._toggler.innerHTML = iconVisible;
       this._input.type = "password";
     } else {
-      this._toggler.innerHTML = iconVisible;
+      this._toggler.innerHTML = iconHidden;
       this._input.type = "text";
     }
   };
 }
 
-customElements.define("cx-input-password", InputPassword);
+customElements.define("cx-password-input", PasswordInput);

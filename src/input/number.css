@@ -1,31 +1,14 @@
 :host {
-  background: var(--light);
-  border: 1px solid var(--gray);
-  border-radius: var(--border-radius);
-  cursor: text;
-  display: grid;
   grid-gap: 1px;
   grid-template-areas:
     "input inc"
     "input dec";
   grid-template-columns: minmax(0, 1fr) var(--spacing-lg);
   grid-template-rows: repeat(2, minmax(8px, auto));
-  margin-bottom: var(--spacing-sm);
-  position: relative;
-  transition-duration: 125ms;
-  transition-property: background, border, box-shadow;
-  width: 100%;
-}
-
-:host(:hover) {
-  border: 1px solid var(--primary);
 }
 
 :host(:focus-within) {
   background: var(--gray);
-  border: 1px solid var(--primary);
-  box-shadow: 0 0 0 2px var(--primary-shadow);
-  outline: none;
 }
 
 :host(:focus-within) button {
@@ -38,43 +21,19 @@
   color: var(--dark);
 }
 
-:host([invalid]) {
-  background: var(--light);
-  border: 1px solid var(--error);
-  box-shadow: 0 0 0 2px var(--error-shadow);
-}
-
-:host([invalid]) #error {
-  opacity: 1;
-}
-
 :host([invalid]) button {
   opacity: 0;
   pointer-events: none;
 }
 
-input {
-  border: none;
-  border-radius: var(--border-radius) 0 0 var(--border-radius);
-  color: var(--dark);
-  font-size: var(--font-size-md);
-  grid-area: input;
-  line-height: var(--line-height-sm);
-  padding: var(--spacing-sm);
-}
-
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
+#input::-webkit-outer-spin-button,
+#input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-input[type="number"] {
+#input {
   -moz-appearance: textfield;
-}
-
-input:focus {
-  outline: none;
 }
 
 button {

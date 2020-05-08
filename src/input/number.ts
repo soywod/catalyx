@@ -1,9 +1,10 @@
 import {Input} from "./input";
-import style from "./number.css";
+import textStyle from "./text.css";
+import numberStyle from "./number.css";
 import template from "./number.html";
 import iconError from "./icon-error.html";
 
-export class InputNumber extends Input {
+export class NumberInput extends Input {
   private _intl?: Intl.NumberFormat;
   private _inc: HTMLButtonElement;
   private _dec: HTMLButtonElement;
@@ -15,7 +16,7 @@ export class InputNumber extends Input {
   private _prevVal = "";
 
   constructor() {
-    super(style, template + iconError);
+    super(textStyle + numberStyle, template + iconError);
 
     if (!this.shadowRoot) {
       throw new Error("Shadow root not initialized");
@@ -129,4 +130,4 @@ export class InputNumber extends Input {
   }
 }
 
-customElements.define("cx-input-number", InputNumber);
+customElements.define("cx-number-input", NumberInput);
