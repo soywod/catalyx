@@ -1,8 +1,7 @@
-import style from "./number.css";
-import numberTemplate from "./number.html";
-import signTemplate from "./sign.html";
-
 import {Input} from "./input";
+import style from "./number.css";
+import template from "./number.html";
+import iconError from "./icon-error.html";
 
 export class InputNumber extends Input {
   private _intl?: Intl.NumberFormat;
@@ -16,7 +15,7 @@ export class InputNumber extends Input {
   private _prevVal = "";
 
   constructor() {
-    super(style, numberTemplate + signTemplate);
+    super(style, template + iconError);
 
     if (!this.shadowRoot) {
       throw new Error("Shadow root not initialized");

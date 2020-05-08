@@ -1,12 +1,11 @@
-import style from "./text.css";
-import textTemplate from "./text.html";
-import signTemplate from "./sign.html";
-
 import {Input} from "./input";
+import style from "./text.css";
+import template from "./text.html";
+import iconError from "./icon-error.html";
 
 export class InputText extends Input {
   constructor() {
-    super(style, textTemplate + signTemplate);
+    super(style, template + iconError);
   }
 
   connectedCallback() {

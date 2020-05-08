@@ -2,6 +2,7 @@
   background: var(--light);
   border: 1px solid var(--gray);
   border-radius: var(--border-radius);
+  cursor: text;
   display: grid;
   grid-gap: 1px;
   grid-template-areas:
@@ -43,7 +44,7 @@
   box-shadow: 0 0 0 2px var(--error-shadow);
 }
 
-:host([invalid]) #sign {
+:host([invalid]) #error {
   opacity: 1;
 }
 
@@ -77,11 +78,12 @@ input:focus {
 }
 
 button {
-  background: none;
   background: var(--light);
   border: none;
   color: var(--gray);
   cursor: pointer;
+  display: grid;
+  justify-items: center;
   justify-self: stretch;
   line-height: var(--line-height-sm);
   opacity: 0;
@@ -96,8 +98,9 @@ button:focus {
 }
 
 button svg {
-  height: var(--font-size-xs);
-  width: var(--font-size-xs);
+  height: var(--font-size-sm);
+  margin: 0 auto;
+  width: var(--font-size-sm);
 }
 
 #inc {
@@ -110,7 +113,7 @@ button svg {
   grid-area: dec;
 }
 
-#sign {
+#error {
   display: flex;
   left: calc(-0.5 * var(--spacing-md));
   opacity: 0;
@@ -119,8 +122,8 @@ button svg {
   transition: 125ms opacity;
 }
 
-#sign svg {
-  fill: var(--error);
+#error svg {
+  color: var(--error);
   height: var(--font-size-md);
   width: var(--font-size-md);
 }

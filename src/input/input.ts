@@ -2,7 +2,7 @@ import {parseStyle, parseTemplate} from "../dom-utils";
 
 export abstract class Input extends HTMLElement {
   protected _input: HTMLInputElement;
-  protected _sign: HTMLSpanElement;
+  protected _error: HTMLSpanElement;
 
   constructor(style: string, template: string) {
     super();
@@ -14,9 +14,9 @@ export abstract class Input extends HTMLElement {
     if (!(input instanceof HTMLInputElement)) throw new Error("Input not found.");
     this._input = input;
 
-    const sign = shadow.getElementById("sign");
-    if (!(sign instanceof HTMLSpanElement)) throw new Error("Sign not found.");
-    this._sign = sign;
+    const error = shadow.getElementById("error");
+    if (!(error instanceof HTMLSpanElement)) throw new Error("Error icon not found.");
+    this._error = error;
 
     Array.from(this.attributes).forEach(attr => {
       this._input.setAttribute(attr.name, attr.value);
@@ -33,11 +33,11 @@ export abstract class Input extends HTMLElement {
 
       this.removeAttribute("invalid");
       this.setAttribute("valid", "");
-      this._sign.removeAttribute("title");
+      this._error.removeAttribute("title");
     } catch (err) {
       this.removeAttribute("valid");
       this.setAttribute("invalid", "");
-      this._sign.setAttribute("title", err.message);
+      this._error.setAttribute("title", err.message);
     }
   };
 

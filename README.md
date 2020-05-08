@@ -12,6 +12,7 @@ Catalyx is a collection of native web components:
 - [Inputs](#inputs)
   - [Text](#text)
   - [Number](#number)
+  - [Password](#password)
 - [Typos](#typos)
   - [Heading](#heading)
 - [Changelog](https://github.com/soywod/catalyx/blob/master/CHANGELOG.md)
@@ -22,7 +23,7 @@ Catalyx is a collection of native web components:
 - [ ] Inputs
   - [X] Text
   - [X] Number
-  - [ ] Password
+  - [X] Password
   - [ ] Phone
   - [ ] Email
   - [ ] Datetime
@@ -85,6 +86,20 @@ Accept all `<input type="number">` attributes.
 Name|Description|Example
 ---|---|---
 `intl`|Instance of [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat).|`elem.intl = new Intl.NumberFormat()`
+
+### Password
+
+Control for entering password. The password can be shown or hidden with the toggler on the right side.
+
+#### Usage
+
+```html
+<cx-input-password></cx-input-password>
+```
+
+#### Attributes
+
+Accept all `<input type="password">` attributes.
 
 ## Links
 
