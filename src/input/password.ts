@@ -15,7 +15,7 @@ export class PasswordInput extends Input {
     const toggler = this.shadowRoot && this.shadowRoot.getElementById("toggler");
     if (!(toggler instanceof HTMLButtonElement)) throw new Error("Toggler not found.");
     this._toggler = toggler;
-    this._toggler.innerHTML = iconVisible;
+    this._toggler.innerHTML = iconHidden;
   }
 
   connectedCallback() {
@@ -32,10 +32,10 @@ export class PasswordInput extends Input {
     evt.preventDefault();
 
     if (this._input.type === "text") {
-      this._toggler.innerHTML = iconVisible;
+      this._toggler.innerHTML = iconHidden;
       this._input.type = "password";
     } else {
-      this._toggler.innerHTML = iconHidden;
+      this._toggler.innerHTML = iconVisible;
       this._input.type = "text";
     }
   };

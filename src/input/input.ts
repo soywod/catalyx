@@ -19,7 +19,7 @@ export abstract class Input extends HTMLElement {
     this._error = error;
 
     Array.from(this.attributes).forEach(attr => {
-      if (!["id", "part"].includes(attr.name)) {
+      if (!["id", "type", "part"].includes(attr.name)) {
         this._input.setAttribute(attr.name, attr.value);
       }
     });

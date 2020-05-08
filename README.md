@@ -6,14 +6,17 @@ Catalyx is a collection of native web components:
 ✔ written in pure **JavaScript** (`0` dependency)<br>
 ✔ lightweight, performant and customizable<br>
 
+*Live demo at https://catalyx.soywod.me.*
+
 ## Table of contents
 
 - [Roadmap to `v1`](#roadmap-to-v1)
 - [Inputs](#inputs)
   - [Text](#text)
   - [Text area](#text-area)
-  - [Number](#number)
+  - [Email](#email)
   - [Password](#password)
+  - [Number](#number)
 - [Typos](#typos)
   - [Heading](#heading)
 - [Changelog](https://github.com/soywod/catalyx/blob/master/CHANGELOG.md)
@@ -24,10 +27,10 @@ Catalyx is a collection of native web components:
 - [ ] Inputs
   - [X] Text
   - [X] Text area
-  - [X] Number
+  - [X] Email
   - [X] Password
+  - [X] Number
   - [ ] Phone
-  - [ ] Email
   - [ ] Datetime
   - [ ] Button
   - [ ] Checkbox
@@ -83,6 +86,34 @@ Control for entering multilined text.
 
 Accept all `<textarea>` attributes.
 
+### Email
+
+Control for entering email.
+
+#### Usage
+
+```html
+<cx-email-input></cx-email-input>
+```
+
+#### Attributes
+
+Accept all `<input type="email">` attributes.
+
+### Password
+
+Control for entering password. The password can be shown or hidden with the toggler on the right side.
+
+#### Usage
+
+```html
+<cx-password-input></cx-password-input>
+```
+
+#### Attributes
+
+Accept all `<input type="password">` attributes.
+
 ### Number
 
 Control for entering number. The value can be incremented and decremented via the input (right buttons), via the keyboard (top and bottom arrow), and via the mouse (wheel). The value can be formatted (on blur) by [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat#Using_locales).
@@ -102,20 +133,6 @@ Accept all `<input type="number">` attributes.
 Name|Description|Example
 ---|---|---
 `intl`|Instance of [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat).|`elem.intl = new Intl.NumberFormat()`
-
-### Password
-
-Control for entering password. The password can be shown or hidden with the toggler on the right side.
-
-#### Usage
-
-```html
-<cx-password-input></cx-password-input>
-```
-
-#### Attributes
-
-Accept all `<input type="password">` attributes.
 
 ## Links
 

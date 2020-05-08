@@ -49,30 +49,6 @@
 </cx-code>
 
 <cx-heading>
-  <h4>Number</h4>
-</cx-heading>
-
-<cx-number-input placeholder="Required" required></cx-number-input>
-<cx-number-input placeholder="Min" min="0"></cx-number-input>
-<cx-number-input placeholder="Max" max="100"></cx-number-input>
-<cx-number-input placeholder="Step" step="0.01"></cx-number-input>
-<cx-number-input id="currency" placeholder="Currency" step="0.01"></cx-number-input>
-<cx-number-input id="percent" placeholder="Percent" min="0" max="1" step="0.01"></cx-number-input>
-
-<cx-code>
-<cx-number-input placeholder="Required" required></cx-number-input>
-<cx-number-input placeholder="Min" min="0"></cx-number-input>
-<cx-number-input placeholder="Max" max="100"></cx-number-input>
-<cx-number-input placeholder="Step" step="0.01"></cx-number-input>
-<cx-number-input id="currency" placeholder="Currency" step="0.01"></cx-number-input>
-<cx-number-input id="percent" placeholder="Percent" min="0" max="1" step="0.01"></cx-number-input>
-<script>
-  document.getElementById("currency").intl = new Intl.NumberFormat("fr-FR", {style: "currency", currency: "EUR"})
-  document.getElementById("percent").intl = new Intl.NumberFormat("fr-FR", {style: "percent"})
-</script>
-</cx-code>
-
-<cx-heading>
   <h4>Text</h4>
 </cx-heading>
 
@@ -95,15 +71,51 @@
 </cx-code>
 
 <cx-heading>
+  <h4>Email</h4>
+</cx-heading>
+
+<cx-email-input placeholder="Required" required></cx-email-input>
+<cx-email-input placeholder="Custom pattern" pattern="\w+@\w+.com"></cx-email-input>
+
+<cx-code>
+<cx-email-input placeholder="Required" required></cx-email-input>
+<cx-email-input placeholder="Custom pattern" pattern="\w+@\w+.com"></cx-email-input>
+</cx-code>
+
+<cx-heading>
   <h4>Password</h4>
 </cx-heading>
 
 <cx-password-input placeholder="Required" required></cx-password-input>
 <cx-password-input placeholder="Min length" minlength="5"></cx-password-input>
-<cx-password-input placeholder="Pattern" pattern="[0-9]{5,}"></cx-password-input>
+<cx-password-input placeholder="Custom pattern" pattern="[0-9]{5,}"></cx-password-input>
 
 <cx-code>
 <cx-password-input placeholder="Required" required></cx-password-input>
 <cx-password-input placeholder="Min length" minlength="5"></cx-password-input>
-<cx-password-input placeholder="Pattern" pattern="[0-9]{5,}"></cx-password-input>
+<cx-password-input placeholder="Custom pattern" pattern="[0-9]{5,}"></cx-password-input>
+</cx-code>
+
+<cx-heading>
+  <h4>Number</h4>
+</cx-heading>
+
+<cx-number-input placeholder="Required" required></cx-number-input>
+<cx-number-input placeholder="Min" min="0"></cx-number-input>
+<cx-number-input placeholder="Max" max="100"></cx-number-input>
+<cx-number-input placeholder="Step" step="0.01"></cx-number-input>
+<cx-number-input id="currency" placeholder="Currency" step="0.01"></cx-number-input>
+<cx-number-input id="percent" placeholder="Percent" min="0" max="1" step="0.01"></cx-number-input>
+
+<cx-code>
+<cx-number-input placeholder="Required" required></cx-number-input>
+<cx-number-input placeholder="Min" min="0"></cx-number-input>
+<cx-number-input placeholder="Max" max="100"></cx-number-input>
+<cx-number-input placeholder="Step" step="0.01"></cx-number-input>
+<cx-number-input id="currency" placeholder="Currency" step="0.01"></cx-number-input>
+<cx-number-input id="percent" placeholder="Percent" min="0" max="1" step="0.01"></cx-number-input>
+<script>
+  document.getElementById("currency").intl = new Intl.NumberFormat("fr-FR", {style: "currency", currency: "EUR"})
+  document.getElementById("percent").intl = new Intl.NumberFormat("fr-FR", {style: "percent"})
+</script>
 </cx-code>
