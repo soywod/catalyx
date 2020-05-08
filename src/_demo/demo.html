@@ -119,3 +119,25 @@
   document.getElementById("percent").intl = new Intl.NumberFormat("fr-FR", {style: "percent"})
 </script>
 </cx-code>
+
+<cx-heading>
+  <h3>Tooltip</h3>
+</cx-heading>
+
+<cx-tooltip title="Tooltip">
+  <button>Title attribute</button>
+</cx-tooltip>
+<cx-tooltip>
+  <span slot="title">Tooltip</span>
+  <button>Title slot</button>
+</cx-tooltip>
+
+<cx-code>
+<cx-tooltip title="Tooltip">
+  <button>Title attribute</button>
+</cx-tooltip>
+<cx-tooltip>
+  <span slot="title">Tooltip</span>
+  <button>Title slot</button>
+</cx-tooltip>
+</cx-code>

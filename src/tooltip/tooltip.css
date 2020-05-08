@@ -1,0 +1,34 @@
+:host {
+  display: inline-block;
+  position: relative;
+}
+
+::slotted([slot="title"]) {
+  background: var(--dark);
+  border-radius: var(--border-radius);
+  bottom: 100%;
+  color: var(--light);
+  display: none;
+  left: 50%;
+  margin-bottom: var(--spacing-sm);
+  padding: var(--spacing-xs);
+  position: absolute;
+  transform: translateX(-50%);
+}
+
+#arrow {
+  background: var(--dark);
+  bottom: 100%;
+  display: none;
+  height: var(--spacing-sm);
+  left: 50%;
+  margin-bottom: var(--spacing-xs);
+  position: absolute;
+  transform: translateX(-50%) rotate(45deg);
+  width: var(--spacing-sm);
+}
+
+:host(:hover) ::slotted([slot="title"]),
+:host(:hover) #arrow {
+  display: inline-block;
+}

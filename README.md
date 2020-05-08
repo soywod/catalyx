@@ -17,6 +17,7 @@ Catalyx is a collection of native web components:
   - [Email](#email)
   - [Password](#password)
   - [Number](#number)
+- [Tooltip](#tooltip)
 - [Typos](#typos)
   - [Heading](#heading)
 - [Changelog](https://github.com/soywod/catalyx/blob/master/CHANGELOG.md)
@@ -47,14 +48,12 @@ Catalyx is a collection of native web components:
   - [ ] Media query
   - [ ] Table
 - [ ] Engines
+  - [X] Tooltip
   - [ ] Form engine
   - [ ] Routing engine
-  - [ ] Floating element positioning engine (popper.js like)
-    - [ ] Drawer
-    - [ ] Modal
-    - [ ] Popover
-    - [ ] Toast
-    - [ ] Tooltip
+  - [ ] Drawer
+  - [ ] Modal
+  - [ ] Toast
 
 ## Inputs
 
@@ -133,6 +132,31 @@ Accept all `<input type="number">` attributes.
 Name|Description|Example
 ---|---|---
 `intl`|Instance of [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat).|`elem.intl = new Intl.NumberFormat()`
+
+## Tooltip
+
+Text / HTML popup tip.
+
+#### Usage
+
+```html
+<cx-tooltip title="Text tip">
+  <button>Hover me</button>
+  <span slot="title"><strong>HTML tip</strong></span>
+</cx-tooltip>
+```
+
+#### Attributes
+
+Name|Description|Example
+---|---|---
+`title`|String title.|`<cx-tooltip title="String tip">`
+
+#### Slots
+
+Name|Description|Example
+---|---|---
+`title`|HTML title.|`<span slot="title"><strong>HTML tip</strong></span>`
 
 ## Links
 

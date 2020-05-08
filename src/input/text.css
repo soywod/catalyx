@@ -29,6 +29,7 @@
 }
 
 :host([invalid]) #error {
+  cursor: help;
   opacity: 1;
 }
 
