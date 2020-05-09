@@ -5,10 +5,11 @@ import style from "./tooltip.css";
 import template from "./tooltip.html";
 
 export class Tooltip extends HTMLElement {
-  private _target: HTMLElement;
-  private _tooltip: HTMLDivElement;
+  private _target: Element;
+  private _container: HTMLDivElement;
+  private _content: HTMLDivElement;
   private _placement: Placement;
-  private _popperInstance?: PopperInstance;
+  private _instance?: PopperInstance;
 
   constructor() {
     super();
@@ -18,43 +19,34 @@ export class Tooltip extends HTMLElement {
     const targetSlot = shadow.querySelector(`slot:not([name])`);
     if (!(targetSlot instanceof HTMLSlotElement)) throw new Error("Target not found.");
     const target = targetSlot.assignedElements()[0];
-    if (!(target instanceof HTMLElement)) throw new Error("Target not found.");
+    if (!(target instanceof Element)) throw new Error("Target not found.");
     this._target = target;
 
-    const tooltip = shadow.getElementById("tooltip");
-    if (!(tooltip instanceof HTMLDivElement)) throw new Error("Tooltip not found.");
-    this._tooltip = tooltip;
-    this._placement = parsePlacement(this.getAttribute("placement"));
+    const container = shadow.getElementById("container");
+    if (!(container instanceof HTMLDivElement)) throw new Error("Tooltip container not found.");
+    this._container = container;
 
-    if (this.hasAttribute("title")) {
-      const title = this.getAttribute("title");
-      if (!title) throw new Error("Title is empty.");
-      const tooltip = document.createElement("span");
-      tooltip.slot = "title";
-      tooltip.textContent = title;
-      this.removeAttribute("title");
-      this._tooltip.append(tooltip);
-    } else {
-      const tooltipSlot = shadow.querySelector(`slot[name="tooltip"]`);
-      if (!(tooltipSlot instanceof HTMLSlotElement)) throw new Error("Tooltip not found.");
-      const tooltip = tooltipSlot.assignedElements()[0];
-      if (!(tooltip instanceof HTMLElement)) throw new Error("Tooltip not found.");
-      this._tooltip.append(tooltip);
-    }
+    const content = shadow.getElementById("content");
+    if (!(content instanceof HTMLDivElement)) throw new Error("Tooltip content not found.");
+    this._content = content;
+
+    this._placement = parsePlacement(this.getAttribute("placement"));
+    this._content.textContent = this.getAttribute("title");
+    this.removeAttribute("title");
   }
 
   connectedCallback() {
-    this._target.addEventListener("mouseenter", this._showTooltip);
-    this._target.addEventListener("mouseleave", this._hideTooltip);
+    this._target.addEventListener("mouseenter", this._show);
+    this._target.addEventListener("mouseleave", this._hide);
   }
 
   disconnectedCallback() {
-    this._target.removeEventListener("mouseenter", this._showTooltip);
-    this._target.removeEventListener("mouseleave", this._hideTooltip);
+    this._target.removeEventListener("mouseenter", this._show);
+    this._target.removeEventListener("mouseleave", this._hide);
   }
 
-  private _showTooltip = () => {
-    this._popperInstance = createPopper(this._target, this._tooltip, {
+  private _show = () => {
+    this._instance = createPopper(this._target, this._container, {
       placement: this._placement,
       modifiers: [
         {
@@ -66,16 +58,21 @@ export class Tooltip extends HTMLElement {
       ],
     });
 
+    this._instance.update();
     this.setAttribute("visible", "");
   };
 
-  private _hideTooltip = () => {
-    if (this._popperInstance) {
+  private _hide = () => {
+    if (this._instance) {
       this.removeAttribute("visible");
-      this._popperInstance.destroy();
-      delete this._popperInstance;
+      this._instance.destroy();
+      this._instance = undefined;
     }
   };
+
+  set title(title: string) {
+    this._content.textContent = title;
+  }
 
   set placement(placement: string) {
     this._placement = parsePlacement(placement);

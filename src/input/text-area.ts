@@ -1,4 +1,5 @@
 import {parseStyle, parseTemplate} from "../dom-utils";
+import {Tooltip} from "../tooltip";
 import textStyle from "./text.css";
 import textAreaStyle from "./text-area.css";
 import template from "./text-area.html";
@@ -6,7 +7,7 @@ import iconError from "./icon-error.html";
 
 export class TextArea extends HTMLElement {
   protected _input: HTMLTextAreaElement;
-  protected _error: HTMLSpanElement;
+  protected _error: Tooltip;
 
   constructor() {
     super();
@@ -16,13 +17,16 @@ export class TextArea extends HTMLElement {
     const input = shadow.getElementById("input");
     if (!(input instanceof HTMLTextAreaElement)) throw new Error("Input not found.");
     this._input = input;
+    this._input.title = "";
 
     const error = shadow.getElementById("error");
-    if (!(error instanceof HTMLSpanElement)) throw new Error("Error icon not found.");
+    if (!(error instanceof Tooltip)) throw new Error("Tooltip not found.");
     this._error = error;
 
     Array.from(this.attributes).forEach(attr => {
-      this._input.setAttribute(attr.name, attr.value);
+      if (!["id", "part"].includes(attr.name)) {
+        this._input.setAttribute(attr.name, attr.value);
+      }
     });
   }
 
@@ -35,6 +39,8 @@ export class TextArea extends HTMLElement {
   }
 
   private _validate = () => {
+    this._input.title = "";
+
     try {
       if (!this._input.checkValidity()) {
         throw new Error(this._input.validationMessage);
@@ -46,7 +52,7 @@ export class TextArea extends HTMLElement {
     } catch (err) {
       this.removeAttribute("valid");
       this.setAttribute("invalid", "");
-      this._error.setAttribute("title", err.message);
+      this._error.title = err.message;
     }
   };
 }

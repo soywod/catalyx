@@ -1,8 +1,8 @@
 :host {
-  display: inline-block;
+  display: inline-flex;
 }
 
-:host([visible]) #tooltip {
+:host([visible]) #container {
   display: inline-block;
 }
 
@@ -10,28 +10,29 @@
   cursor: help;
 }
 
-#tooltip {
+#container {
   background: var(--dark);
   border-radius: var(--border-radius);
+  box-shadow: 0 0 var(--spacing-md) var(--shadow);
   color: var(--light);
   display: none;
   padding: var(--spacing-xs);
   position: relative;
 }
 
-#tooltip[data-popper-placement^="top"] > #arrow {
+#container[data-popper-placement^="top"] > #arrow {
   bottom: calc(-1 * var(--spacing-xs));
 }
 
-#tooltip[data-popper-placement^="bottom"] > #arrow {
+#container[data-popper-placement^="bottom"] > #arrow {
   top: calc(-1 * var(--spacing-xs));
 }
 
-#tooltip[data-popper-placement^="left"] > #arrow {
+#container[data-popper-placement^="left"] > #arrow {
   right: calc(-1 * var(--spacing-xs));
 }
 
-#tooltip[data-popper-placement^="right"] > #arrow {
+#container[data-popper-placement^="right"] > #arrow {
   left: calc(-1 * var(--spacing-xs));
 }
 

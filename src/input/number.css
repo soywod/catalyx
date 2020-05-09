@@ -3,7 +3,7 @@
   grid-template-areas:
     "input inc"
     "input dec";
-  grid-template-columns: minmax(0, 1fr) var(--spacing-lg);
+  grid-template-columns: minmax(0, 1fr) auto;
   grid-template-rows: repeat(2, minmax(8px, auto));
 }
 
@@ -13,8 +13,7 @@
 
 :host(:focus-within) button {
   color: var(--gray-dark);
-  opacity: 1;
-  pointer-events: initial;
+  display: grid;
 }
 
 :host(:focus-within) button:hover {
@@ -22,8 +21,7 @@
 }
 
 :host([invalid]) button {
-  opacity: 0;
-  pointer-events: none;
+  display: none;
 }
 
 #input::-webkit-outer-spin-button,
@@ -37,17 +35,16 @@
 }
 
 button {
+  align-self: stretch;
   background: var(--light);
   border: none;
   color: var(--gray);
   cursor: pointer;
-  display: grid;
+  display: none;
   justify-items: center;
   justify-self: stretch;
   line-height: var(--line-height-sm);
-  opacity: 0;
   padding: 0;
-  pointer-events: none;
   transition-duration: 125ms;
   transition-property: color, background, opacity;
 }
@@ -59,6 +56,7 @@ button:focus {
 button svg {
   height: var(--font-size-sm);
   margin: 0 auto;
+  padding: 0 var(--spacing-sm);
   width: var(--font-size-sm);
 }
 
@@ -73,16 +71,5 @@ button svg {
 }
 
 #error {
-  display: flex;
-  left: calc(-0.5 * var(--spacing-md));
-  opacity: 0;
-  position: absolute;
-  top: calc(-0.5 * var(--spacing-md));
-  transition: 125ms opacity;
-}
-
-#error svg {
-  color: var(--error);
-  height: var(--font-size-md);
-  width: var(--font-size-md);
+  grid-area: input;
 }

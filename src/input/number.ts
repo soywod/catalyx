@@ -99,12 +99,14 @@ export class NumberInput extends Input {
     evt && evt.preventDefault();
     const val = parseFloat(this._input.value) || 0;
     this._input.value = Number(Math.max(this._min, val - this._step)).toFixed(this._precision);
+    this._validate();
   };
 
   private _handleInc = (evt?: Event) => {
     evt && evt.preventDefault();
     const val = parseFloat(this._input.value) || 0;
     this._input.value = Number(Math.min(val + this._step, this._max)).toFixed(this._precision);
+    this._validate();
   };
 
   private _handleWheel = (evt: WheelEvent) => {

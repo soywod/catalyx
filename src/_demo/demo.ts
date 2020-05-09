@@ -1,9 +1,9 @@
 import template from "./demo.html";
 
+import "../tooltip";
 import "../heading";
 import {NumberInput} from "../input";
 import "../code";
-import "../tooltip";
 
 customElements.define(
   "cx-demo",

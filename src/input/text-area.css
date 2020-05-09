@@ -2,3 +2,8 @@
   font-family: inherit;
   resize: vertical;
 }
+
+#error {
+  align-self: start;
+  padding-top: var(--spacing-xs);
+}

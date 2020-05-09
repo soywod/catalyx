@@ -1,8 +1,9 @@
 import {parseStyle, parseTemplate} from "../dom-utils";
+import {Tooltip} from "../tooltip";
 
-export abstract class Input extends HTMLElement {
+export class Input extends HTMLElement {
   protected _input: HTMLInputElement;
-  protected _error: HTMLSpanElement;
+  protected _error: Tooltip;
 
   constructor(style: string, template: string) {
     super();
@@ -13,9 +14,10 @@ export abstract class Input extends HTMLElement {
     const input = shadow.getElementById("input");
     if (!(input instanceof HTMLInputElement)) throw new Error("Input not found.");
     this._input = input;
+    this._input.title = "";
 
     const error = shadow.getElementById("error");
-    if (!(error instanceof HTMLSpanElement)) throw new Error("Error icon not found.");
+    if (!(error instanceof Tooltip)) throw new Error("Tooltip not found.");
     this._error = error;
 
     Array.from(this.attributes).forEach(attr => {
@@ -26,6 +28,8 @@ export abstract class Input extends HTMLElement {
   }
 
   protected _validate = () => {
+    this._input.title = "";
+
     try {
       if (!this._input.checkValidity()) {
         throw new Error(this._input.validationMessage);
@@ -35,11 +39,10 @@ export abstract class Input extends HTMLElement {
 
       this.removeAttribute("invalid");
       this.setAttribute("valid", "");
-      this._error.removeAttribute("title");
     } catch (err) {
       this.removeAttribute("valid");
       this.setAttribute("invalid", "");
-      this._error.setAttribute("title", err.message);
+      this._error.title = err.message;
     }
   };
 
