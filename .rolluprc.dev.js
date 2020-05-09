@@ -13,6 +13,7 @@ export default {
     html({
       template: "src/_demo/index.html",
       target: `${buildDir}/index.html`,
+      attrs: [`type="module"`],
     }),
     serve({
       contentBase: buildDir,

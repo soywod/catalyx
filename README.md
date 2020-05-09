@@ -3,7 +3,7 @@
 Catalyx is a collection of native web components:
 
 ✔ based on **Web Components** standards<br>
-✔ written in pure **JavaScript** (`0` dependency)<br>
+✔ written in pure **JavaScript**<br>
 ✔ lightweight, performant and customizable<br>
 
 *Live demo at https://catalyx.soywod.me.*
@@ -135,14 +135,13 @@ Name|Description|Example
 
 ## Tooltip
 
-Text / HTML popup tip.
+Text and HTML popup tip based on [`Popper`](https://popper.js.org/) positionning engine.
 
 #### Usage
 
 ```html
-<cx-tooltip title="Text tip">
+<cx-tooltip>
   <button>Hover me</button>
-  <span slot="title"><strong>HTML tip</strong></span>
 </cx-tooltip>
 ```
 
@@ -150,13 +149,20 @@ Text / HTML popup tip.
 
 Name|Description|Example
 ---|---|---
-`title`|String title.|`<cx-tooltip title="String tip">`
+`title`|Text tip.|`<cx-tooltip title="Text tip">`
+`placement`|Tooltip position. Possible values: <code>top</code> (default), <code>bottom</code>, <code>right</code>, <code>left</code>, <code>top-start</code>, <code>top-end</code>, <code>bottom-start</code>, <code>bottom-end</code>, <code>right-start</code>, <code>right-end</code>, <code>left-start</code>, <code>left-end</code>, <code>auto</code>, <code>auto-start</code>, <code>auto-end</code>|`<cx-tooltip placement="right">`
 
 #### Slots
 
 Name|Description|Example
 ---|---|---
-`title`|HTML title.|`<span slot="title"><strong>HTML tip</strong></span>`
+`tooltip`|HTML tip.|`<span slot="title"><em>HTML</em> tip</span>`
+
+#### Properties
+
+Name|Description|Example
+---|---|---
+`placement`|Tooltip placement. Same possible values as `placement` attribute.|`elem.placement = "bottom"`
 
 ## Links
 

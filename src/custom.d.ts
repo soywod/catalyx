@@ -5,3 +5,7 @@ declare module "*.html" {
 declare module "*.css" {
   export default string;
 }
+
+declare interface Window {
+  Popper: any;
+}

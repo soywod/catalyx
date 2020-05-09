@@ -1,3 +1,4 @@
+import replace from "@rollup/plugin-replace";
 import resolve from "rollup-plugin-node-resolve";
 import babel from "rollup-plugin-babel";
 import {string} from "rollup-plugin-string";
@@ -30,6 +31,7 @@ export const output = (file = "index") => [outputUMD(file), outputESM(file)];
 
 export const plugins = (plugins = []) =>
   [
+    replace({"process.env.NODE_ENV": JSON.stringify("production")}),
     resolve({extensions}),
     babel({include, exclude, extensions}),
     string({include: include + ".{html|css}", exclude}),

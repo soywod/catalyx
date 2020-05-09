@@ -1,34 +1,50 @@
 :host {
   display: inline-block;
+}
+
+:host([visible]) #tooltip {
+  display: inline-block;
+}
+
+::slotted(*) {
+  cursor: help;
+}
+
+#tooltip {
+  background: var(--dark);
+  border-radius: var(--border-radius);
+  color: var(--light);
+  display: none;
+  padding: var(--spacing-xs);
   position: relative;
 }
 
-::slotted([slot="title"]) {
-  background: var(--dark);
-  border-radius: var(--border-radius);
-  bottom: 100%;
-  color: var(--light);
-  display: none;
-  left: 50%;
-  margin-bottom: var(--spacing-sm);
-  padding: var(--spacing-xs);
-  position: absolute;
-  transform: translateX(-50%);
+#tooltip[data-popper-placement^="top"] > #arrow {
+  bottom: calc(-1 * var(--spacing-xs));
 }
 
-#arrow {
-  background: var(--dark);
-  bottom: 100%;
-  display: none;
-  height: var(--spacing-sm);
-  left: 50%;
-  margin-bottom: var(--spacing-xs);
-  position: absolute;
-  transform: translateX(-50%) rotate(45deg);
-  width: var(--spacing-sm);
+#tooltip[data-popper-placement^="bottom"] > #arrow {
+  top: calc(-1 * var(--spacing-xs));
 }
 
-:host(:hover) ::slotted([slot="title"]),
-:host(:hover) #arrow {
-  display: inline-block;
+#tooltip[data-popper-placement^="left"] > #arrow {
+  right: calc(-1 * var(--spacing-xs));
+}
+
+#tooltip[data-popper-placement^="right"] > #arrow {
+  left: calc(-1 * var(--spacing-xs));
+}
+
+#arrow,
+#arrow::before {
+  height: calc(var(--spacing-xs) * 2);
+  position: absolute;
+  width: calc(var(--spacing-xs) * 2);
+  z-index: -1;
+}
+
+#arrow::before {
+  background: var(--dark);
+  content: "";
+  transform: rotate(45deg);
 }
