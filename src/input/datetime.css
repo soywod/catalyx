@@ -1,0 +1,64 @@
+:host([visible]) #picker {
+  display: inline-block;
+}
+
+#picker {
+  background: var(--light);
+  border: 1px solid var(--gray);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  color: var(--dark);
+  display: none;
+  padding: var(--spacing-xs);
+  position: relative;
+}
+
+#days {
+  display: grid;
+  grid-auto-rows: minmax(0, 1fr);
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+}
+
+strong {
+  align-items: center;
+  display: flex;
+  font-size: var(--font-size-sm);
+  justify-content: center;
+}
+
+.day {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+}
+
+.day > span {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: var(--border-radius);
+  display: flex;
+  height: var(--spacing-md);
+  justify-content: center;
+  padding: var(--spacing-xs);
+  transition-duration: 125ms;
+  transition-property: background, color;
+  width: var(--spacing-md);
+}
+
+.day:hover > span {
+  background: var(--gray-light);
+}
+
+.day:focus {
+  outline: none;
+}
+
+.day:focus > span {
+  background: var(--primary);
+  color: var(--light);
+}
+
+.day.today > span {
+  border: 1px dashed var(--primary);
+}

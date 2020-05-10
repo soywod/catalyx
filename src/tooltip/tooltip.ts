@@ -58,7 +58,6 @@ export class Tooltip extends HTMLElement {
       ],
     });
 
-    this._instance.update();
     this.setAttribute("visible", "");
   };
 

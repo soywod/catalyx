@@ -83,20 +83,6 @@
 </cx-code>
 
 <cx-heading>
-  <h4>Password</h4>
-</cx-heading>
-
-<cx-password-input placeholder="Required" required></cx-password-input>
-<cx-password-input placeholder="Min length" minlength="5"></cx-password-input>
-<cx-password-input placeholder="Custom pattern" pattern="[0-9]{5,}"></cx-password-input>
-
-<cx-code>
-<cx-password-input placeholder="Required" required></cx-password-input>
-<cx-password-input placeholder="Min length" minlength="5"></cx-password-input>
-<cx-password-input placeholder="Custom pattern" pattern="[0-9]{5,}"></cx-password-input>
-</cx-code>
-
-<cx-heading>
   <h4>Number</h4>
 </cx-heading>
 
@@ -118,6 +104,16 @@
   document.getElementById("currency").intl = new Intl.NumberFormat("fr-FR", {style: "currency", currency: "EUR"})
   document.getElementById("percent").intl = new Intl.NumberFormat("fr-FR", {style: "percent"})
 </script>
+</cx-code>
+
+<cx-heading>
+  <h4>Datetime</h4>
+</cx-heading>
+
+<cx-datetime-input placeholder="Required" required></cx-datetime-input>
+
+<cx-code>
+<cx-datetime-input placeholder="Required" required></cx-datetime-input>
 </cx-code>
 
 <cx-heading>

@@ -13,7 +13,7 @@
 #container {
   background: var(--dark);
   border-radius: var(--border-radius);
-  box-shadow: 0 0 var(--spacing-md) var(--shadow);
+  box-shadow: var(--shadow);
   color: var(--light);
   display: none;
   padding: var(--spacing-xs);
