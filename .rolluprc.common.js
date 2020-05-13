@@ -34,5 +34,5 @@ export const plugins = (plugins = []) =>
     replace({"process.env.NODE_ENV": JSON.stringify("production")}),
     resolve({extensions}),
     babel({include, exclude, extensions}),
-    string({include: include + ".{html|css}", exclude}),
+    string({include: include + ".{html|svg|css}", exclude}),
   ].concat(plugins);
