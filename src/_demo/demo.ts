@@ -29,7 +29,6 @@ customElements.define(
 
       const date = this.querySelector("#date");
       if (date instanceof DatePicker) {
-        console.log("CHANGE");
         date.addEventListener("change", console.log);
       }
     }

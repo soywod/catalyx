@@ -3,7 +3,14 @@ import {terser} from "rollup-plugin-terser";
 import {output, plugins} from "./.rolluprc.common.js";
 
 const minify = terser({output: {comments: () => false}});
-const components = ["input/text", "input/number", "input/email", "input/password", "tooltip"];
+const components = [
+  "input/text",
+  "input/number",
+  "input/email",
+  "input/password",
+  "input/date-picker",
+  "tooltip",
+];
 
 export default components
   .map(component => ({

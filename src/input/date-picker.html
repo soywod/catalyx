@@ -1,64 +1,8 @@
-<div id="picker" role="tooltip" placement="bottom-start"></div>
-
-<template id="icon-prev-tpl">
-  <svg viewBox="0 0 24 24">
-    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-    <path d="M0 0h24v24H0z" fill="none"/>
-  </svg>
-</template>
-
-<template id="icon-prev-alt-tpl">
-  <svg viewBox="0 0 24 24">
-    <path d="M18.41 16.59L13.82 12l4.59-4.59L17 6l-6 6 6 6zM6 6h2v12H6z"/>
-    <path d="M24 24H0V0h24v24z" fill="none"/>
-  </svg>
-</template>
-
-<template id="icon-next-tpl">
-  <svg viewBox="0 0 24 24">
-    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-    <path d="M0 0h24v24H0z" fill="none"/>
-  </svg>
-</template>
-
-<template id="icon-next-alt-tpl">
-  <svg viewBox="0 0 24 24">
-    <path d="M0 0h24v24H0V0z" fill="none"/>
-    <path d="M5.59 7.41L10.18 12l-4.59 4.59L7 18l6-6-6-6zM16 6h2v12h-2z"/>
-  </svg>
-</template>
-
-<template id="daily-view-header-tpl">
-  <div id="daily-view-header">
-    <button id="prev-year"></button>
-    <button id="prev-month"></button>
-    <button id="curr-month"></button>
-    <button id="curr-year"></button>
-    <button id="next-month"></button>
-    <button id="next-year"></button>
+<div id="picker" role="tooltip" placement="bottom-start">
+  <div id="header">
+    <button id="curr-day" class="btn"></button>
+    <button id="curr-month" class="btn"></button>
+    <button id="curr-year" class="btn"></button>
   </div>
-</template>
-
-<template id="daily-view-tpl">
-  <div id="days"></div>
-</template>
-
-<template id="monthly-view-header-tpl">
-  <button id="prev-year"></button>
-  <button id="curr-year"></button>
-  <button id="next-year"></button>
-</template>
-
-<template id="monthly-view-tpl">
-  <div id="months"></div>
-</template>
-
-<template id="yearly-view-header-tpl">
-  <button id="prev-decade"></button>
-  <button id="curr-decade"></button>
-  <button id="next-decade"></button>
-</template>
-
-<template id="yearly-view-tpl">
-  <div id="years"></div>
-</template>
+  <div id="content"></div>
+</div>
