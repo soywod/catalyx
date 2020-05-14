@@ -107,13 +107,16 @@
 </cx-code>
 
 <cx-heading>
-  <h4>Datetime</h4>
+  <h4>Date picker</h4>
 </cx-heading>
 
-<cx-datetime-input placeholder="Required" required></cx-datetime-input>
+<cx-date-picker id="date" placeholder="Required" required></cx-date-picker>
 
 <cx-code>
-<cx-datetime-input placeholder="Required" required></cx-datetime-input>
+<cx-date-picker id="date" placeholder="Required" required></cx-date-picker>
+<script>
+  document.getElementById("date").addEventListener("change", console.log)
+</script>
 </cx-code>
 
 <cx-heading>

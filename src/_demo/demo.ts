@@ -2,7 +2,7 @@ import template from "./demo.html";
 
 import "../tooltip";
 import "../heading";
-import {NumberInput} from "../input";
+import {NumberInput, DatePicker} from "../input";
 import "../code";
 
 customElements.define(
@@ -25,6 +25,12 @@ customElements.define(
         percent.intl = new Intl.NumberFormat("fr-FR", {
           style: "percent",
         });
+      }
+
+      const date = this.querySelector("#date");
+      if (date instanceof DatePicker) {
+        console.log("CHANGE");
+        date.addEventListener("change", console.log);
       }
     }
   },

@@ -22,6 +22,16 @@
   padding: var(--spacing-xs);
 }
 
+.header span {
+  align-items: center;
+  color: var(--text-color);
+  display: inline-flex;
+  font-size: var(--font-size-sm);
+  justify-content: center;
+  line-height: var(--line-height-sm);
+  padding: var(--spacing-xs);
+}
+
 .header button {
   align-items: center;
   background: none;
@@ -30,7 +40,9 @@
   color: var(--text-color);
   cursor: pointer;
   display: inline-flex;
+  font-size: var(--font-size-sm);
   justify-content: center;
+  line-height: var(--line-height-sm);
   padding: var(--spacing-xs);
   transition-duration: 125ms;
   transition-property: color, background;
@@ -45,7 +57,7 @@
 }
 
 .header svg {
-  width: var(--spacing-md);
+  width: var(--font-size-md);
 }
 
 #daily-view-header {
@@ -53,7 +65,7 @@
 }
 
 #monthly-view-header {
-  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-columns: 1fr 1fr 2fr 1fr 1fr;
 }
 
 .content {
@@ -76,8 +88,10 @@
 
 .weekday {
   align-items: center;
+  color: var(--text-color-secondary);
   display: flex;
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-sm);
+  font-style: italic;
   justify-content: center;
 }
 
@@ -86,6 +100,8 @@
   border: none;
   color: var(--text-color);
   cursor: pointer;
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-sm);
   padding: var(--spacing-xs);
 }
 
@@ -95,6 +111,7 @@
   display: flex;
   justify-content: center;
   padding: var(--spacing-xs);
+  pointer-events: none;
   transition: 125ms color;
 }
 
@@ -102,16 +119,13 @@
   color: var(--primary);
 }
 
-.date:focus {
-  outline: none;
-}
-
 .date.today > span {
+  font-style: italic;
   font-weight: bold;
   text-decoration: underline;
 }
 
-.date:focus > span {
+.date.active > span {
   background: var(--primary);
   color: var(--light);
 }

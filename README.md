@@ -17,6 +17,7 @@ Catalyx is a collection of native web components:
   - [Email](#email)
   - [Password](#password)
   - [Number](#number)
+  - [Date picker](#date-picker)
 - [Tooltip](#tooltip)
 - [Typos](#typos)
   - [Heading](#heading)
@@ -31,8 +32,8 @@ Catalyx is a collection of native web components:
   - [X] Email
   - [X] Password
   - [X] Number
+  - [X] Date picker
   - [ ] Phone
-  - [ ] Datetime
   - [ ] Button
   - [ ] Checkbox
   - [ ] Color
@@ -132,6 +133,26 @@ Accept all `<input type="number">` attributes.
 Name|Description|Example
 ---|---|---
 `intl`|Instance of [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat).|`elem.intl = new Intl.NumberFormat()`
+
+### Date picker
+
+Control for picking a date based on [`Popper`](https://popper.js.org/) positionning engine.
+
+#### Usage
+
+```html
+<cx-date-picker></cx-date-picker>
+```
+
+#### Attributes
+
+#### Properties
+
+#### Events
+
+Name|Description|Example
+---|---|---
+`change`|Called when the date changes. Date available in `evt.detail.date`.|`elem.addEventListener("change", handler)`
 
 ## Tooltip
 

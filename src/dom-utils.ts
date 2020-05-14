@@ -26,6 +26,26 @@ export function findOrFail<T extends HTMLElement>(
   return elem;
 }
 
+export function findAllOrFail<T extends HTMLElement>(
+  parent: DocumentFragment | null,
+  type: Constructor<T>,
+  selector: string,
+): T[] {
+  if (!parent) {
+    throw new Error(`Element "${selector}" not found.`);
+  }
+
+  const elems: T[] = [];
+
+  for (const elem of Array.from(parent.querySelectorAll(selector))) {
+    if (typeGuard(elem, type)) {
+      elems.push(elem);
+    }
+  }
+
+  return elems;
+}
+
 export function clone(elem: Node): DocumentFragment {
   const clone = elem.cloneNode(true);
   if (!(clone instanceof DocumentFragment)) throw new Error(`Clone failed.`);
