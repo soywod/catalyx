@@ -304,7 +304,7 @@ function getClosestYearsCursor(date: Date | number) {
 }
 
 function getDaysOfWeek(): string[] {
-  const intl = new Intl.DateTimeFormat("fr-FR", {weekday: "short"});
+  const intl = new Intl.DateTimeFormat("fr-FR", {weekday: "narrow"});
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();

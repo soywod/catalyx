@@ -25,6 +25,7 @@
 #title {
   font-family: var(--font-family);
   font-size: var(--font-size-lg);
+  font-weight: bold;
   grid-column: 1 / span 5;
   grid-row: 1;
   line-height: var(--line-height-md);
@@ -33,16 +34,16 @@
 #date > span {
   color: var(--disabled-color);
   font-family: var(--font-family);
-  font-size: var(--font-size-sm);
-  line-height: var(--line-height-sm);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
 }
 
 #date > .btn {
   align-items: center;
   color: var(--text-color);
   display: inline-flex;
-  font-size: var(--font-size-sm);
-  line-height: var(--line-height-sm);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
   transition-duration: 125ms;
   transition-property: color, background;
 }
@@ -75,22 +76,23 @@
 }
 
 #prev-years {
+  font-weight: bold;
   grid-column: 1;
   grid-row: 1;
 }
 
 #next-years {
+  font-weight: bold;
   grid-column: 4;
   grid-row: 8;
 }
 
 .weekday {
   align-items: center;
-  color: var(--text-color-secondary);
   display: flex;
   font-family: var(--font-family);
   font-size: var(--font-size-sm);
-  font-style: italic;
+  font-weight: bold;
   justify-content: center;
 }
 
@@ -125,7 +127,7 @@
 }
 
 .btn.today > span {
-  text-decoration: underline;
+  font-weight: bold;
 }
 
 .btn.active > span {
