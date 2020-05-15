@@ -18,24 +18,37 @@
 
 #header {
   border-bottom: 1px solid var(--gray-light);
-  display: grid;
-  grid-auto-flow: column;
-  justify-content: center;
   padding: var(--spacing-xs);
+  text-align: center;
 }
 
-#header .btn {
+#title {
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  grid-column: 1 / span 5;
+  grid-row: 1;
+  line-height: var(--line-height-md);
+}
+
+#date > span {
+  color: var(--disabled-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-sm);
+}
+
+#date > .btn {
   align-items: center;
   color: var(--text-color);
   display: inline-flex;
-  font-size: var(--font-size-md);
-  justify-content: center;
-  line-height: var(--line-height-md);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-sm);
   transition-duration: 125ms;
   transition-property: color, background;
 }
 
-#header .btn:hover {
+#date > .btn:hover,
+#date > .btn.active {
   background: var(--gray-light);
   color: var(--primary);
 }
@@ -57,13 +70,18 @@
 }
 
 .yearly {
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(9, 1fr);
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(8, 1fr);
 }
 
-.yearly :nth-of-type(3) {
-  grid-column: 2 / span 2;
+#prev-decade {
+  grid-column: 1;
   grid-row: 1;
+}
+
+#next-decade {
+  grid-column: 4;
+  grid-row: 8;
 }
 
 .weekday {
@@ -117,17 +135,3 @@
   color: var(--light);
 }
 
-#prev-decade {
-  grid-column: 1;
-  grid-row: 1;
-}
-
-#next-decade {
-  grid-column: 6;
-  grid-row: 9;
-}
-
-.zoom {
-  transform: scale(2) translateY(1px);
-  transform-origin: bottom center;
-}

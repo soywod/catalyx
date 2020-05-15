@@ -11,32 +11,38 @@ import iconError from "./icon-error.html";
 export type DatePickerView = "daily" | "monthly" | "yearly";
 export type DatePickerEvent = CustomEvent<{date: Date}>;
 
-function getClosestHalfCentury(date: Date | number) {
+function getClosestYearsCursor(date: Date | number) {
   const year = typeof date === "number" ? date : date.getFullYear();
-  return Math.trunc(year / 50) * 50;
+  return Math.trunc(year / 30) * 30;
 }
 
 export class DatePicker extends Input {
   private _popperPlacement: Placement;
   private _popperInstance?: PopperInstance;
+
   private _picker: HTMLDivElement;
-  private _currDay: HTMLButtonElement;
-  private _currMonth: HTMLButtonElement;
-  private _currYear: HTMLButtonElement;
+  private _title: HTMLDivElement;
+  private _dayBtn: HTMLButtonElement;
+  private _monthBtn: HTMLButtonElement;
+  private _yearBtn: HTMLButtonElement;
   private _content: HTMLDivElement;
-  private _currDate: Date;
-  private _currHalfCentury: number;
+
+  private _yearsCursor: number;
+  private _year?: number;
+  private _month?: number;
+  private _day?: number;
+  private _date?: Date;
 
   constructor() {
     super(textStyle + dateStyle, textTemplate + dateTemplate + iconError);
     this._picker = findOrFail(this.shadowRoot, HTMLDivElement, "picker");
-    this._currDay = findOrFail(this.shadowRoot, HTMLButtonElement, "curr-day");
-    this._currMonth = findOrFail(this.shadowRoot, HTMLButtonElement, "curr-month");
-    this._currYear = findOrFail(this.shadowRoot, HTMLButtonElement, "curr-year");
+    this._title = findOrFail(this.shadowRoot, HTMLDivElement, "title");
+    this._dayBtn = findOrFail(this.shadowRoot, HTMLButtonElement, "curr-day");
+    this._monthBtn = findOrFail(this.shadowRoot, HTMLButtonElement, "curr-month");
+    this._yearBtn = findOrFail(this.shadowRoot, HTMLButtonElement, "curr-year");
     this._content = findOrFail(this.shadowRoot, HTMLDivElement, "content");
     this._popperPlacement = parsePlacement(this._picker.getAttribute("placement"));
-    this._currDate = new Date();
-    this._currHalfCentury = getClosestHalfCentury(this._currDate);
+    this._yearsCursor = getClosestYearsCursor(new Date());
     this._input.readOnly = true;
   }
 
@@ -73,38 +79,32 @@ export class DatePicker extends Input {
       }
 
       if (evt.target.id === "prev-decade") {
-        this._currHalfCentury -= 50;
+        this._yearsCursor -= 30;
         return this._showYearlyView();
       }
 
       if (evt.target.id === "next-decade") {
-        this._currHalfCentury += 50;
+        this._yearsCursor += 30;
         return this._showYearlyView();
       }
 
       if (evt.target.classList.contains("day")) {
-        const year = this._currDate.getFullYear();
-        const month = this._currDate.getMonth();
-        const day = Number(evt.target.getAttribute("data-day"));
-        this._currDate = new Date(year, month, day);
-        this._input.value = this._currDate.toLocaleDateString();
-        this.dispatchEvent(new CustomEvent("change", {detail: {date: this._currDate}}));
-        this._showDailyView();
+        this._day = Number(evt.target.getAttribute("data-day"));
+        if (this._year !== undefined && this._month !== undefined) {
+          this._date = new Date(this._year, this._month, this._day);
+          this._input.value = this._date.toLocaleDateString();
+          this.dispatchEvent(new CustomEvent("change", {detail: {date: this._date}}));
+          this._showDailyView();
+        }
       }
 
       if (evt.target.classList.contains("month")) {
-        const year = this._currDate.getFullYear();
-        const month = Number(evt.target.getAttribute("data-month"));
-        const day = this._currDate.getDate();
-        this._currDate = new Date(year, month, day);
+        this._month = Number(evt.target.getAttribute("data-month"));
         this._showDailyView();
       }
 
       if (evt.target.classList.contains("year")) {
-        const year = Number(evt.target.getAttribute("data-year"));
-        const month = this._currDate.getMonth();
-        const day = this._currDate.getDate();
-        this._currDate = new Date(year, month, day);
+        this._year = Number(evt.target.getAttribute("data-year"));
         this._showMonthlyView();
       }
     }
@@ -112,10 +112,10 @@ export class DatePicker extends Input {
 
   private _renderDailyView = () => {
     const now = new Date();
-    const currYear = this._currDate.getFullYear();
-    const currMonth = this._currDate.getMonth();
-    const daysInMonth = 32 - new Date(currYear, currMonth, 32).getDate();
-    const firstDayOfWeek = new Date(currYear, currMonth, 1).getDay();
+    const year = this._year || now.getFullYear();
+    const month = this._month || now.getMonth();
+    const daysInMonth = 32 - new Date(year, month, 32).getDate();
+    const firstDayOfWeek = new Date(year, month, 1).getDay();
     const daysOfWeek = getDaysOfWeek().reduce(
       (html, day) => html + `<span class="weekday">${day}</span>`,
       "",
@@ -124,10 +124,9 @@ export class DatePicker extends Input {
     const emptyDays = [...Array(firstDayOfWeek)].reduce(html => html + `<span></span>`, daysOfWeek);
     return [...Array(daysInMonth)].reduce((html, _, idx) => {
       const day = idx + 1;
-      const currDate = new Date(this._currDate.getFullYear(), this._currDate.getMonth(), day);
       const classes = ["btn", "day"];
-      matchByDay(currDate, now) && classes.push("today");
-      matchByDay(currDate, this._currDate) && classes.push("active");
+      day === now.getDate() && classes.push("today");
+      day === this._day && classes.push("active");
       const className = classes.join(" ");
       const button = `
         <button class="${className}" data-day="${day}">
@@ -141,11 +140,11 @@ export class DatePicker extends Input {
 
   private _renderMonthlyView = () => {
     const now = new Date();
+
     return getMonths().reduce((html, monthStr, month) => {
-      const currDate = new Date(this._currDate.getFullYear(), month, this._currDate.getDate());
       const classes = ["btn", "month"];
-      matchByMonth(currDate, now) && classes.push("today");
-      matchByMonth(currDate, this._currDate) && classes.push("active");
+      month === now.getMonth() && classes.push("today");
+      month === this._month && classes.push("active");
       const className = classes.join(" ");
       const button = `
         <button class="${className}" data-month="${month}">
@@ -159,19 +158,18 @@ export class DatePicker extends Input {
 
   private _renderYearlyView = () => {
     const now = new Date();
-    const prevDecade = `<button id="prev-decade" class="btn"><span><span class="zoom">&larr;</span></span></button>`;
-    const nextDecade = `<button id="next-decade" class="btn"><span><span class="zoom">&rarr;</span></span></button>`;
+    const prevDecade = `<button id="prev-decade" class="btn"><span>&lt;&lt;</span></button>`;
+    const nextDecade = `<button id="next-decade" class="btn"><span>&gt;&gt;</span></button>`;
 
-    return [...Array(51)].reduce((html, _, idx) => {
-      const year = this._currHalfCentury + idx;
-      const currDate = new Date(year, this._currDate.getMonth(), this._currDate.getDate());
+    return [...Array(30)].reduce((html, _, idx) => {
+      const year = this._yearsCursor + idx;
       const classes = ["btn", "year"];
-      matchByYear(currDate, now) && classes.push("today");
-      matchByYear(currDate, this._currDate) && classes.push("active");
+      year === now.getFullYear() && classes.push("today");
+      year === this._year && classes.push("active");
       const className = classes.join(" ");
       const button = `
         <button class="${className}" data-year="${year}">
-          <span>${idx === 0 ? year : year.toString().slice(2)}</span>
+          <span>${year.toString()}</span>
         </button>
       `;
 
@@ -180,47 +178,56 @@ export class DatePicker extends Input {
   };
 
   private _renderCurrDay = () => {
-    return this._currDate.getDate().toString();
+    const intl = new Intl.NumberFormat("fr-FR", {minimumIntegerDigits: 2});
+    return this._day === undefined ? "ˍˍ" : intl.format(this._day);
   };
 
   private _renderCurrMonth = () => {
-    return new Intl.DateTimeFormat("fr-FR", {month: "short"}).format(this._currDate);
+    const intl = new Intl.DateTimeFormat("fr-FR", {month: "short"});
+    return this._month === undefined ? "ˍˍ" : intl.format(new Date(0, this._month));
   };
 
   private _renderCurrYear = () => {
-    return this._currDate.getFullYear().toString();
+    return this._year === undefined ? "ˍˍˍˍ" : this._year.toString();
+  };
+
+  private _resetView = () => {
+    this._dayBtn.classList.remove("active");
+    this._dayBtn.textContent = this._renderCurrDay();
+    this._monthBtn.classList.remove("active");
+    this._monthBtn.textContent = this._renderCurrMonth();
+    this._yearBtn.classList.remove("active");
+    this._yearBtn.textContent = this._renderCurrYear();
+    this._content.classList.remove("daily", "monthly", "yearly");
   };
 
   private _showDailyView = () => {
-    this._currDay.textContent = this._renderCurrDay();
-    this._currMonth.textContent = this._renderCurrMonth();
-    this._currYear.textContent = this._renderCurrYear();
-    this._content.classList.remove("daily", "monthly", "yearly");
+    this._resetView();
+    this._title.textContent = this.getAttribute("title-day") || "Pick a day";
+    this._dayBtn.classList.add("active");
     this._content.classList.add("daily");
     this._content.innerHTML = this._renderDailyView();
   };
 
   private _showMonthlyView = () => {
-    this._currDay.textContent = this._renderCurrDay();
-    this._currMonth.textContent = this._renderCurrMonth();
-    this._currYear.textContent = this._renderCurrYear();
-    this._content.classList.remove("daily", "monthly", "yearly");
+    this._resetView();
+    this._title.textContent = this.getAttribute("title-month") || "Pick a month";
+    this._monthBtn.classList.add("active");
     this._content.classList.add("monthly");
     this._content.innerHTML = this._renderMonthlyView();
   };
 
   private _showYearlyView = () => {
-    this._currDay.textContent = this._renderCurrDay();
-    this._currMonth.textContent = this._renderCurrMonth();
-    this._currYear.textContent = this._renderCurrYear();
-    this._content.classList.remove("daily", "monthly", "yearly");
+    this._resetView();
+    this._title.textContent = this.getAttribute("title-year") || "Pick a year";
+    this._yearBtn.classList.add("active");
     this._content.classList.add("yearly");
     this._content.innerHTML = this._renderYearlyView();
   };
 
   private _showPicker = () => {
-    this._currHalfCentury = getClosestHalfCentury(this._currDate);
-    this._showDailyView();
+    this._yearsCursor = getClosestYearsCursor(this._date || new Date());
+    this._showYearlyView();
     this._popperInstance = createPopper(this._input, this._picker, {
       placement: this._popperPlacement,
       modifiers: [
@@ -289,18 +296,6 @@ function getMonths(): string[] {
     const date = new Date(year, month + i);
     return Object.assign(months, {[date.getMonth() % 12]: intl.format(date)});
   }, []);
-}
-
-function matchByYear(d1: Date, d2: Date) {
-  return d1.getFullYear() === d2.getFullYear();
-}
-
-function matchByMonth(d1: Date, d2: Date) {
-  return matchByYear(d1, d2) && d1.getMonth() === d2.getMonth();
-}
-
-function matchByDay(d1: Date, d2: Date) {
-  return matchByYear(d1, d2) && matchByMonth(d1, d2) && d1.getDate() === d2.getDate();
 }
 
 customElements.define("cx-date-picker", DatePicker);
