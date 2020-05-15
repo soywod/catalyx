@@ -11,10 +11,7 @@ import iconError from "./icon-error.html";
 export type DatePickerView = "daily" | "monthly" | "yearly";
 export type DatePickerEvent = CustomEvent<{date: Date}>;
 
-function getClosestYearsCursor(date: Date | number) {
-  const year = typeof date === "number" ? date : date.getFullYear();
-  return Math.trunc(year / 30) * 30;
-}
+const YEARS_CHUNK_SIZE = 30;
 
 export class DatePicker extends Input {
   private _popperPlacement: Placement;
@@ -49,20 +46,46 @@ export class DatePicker extends Input {
   connectedCallback() {
     this.addEventListener("focus", this._showPicker);
     this.addEventListener("blur", this._hidePicker);
+    this.addEventListener("keydown", this._handleKeyDown);
+    this._picker.addEventListener("mousedown", this._handleClick);
+    this._picker.addEventListener("touchstart", this._handleClick);
     this._input.addEventListener("input", this._validate);
-    this._picker.addEventListener("mousedown", this._handleMouseDown);
-    this._picker.addEventListener("touchstart", this._handleMouseDown);
+    this._content.addEventListener("wheel", this._handleWheel);
   }
 
   disconnectedCallback() {
     this.removeEventListener("focus", this._showPicker);
     this.removeEventListener("blur", this._hidePicker);
+    this.removeEventListener("keydown", this._handleKeyDown);
+    this._picker.removeEventListener("mousedown", this._handleClick);
+    this._picker.removeEventListener("touchstart", this._handleClick);
     this._input.removeEventListener("input", this._validate);
-    this._picker.removeEventListener("mousedown", this._handleMouseDown);
-    this._picker.removeEventListener("touchstart", this._handleMouseDown);
+    this._content.removeEventListener("wheel", this._handleWheel);
   }
 
-  private _handleMouseDown = (evt: Event) => {
+  private _handleWheel = (evt: WheelEvent) => {
+    if (this._content.classList.contains("yearly")) {
+      evt.preventDefault();
+      this._yearsCursor += YEARS_CHUNK_SIZE * (evt.deltaY > 0 ? -1 : 1);
+      return this._showYearlyView();
+    }
+  };
+
+  private _handleKeyDown = (evt: KeyboardEvent) => {
+    if (this._content.classList.contains("yearly")) {
+      if (["ArrowDown", "ArrowLeft"].includes(evt.key)) {
+        evt.preventDefault();
+        this._yearsCursor -= YEARS_CHUNK_SIZE;
+        return this._showYearlyView();
+      } else if (["ArrowUp", "ArrowRight"].includes(evt.key)) {
+        evt.preventDefault();
+        this._yearsCursor += YEARS_CHUNK_SIZE;
+        return this._showYearlyView();
+      }
+    }
+  };
+
+  private _handleClick = (evt: MouseEvent | TouchEvent) => {
     evt.preventDefault();
 
     if (evt.target instanceof HTMLElement) {
@@ -78,13 +101,13 @@ export class DatePicker extends Input {
         return this._showYearlyView();
       }
 
-      if (evt.target.id === "prev-decade") {
-        this._yearsCursor -= 30;
+      if (evt.target.id === "prev-years") {
+        this._yearsCursor -= YEARS_CHUNK_SIZE;
         return this._showYearlyView();
       }
 
-      if (evt.target.id === "next-decade") {
-        this._yearsCursor += 30;
+      if (evt.target.id === "next-years") {
+        this._yearsCursor += YEARS_CHUNK_SIZE;
         return this._showYearlyView();
       }
 
@@ -158,10 +181,10 @@ export class DatePicker extends Input {
 
   private _renderYearlyView = () => {
     const now = new Date();
-    const prevDecade = `<button id="prev-decade" class="btn"><span>&lt;&lt;</span></button>`;
-    const nextDecade = `<button id="next-decade" class="btn"><span>&gt;&gt;</span></button>`;
+    const prevDecade = `<button id="prev-years" class="btn"><span>&lt;&lt;</span></button>`;
+    const nextDecade = `<button id="next-years" class="btn"><span>&gt;&gt;</span></button>`;
 
-    return [...Array(30)].reduce((html, _, idx) => {
+    return [...Array(YEARS_CHUNK_SIZE)].reduce((html, _, idx) => {
       const year = this._yearsCursor + idx;
       const classes = ["btn", "year"];
       year === now.getFullYear() && classes.push("today");
@@ -273,6 +296,11 @@ function parsePlacement(str?: string | null): Placement {
     default:
       return "top";
   }
+}
+
+function getClosestYearsCursor(date: Date | number) {
+  const year = typeof date === "number" ? date : date.getFullYear();
+  return Math.trunc(year / YEARS_CHUNK_SIZE) * YEARS_CHUNK_SIZE;
 }
 
 function getDaysOfWeek(): string[] {

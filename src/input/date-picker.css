@@ -74,12 +74,12 @@
   grid-template-rows: repeat(8, 1fr);
 }
 
-#prev-decade {
+#prev-years {
   grid-column: 1;
   grid-row: 1;
 }
 
-#next-decade {
+#next-years {
   grid-column: 4;
   grid-row: 8;
 }
@@ -134,4 +134,3 @@
   background: var(--primary);
   color: var(--light);
 }
-
