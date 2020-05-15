@@ -44,46 +44,45 @@ export class DatePicker extends Input {
     this.addEventListener("focus", this._showPicker);
     this.addEventListener("blur", this._hidePicker);
     this._input.addEventListener("input", this._validate);
-    this._currDay.addEventListener("mousedown", this._showDailyView);
-    this._currDay.addEventListener("touchstart", this._showDailyView);
-    this._currMonth.addEventListener("mousedown", this._showMonthlyView);
-    this._currMonth.addEventListener("touchstart", this._showMonthlyView);
-    this._currYear.addEventListener("mousedown", this._showYearlyView);
-    this._currYear.addEventListener("touchstart", this._showYearlyView);
-    this._content.addEventListener("mousedown", this._handleContentMouseDown);
-    this._content.addEventListener("touchstart", this._handleContentMouseDown);
+    this._picker.addEventListener("mousedown", this._handleMouseDown);
+    this._picker.addEventListener("touchstart", this._handleMouseDown);
   }
 
   disconnectedCallback() {
     this.removeEventListener("focus", this._showPicker);
     this.removeEventListener("blur", this._hidePicker);
     this._input.removeEventListener("input", this._validate);
-    this._currDay.removeEventListener("mousedown", this._showDailyView);
-    this._currDay.removeEventListener("touchstart", this._showDailyView);
-    this._currMonth.removeEventListener("mousedown", this._showMonthlyView);
-    this._currMonth.removeEventListener("touchstart", this._showMonthlyView);
-    this._currYear.removeEventListener("mousedown", this._showYearlyView);
-    this._currYear.removeEventListener("touchstart", this._showYearlyView);
-    this._content.removeEventListener("mousedown", this._handleContentMouseDown);
-    this._content.removeEventListener("touchstart", this._handleContentMouseDown);
+    this._picker.removeEventListener("mousedown", this._handleMouseDown);
+    this._picker.removeEventListener("touchstart", this._handleMouseDown);
   }
 
-  private _handleContentMouseDown = (evt: Event) => {
+  private _handleMouseDown = (evt: Event) => {
+    evt.preventDefault();
+
     if (evt.target instanceof HTMLElement) {
+      if (evt.target.id === "curr-day") {
+        return this._showDailyView();
+      }
+
+      if (evt.target.id === "curr-month") {
+        return this._showMonthlyView();
+      }
+
+      if (evt.target.id === "curr-year") {
+        return this._showYearlyView();
+      }
+
       if (evt.target.id === "prev-decade") {
-        evt.preventDefault();
         this._currHalfCentury -= 50;
         return this._showYearlyView();
       }
 
       if (evt.target.id === "next-decade") {
-        evt.preventDefault();
         this._currHalfCentury += 50;
         return this._showYearlyView();
       }
 
       if (evt.target.classList.contains("day")) {
-        evt.preventDefault();
         const year = this._currDate.getFullYear();
         const month = this._currDate.getMonth();
         const day = Number(evt.target.getAttribute("data-day"));
@@ -94,7 +93,6 @@ export class DatePicker extends Input {
       }
 
       if (evt.target.classList.contains("month")) {
-        evt.preventDefault();
         const year = this._currDate.getFullYear();
         const month = Number(evt.target.getAttribute("data-month"));
         const day = this._currDate.getDate();
@@ -103,7 +101,6 @@ export class DatePicker extends Input {
       }
 
       if (evt.target.classList.contains("year")) {
-        evt.preventDefault();
         const year = Number(evt.target.getAttribute("data-year"));
         const month = this._currDate.getMonth();
         const day = this._currDate.getDate();
