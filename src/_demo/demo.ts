@@ -2,7 +2,7 @@ import template from "./demo.html";
 
 import "../tooltip";
 import "../heading";
-import {NumberInput, DatePicker} from "../input";
+import {NumberInput, DatePicker, CheckboxInput} from "../input";
 import "../code";
 
 customElements.define(
@@ -30,6 +30,11 @@ customElements.define(
       const date = this.querySelector("#date");
       if (date instanceof DatePicker) {
         date.addEventListener("change", console.log);
+      }
+
+      const checkbox = this.querySelector("#checkbox");
+      if (checkbox instanceof CheckboxInput) {
+        checkbox.addEventListener("change", console.log);
       }
     }
   },
