@@ -138,3 +138,21 @@
   <button>With placement</button>
 </cx-tooltip>
 </cx-code>
+
+<cx-heading>
+  <h4>Checkbox</h4>
+</cx-heading>
+<cx-checkbox-input id="checkbox">
+  <label for="input" slot="left">Left</label>
+  <label for="input" slot="right">Right</label>
+</cx-checkbox-input>
+
+<cx-code>
+<cx-checkbox-input id="checkbox">
+  <label for="input" slot="left">Left label</label>
+  <label for="input" slot="right">Right label</label>
+</cx-checkbox-input>
+<script>
+  document.getElementById("#checkbox").addEventListener("change", console.log)
+</script>
+</cx-code>

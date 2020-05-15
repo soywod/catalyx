@@ -4,3 +4,4 @@ export * from "./email";
 export * from "./password";
 export * from "./number";
 export * from "./date-picker";
+export * from "./checkbox";
