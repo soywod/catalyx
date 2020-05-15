@@ -1,13 +1,10 @@
 :host {
+  cursor: default;
   display: inline-flex;
 }
 
 :host([visible]) #container {
   display: inline-block;
-}
-
-::slotted(*) {
-  cursor: help;
 }
 
 #container {
@@ -16,6 +13,9 @@
   box-shadow: var(--shadow);
   color: var(--light);
   display: none;
+  font-family: var(--font-family);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-sm);
   padding: var(--spacing-xs);
   position: relative;
 }

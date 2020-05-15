@@ -1,4 +1,7 @@
 :host {
+  background: var(--gray-light);
+  border: 1px solid var(--gray);
+  border-radius: var(--border-radius);
   display: block;
   margin-bottom: var(--spacing-sm);
   overflow-x: auto;
@@ -6,8 +9,10 @@
 }
 
 pre {
-  background: var(--gray-light);
-  border-radius: var(--border-radius);
+  color: var(--text-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
   margin: 0;
   padding: var(--spacing-sm);
 }

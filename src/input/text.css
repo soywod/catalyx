@@ -38,11 +38,19 @@
 #input {
   border: none;
   border-radius: var(--border-radius) 0 0 var(--border-radius);
-  color: var(--dark);
+  color: var(--text-color);
+  font-family: var(--font-family);
   font-size: var(--font-size-md);
   grid-area: input;
-  line-height: var(--line-height-sm);
+  line-height: var(--line-height-md);
   padding: var(--spacing-sm);
+}
+
+#input::placeholder {
+  color: var(--disabled-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
 }
 
 #input:focus {
@@ -50,7 +58,6 @@
 }
 
 #error {
-  cursor: help;
   display: none;
   grid-column: 1;
   grid-row: 1;
@@ -62,6 +69,6 @@
 
 #error svg {
   color: var(--error);
-  height: var(--font-size-xl);
-  width: var(--font-size-xl);
+  height: var(--font-size-lg);
+  width: var(--font-size-lg);
 }

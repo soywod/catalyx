@@ -12,8 +12,14 @@
 }
 
 :host([separator]) {
-  border-bottom: 1px solid var(--gray);
+  border-bottom: 1px solid var(--gray-light);
   padding-bottom: var(--spacing-xs);
+}
+
+::slotted {
+  color: var(--heading-color);
+  font-family: var(--font-family);
+  line-height: var(--line-height-md);
 }
 
 ::slotted(h1),
@@ -24,7 +30,6 @@
 ::slotted(h6) {
   font-weight: 500;
   grid-area: heading;
-  line-height: var(--line-height-md);
   margin: 0;
 }
 
@@ -44,7 +49,7 @@
 }
 
 ::slotted([slot="subheading"]) {
-  color: var(--gray-dark);
+  color: var(--text-color-secondary);
   font-size: var(--font-size-md);
   font-weight: 400;
   grid-column: 2;
