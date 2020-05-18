@@ -1,0 +1,113 @@
+*:focus {
+  outline: none;
+}
+
+:host {
+  align-items: center;
+  background: var(--light);
+  border: var(--border);
+  border-radius: var(--border-radius);
+  cursor: text;
+  display: flex;
+  margin-bottom: var(--spacing-sm);
+  position: relative;
+  transition-duration: 125ms;
+  transition-property: background, border, box-shadow;
+  width: 100%;
+}
+
+:host(:hover) {
+  border: var(--border-hover);
+}
+
+:host(:focus-within) {
+  border: var(--border-focus);
+  box-shadow: var(--shadow-focus);
+  outline: none;
+}
+
+:host([clearable]:focus-within) #clear {
+  display: inline-flex;
+}
+
+:host([invalid]) {
+  background: var(--light);
+  border: var(--border-error);
+  box-shadow: var(--shadow-error);
+}
+
+:host([invalid]) #validation-tooltip {
+  display: flex;
+}
+
+::slotted(*) {
+  background: var(--gray-light);
+  color: var(--text-color);
+  cursor: default;
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
+  padding: var(--spacing-sm);
+}
+
+::slotted([slot="prefix"]) {
+  border-right: 1px solid var(--gray);
+}
+
+::slotted([slot="suffix"]) {
+  border-left: 1px solid var(--gray);
+}
+
+#input {
+  border: none;
+  border-radius: var(--border-radius);
+  color: var(--text-color);
+  flex: 1;
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
+  padding: var(--spacing-sm);
+  resize: vertical;
+}
+
+#input::placeholder {
+  color: var(--disabled-color);
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
+}
+
+#validation-tooltip {
+  display: none;
+  grid-column: 1;
+  grid-row: 1;
+  position: absolute;
+  right: calc(-1 * var(--spacing-sm));
+  top: calc(-1 * var(--spacing-sm));
+  z-index: 1;
+}
+
+#validation-tooltip svg {
+  color: var(--error);
+  height: var(--font-size-lg);
+  width: var(--font-size-lg);
+}
+
+#clear {
+  background: none;
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  display: none;
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  font-weight: bold;
+  line-height: var(--line-height-md);
+  opacity: 0.5;
+  padding: 0 var(--spacing-sm);
+  transition: 125ms opacity;
+}
+
+#clear:hover {
+  opacity: 1;
+}

@@ -19,10 +19,21 @@ export function findOrFail<T extends HTMLElement>(
   parent: DocumentFragment | null,
   type: Constructor<T>,
   id: string,
-) {
+): T {
   if (!parent) throw new Error(`Element "#${id}" not found.`);
   const elem = parent.getElementById(id);
   if (!typeGuard(elem, type)) throw new Error(`Element "#${id}" not found.`);
+  return elem;
+}
+
+export function findFirstOrFail<T extends HTMLElement>(
+  parent: DocumentFragment | null,
+  type: Constructor<T>,
+  selector: string,
+): T {
+  if (!parent) throw new Error(`Element "${selector}" not found.`);
+  const elem = parent.querySelector(selector);
+  if (!typeGuard(elem, type)) throw new Error(`Element "${selector}" not found.`);
   return elem;
 }
 

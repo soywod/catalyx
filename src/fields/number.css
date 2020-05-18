@@ -1,0 +1,56 @@
+:host(:focus-within) #controllers {
+  display: grid;
+}
+
+#input::-webkit-outer-spin-button,
+#input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#input {
+  -moz-appearance: textfield;
+}
+
+#controllers {
+  align-self: stretch;
+  background: var(--gray);
+  cursor: pointer;
+  display: none;
+  grid-auto-flow: row;
+  grid-row-gap: 1px;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  padding-left: 1px;
+}
+
+.controller {
+  align-self: stretch;
+  background: var(--light);
+  border: none;
+  color: var(--disabled-color);
+  cursor: pointer;
+  display: inline-flex;
+  justify-items: center;
+  justify-self: stretch;
+  line-height: var(--line-height-sm);
+  padding: 0 var(--spacing-xs);
+  transition: 125ms color;
+}
+
+.controller svg {
+  height: var(--font-size-sm);
+  margin: 0 auto;
+  width: var(--font-size-sm);
+}
+
+.controller:hover {
+  color: var(--text-color);
+}
+
+#inc {
+  border-top-right-radius: var(--border-radius);
+}
+
+#dec {
+  border-bottom-right-radius: var(--border-radius);
+}

@@ -49,65 +49,166 @@
 </cx-code>
 
 <cx-heading>
-  <h4>Text</h4>
+  <h2>Buttons</h2>
 </cx-heading>
 
-<cx-text-input placeholder="Required" required></cx-text-input>
+<cx-heading>
+  <h4>Checkbox</h4>
+</cx-heading>
+<cx-checkbox-input id="checkbox">
+  <label for="input" slot="left">Left</label>
+  <label for="input" slot="right">Right</label>
+</cx-checkbox-input>
 
 <cx-code>
-<cx-text-input placeholder="Required" required></cx-text-input>
+<cx-checkbox-input id="checkbox">
+  <label for="input" slot="left">Left label</label>
+  <label for="input" slot="right">Right label</label>
+</cx-checkbox-input>
+<script>
+  document.getElementById("#checkbox").addEventListener("change", console.log)
+</script>
 </cx-code>
 
 <cx-heading>
-  <h4>Text area</h4>
+  <h2>Fields</h2>
 </cx-heading>
 
-<cx-text-area placeholder="Required" required></cx-text-area>
-<cx-text-area placeholder="Rows" rows="5"></cx-text-area>
+<cx-heading>
+  <h3>Text based</h3>
+</cx-heading>
+
+<cx-heading>
+  <h4>Text</h4>
+</cx-heading>
+
+<cx-text-field placeholder="Required" required></cx-text-field>
+<cx-text-field placeholder="Prefix">
+  <span slot="prefix">😀</span>
+</cx-text-field>
+<cx-text-field placeholder="Suffix">
+  <span slot="suffix">😀</span>
+</cx-text-field>
+<cx-text-field placeholder="Clearable" clearable></cx-text-field>
+<cx-text-field placeholder="Multiple" multiple></cx-text-field>
+<cx-text-field id="text-field-format" placeholder="Format"></cx-text-field>
 
 <cx-code>
-<cx-text-area placeholder="Required" required></cx-text-area>
-<cx-text-area placeholder="Rows" rows="5"></cx-text-area>
+<cx-text-field placeholder="Required" required></cx-text-field>
+<cx-text-field placeholder="Prefix">
+  <span slot="prefix">😀</span>
+</cx-text-field>
+<cx-text-field placeholder="Suffix">
+  <span slot="suffix">😀</span>
+</cx-text-field>
+<cx-text-field placeholder="Clearable" clearable></cx-text-field>
+<cx-text-field placeholder="Multiple" multiple></cx-text-field>
+<cx-text-field id="text-field-format" placeholder="Format"></cx-text-field>
+<script>
+  document.getElementById("text-field-format").format = val => val.split("").reverse().join("")
+</script>
 </cx-code>
 
 <cx-heading>
   <h4>Email</h4>
 </cx-heading>
 
-<cx-email-input placeholder="Required" required></cx-email-input>
-<cx-email-input placeholder="Custom pattern" pattern="\w+@\w+.com"></cx-email-input>
+<cx-email-field placeholder="Required" required></cx-email-field>
+<cx-email-field placeholder="Pattern \w+@\w+.com" pattern="\w+@\w+.com"></cx-email-field>
 
 <cx-code>
-<cx-email-input placeholder="Required" required></cx-email-input>
-<cx-email-input placeholder="Custom pattern" pattern="\w+@\w+.com"></cx-email-input>
+<cx-email-field placeholder="Required" required></cx-email-field>
+<cx-email-field placeholder="Pattern \w+@\w+.com" pattern="\w+@\w+.com"></cx-email-field>
 </cx-code>
 
 <cx-heading>
-  <h4>Number</h4>
+  <h4>Tel</h4>
 </cx-heading>
 
-<cx-number-input placeholder="Required" required></cx-number-input>
-<cx-number-input placeholder="Min" min="0"></cx-number-input>
-<cx-number-input placeholder="Max" max="100"></cx-number-input>
-<cx-number-input placeholder="Step" step="0.01"></cx-number-input>
-<cx-number-input id="currency" placeholder="Currency" step="0.01"></cx-number-input>
-<cx-number-input id="percent" placeholder="Percent" min="0" max="1" step="0.01"></cx-number-input>
+<cx-tel-field placeholder="Required" required></cx-tel-field>
+<cx-tel-field placeholder="Pattern [0-9]+" pattern="[0-9]+"></cx-tel-field>
 
 <cx-code>
-<cx-number-input placeholder="Required" required></cx-number-input>
-<cx-number-input placeholder="Min" min="0"></cx-number-input>
-<cx-number-input placeholder="Max" max="100"></cx-number-input>
-<cx-number-input placeholder="Step" step="0.01"></cx-number-input>
-<cx-number-input id="currency" placeholder="Currency" step="0.01"></cx-number-input>
-<cx-number-input id="percent" placeholder="Percent" min="0" max="1" step="0.01"></cx-number-input>
-<script>
-  document.getElementById("currency").intl = new Intl.NumberFormat("fr-FR", {style: "currency", currency: "EUR"})
-  document.getElementById("percent").intl = new Intl.NumberFormat("fr-FR", {style: "percent"})
-</script>
+<cx-tel-field placeholder="Required" required></cx-tel-field>
+<cx-tel-field placeholder="Pattern [0-9]+" pattern="[0-9]+"></cx-tel-field>
 </cx-code>
 
 <cx-heading>
-  <h4>Date picker</h4>
+  <h4>URL</h4>
+</cx-heading>
+
+<cx-url-field placeholder="Required" required></cx-url-field>
+<cx-url-field placeholder="Pattern http://\w+" pattern="http://\w+"></cx-url-field>
+
+<cx-code>
+<cx-url-field placeholder="Required" required></cx-url-field>
+<cx-url-field placeholder="Pattern http://\w+" pattern="http://\w+"></cx-url-field>
+</cx-code>
+
+<cx-heading>
+  <h4>Password</h4>
+</cx-heading>
+
+<cx-password-field placeholder="Required" required clearable></cx-password-field>
+<cx-password-field placeholder="Pattern [0-9]+" pattern="[0-9]+"></cx-password-field>
+
+<cx-code>
+<cx-password-field placeholder="Required" required></cx-password-field>
+<cx-password-field placeholder="Pattern [0-9]+" pattern="[0-9]+"></cx-password-field>
+</cx-code>
+
+<cx-heading>
+  <h3>Number based</h3>
+</cx-heading>
+
+<cx-heading>
+  <h4>Integer</h4>
+</cx-heading>
+
+<cx-int-field placeholder="Required" required></cx-int-field>
+<cx-int-field placeholder="Min 0" min="0"></cx-int-field>
+<cx-int-field placeholder="Max 100" max="100"></cx-int-field>
+<cx-int-field placeholder="Autoformat browser locale" autoformat></cx-int-field>
+
+<cx-code>
+<cx-int-field placeholder="Required" required></cx-int-field>
+<cx-int-field placeholder="Min 0" min="0"></cx-int-field>
+<cx-int-field placeholder="Max 100" max="100"></cx-int-field>
+<cx-int-field placeholder="Autoformat browser locale" autoformat></cx-int-field>
+</cx-code>
+
+<cx-heading>
+  <h4>Float</h4>
+</cx-heading>
+
+<cx-float-field placeholder="Required" required></cx-float-field>
+<cx-float-field placeholder="Step 0.1" step="0.1"></cx-float-field>
+<cx-float-field placeholder="Autoformat locale en-US" autoformat locale="en-US"></cx-float-field>
+
+<cx-code>
+<cx-float-field placeholder="Required" required></cx-float-field>
+<cx-float-field placeholder="Step 0.1" step="0.1"></cx-float-field>
+<cx-float-field placeholder="Autoformat locale en-US" autoformat locale="en-US"></cx-float-field>
+</cx-code>
+
+<cx-heading>
+  <h4>Currency</h4>
+</cx-heading>
+
+<cx-currency-field id="currency" placeholder="Locale ar-EG" locale="ar-EG"></cx-currency-field>
+<cx-currency-field id="currency" placeholder="Currency JPY" currency="JPY"></cx-currency-field>
+
+<cx-code>
+<cx-currency-field id="currency" placeholder="Locale ar-EG" locale="ar-EG"></cx-currency-field>
+<cx-currency-field id="currency" placeholder="Currency JPY" currency="JPY"></cx-currency-field>
+</cx-code>
+
+<cx-heading>
+  <h2>Pickers</h2>
+</cx-heading>
+
+<cx-heading>
+  <h3>Date</h3>
 </cx-heading>
 
 <cx-date-picker id="date" placeholder="Required" required></cx-date-picker>
@@ -118,6 +219,10 @@
   document.getElementById("date").addEventListener("change", console.log)
 </script>
 </cx-code>
+
+<cx-heading>
+  <h2>Dialogs</h2>
+</cx-heading>
 
 <cx-heading>
   <h3>Tooltip</h3>
@@ -137,22 +242,4 @@
 <cx-tooltip title="Tooltip" placement="right">
   <button>With placement</button>
 </cx-tooltip>
-</cx-code>
-
-<cx-heading>
-  <h4>Checkbox</h4>
-</cx-heading>
-<cx-checkbox-input id="checkbox">
-  <label for="input" slot="left">Left</label>
-  <label for="input" slot="right">Right</label>
-</cx-checkbox-input>
-
-<cx-code>
-<cx-checkbox-input id="checkbox">
-  <label for="input" slot="left">Left label</label>
-  <label for="input" slot="right">Right label</label>
-</cx-checkbox-input>
-<script>
-  document.getElementById("#checkbox").addEventListener("change", console.log)
-</script>
 </cx-code>
