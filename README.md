@@ -11,89 +11,94 @@ Catalyx is a collection of native web components:
 ## Table of contents
 
 - [Roadmap to `v1`](#roadmap-to-v1)
-- [Inputs](#inputs)
-  - [Text](#text)
-  - [Text area](#text-area)
-  - [Email](#email)
-  - [Password](#password)
-  - [Number](#number)
-  - [Date picker](#date-picker)
-- [Tooltip](#tooltip)
-- [Typos](#typos)
+- [Buttons](#buttons)
+  - [Button](#button)
+  - [Choice](#choice)
+  - [Switch](#switch)
+- [Fields](#fields)
+  - Text based
+    - [Text](#text)
+    - [Email](#email)
+    - [Tel](#tel)
+    - [URL](#url)
+    - [Password](#password)
+    - [Phone](#phone)
+  - Number based
+    - [Integer](#integer)
+    - [Float](#float)
+    - [Currency](#currency)
+- [Pickers](#pickers)
+  - [Date](#date)
+- [Dialogs](#dialogs)
+  - [Tooltip](#tooltip)
+- [Layouts](#layouts)
   - [Heading](#heading)
 - [Changelog](https://github.com/soywod/catalyx/blob/master/CHANGELOG.md)
 - [License](https://github.com/soywod/catalyx/blob/master/LICENSE)
 
 ## Roadmap to `v1`
 
-- [ ] Inputs
-  - [X] Text
-  - [X] Text area
-  - [X] Email
-  - [X] Password
-  - [X] Number
-  - [X] Date picker
-  - [ ] Phone
-  - [ ] Button
-  - [ ] Checkbox
+- [ ] Buttons
+  - [X] Button
+  - [ ] Choice
+  - [ ] Switch
+- [X] Fields
+  - [X] Text based
+    - [X] Text
+    - [X] Email
+    - [X] Tel
+    - [X] URL
+    - [X] Password
+    - [X] Phone
+  - [X] Number based
+    - [X] Integer
+    - [X] Float
+    - [X] Currency
+- [ ] Pickers
+  - [X] Date
+  - [ ] Time
+  - [ ] Datetime
+  - [ ] Month
+  - [ ] Range
   - [ ] Color
   - [ ] File
-  - [ ] Radio
-  - [ ] Switch
-- [ ]  Typos
-  - [X] Heading
-  - [ ] Paragraph
-- [ ] Layouts
-  - [ ] Grid
-  - [ ] List
-  - [ ] Media query
-  - [ ] Table
-- [ ] Engines
+- [ ] Dialogs
   - [X] Tooltip
-  - [ ] Form engine
-  - [ ] Routing engine
-  - [ ] Drawer
   - [ ] Modal
   - [ ] Toast
+  - [ ] Drawer
+  - [ ] Dropdown
+  - [ ] Notification
+- [ ] Layouts
+  - [X] Heading
+  - [ ] Form
+  - [ ] Router
 
-## Inputs
-
+## Buttons
+### Button
+## Fields
 ### Text
 
-Control for entering text.
+Control for entering a single or multiple lines of text.
 
 #### Usage
 
 ```html
-<cx-text-input></cx-text-input>
+<cx-text-field></cx-text-field>
 ```
 
 #### Attributes
 
 Accept all `<input type="text">` attributes.
 
-### Text area
-
-Control for entering multilined text.
-
-#### Usage
-
-```html
-<cx-text-area></cx-text-area>
-```
-
-#### Attributes
-
-Accept all `<textarea>` attributes.
-
 ### Email
 
-Control for entering email.
+Control for entering an email. Extends [Text field](#text).
 
 #### Usage
 
 ```html
-<cx-email-input></cx-email-input>
+<cx-email-field></cx-email-field>
 ```
 
 #### Attributes
@@ -102,37 +107,52 @@ Accept all `<input type="email">` attributes.
 
 ### Password
 
-Control for entering password. The password can be shown or hidden with the toggler on the right side.
+Control for entering a password. Extends [Text field](#text). The password can be
+shown or hidden with the toggler on the right side.
 
 #### Usage
 
 ```html
-<cx-password-input></cx-password-input>
+<cx-password-field></cx-password-field>
 ```
 
 #### Attributes
 
 Accept all `<input type="password">` attributes.
 
-### Number
+### Integer
 
-Control for entering number. The value can be incremented and decremented via the input (right buttons), via the keyboard (top and bottom arrow), and via the mouse (wheel). The value can be formatted (on blur) by [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat#Using_locales).
+Control for entering an integer. The value can be incremented and decremented via the input (right buttons), via the keyboard (top and bottom arrow), and via the mouse (wheel).
 
 #### Usage
 
 ```html
-<cx-number-input></cx-number-input>
+<cx-integer-field></cx-integer-field>
 ```
 
 #### Attributes
 
 Accept all `<input type="number">` attributes.
 
-#### Properties
+### Float
 
-Name|Description|Example
----|---|---
-`intl`|Instance of [`Intl.NumberFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat).|`elem.intl = new Intl.NumberFormat()`
+Control for entering a float.
+
+#### Usage
+
+```html
+<cx-float-field></cx-float-field>
+```
+
+### Currency
+
+Control for entering a currency.
+
+#### Usage
+
+```html
+<cx-currency-field></cx-currency-field>
+```
 
 ### Date picker
 
