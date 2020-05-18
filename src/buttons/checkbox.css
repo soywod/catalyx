@@ -1,61 +1,78 @@
+* {
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
+}
+
 :host {
-  display: flex;
+  align-items: center;
+  display: inline-flex;
   margin-bottom: var(--spacing-sm);
   position: relative;
   user-select: none;
 }
 
-::slotted([slot="left"]) {
-  margin-right: var(--spacing-sm);
+:host(:hover) #checkmark {
+  border: var(--border-hover);
 }
 
-::slotted([slot="right"]) {
-  margin-left: var(--spacing-sm);
+:host(:focus),
+:host(:focus-within) {
+  outline: none;
+}
+
+:host(:focus) #checkmark,
+:host(:focus-within) #checkmark {
+  border: var(--border-focus);
+  box-shadow: var(--shadow-focus);
 }
 
 #input {
-  height: 0;
+  box-sizing: border-box;
+  height: var(--spacing-md);
+  margin: 0;
   opacity: 0;
   position: absolute;
-  width: 0;
+  width: var(--spacing-md);
+}
+
+#input:checked + #checkmark {
+  background-color: var(--primary);
+  border: var(--border-focus);
+}
+
+#input:checked + #checkmark:after {
+  display: inline-flex;
 }
 
 #checkmark {
   background-color: var(--gray-light);
+  border: var(--border);
   border-radius: var(--border-radius);
-  cursor: pointer;
-  height: 1rem;
-  width: 1rem;
+  box-sizing: border-box;
+  display: inline-block;
+  height: var(--spacing-md);
+  margin-right: var(--spacing-sm);
+  pointer-events: none;
+  position: relative;
+  transition-duration: 125ms;
+  transition-property: background, border, shadow;
+  width: var(--spacing-md);
 }
 
 #checkmark:after {
-  content: "";
-  cursor: pointer;
+  align-items: center;
+  bottom: 0;
+  box-sizing: border-box;
+  color: var(--light);
+  content: "✔";
   display: none;
-}
-
-#input:checked ~ #checkmark {
-  background-color: var(--primary);
-}
-
-#input:checked ~ #checkmark:after {
-  display: block;
-}
-
-:host #checkmark:after {
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  height: 7px;
-  margin-left: 5px;
-  margin-top: 2px;
-  transform: rotate(45deg);
-  width: 3px;
-}
-
-#validation-tooltip {
-  display: none;
-}
-
-#clear {
-  display: none;
+  height: var(--spacing-md);
+  justify-content: center;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: var(--spacing-md);
 }

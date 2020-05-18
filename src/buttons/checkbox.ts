@@ -1,37 +1,16 @@
-import {TextField} from "../fields";
-import tooltipTpl from "../fields/text-tooltip.html";
-import clearTpl from "../fields/text-clear.html";
+import {parseStyle, parseTemplate} from "../dom-utils";
 import style from "./checkbox.css";
-import checkboxTpl from "./checkbox.html";
+import tpl from "./checkbox.html";
 
-export class CheckboxInput extends TextField {
+export class Checkbox extends HTMLElement {
   constructor() {
-    super({style, tpl: checkboxTpl + clearTpl + tooltipTpl});
-  }
+    super();
 
-  private _toggle = () => {
-    const checked = this._input.hasAttribute("checked");
-
-    if (!checked) {
-      this._input.setAttribute("checked", "");
-    } else {
-      this._input.removeAttribute("checked");
-    }
-
-    this.dispatchEvent(new CustomEvent("change", {detail: {checked: !checked}}));
-  };
-
-  connectedCallback() {
-    const checkmark = this.shadowRoot && this.shadowRoot.getElementById("checkmark");
-
-    checkmark && checkmark.addEventListener("click", this._toggle);
-  }
-
-  disconnectedCallback() {
-    const checkmark = this.shadowRoot && this.shadowRoot.getElementById("checkmark");
-
-    checkmark && checkmark.removeEventListener("click", this._toggle);
+    this.attachShadow({mode: "open", delegatesFocus: true}).append(
+      parseStyle(style),
+      parseTemplate(tpl),
+    );
   }
 }
 
-customElements.define("cx-checkbox-input", CheckboxInput);
+customElements.define("cx-checkbox", Checkbox);

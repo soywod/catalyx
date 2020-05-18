@@ -18,11 +18,6 @@ customElements.define(
         date.addEventListener("change", console.log);
       }
 
-      /* const checkbox = this.querySelector("#checkbox"); */
-      /* if (checkbox instanceof CheckboxInput) { */
-      /*   checkbox.addEventListener("change", console.log); */
-      /* } */
-
       const textFieldFormat = this.querySelector("#text-field-format");
       if (textFieldFormat instanceof TextField) {
         textFieldFormat.format = val => val.split("").reverse().join("");

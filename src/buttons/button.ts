@@ -23,11 +23,15 @@ export class Button extends HTMLElement {
     this._isToggler = this.hasAttribute("toggler");
   }
 
-  protected connectedCallback() {
-    this.addEventListener("mousedown", this._handleClick);
+  connectedCallback() {
+    this.addEventListener("click", this._toggle);
   }
 
-  private _handleClick = () => {
+  disconnectedCallback() {
+    this.removeEventListener("click", this._toggle);
+  }
+
+  protected _toggle = () => {
     if (this._isToggler) {
       if (this.hasAttribute("active")) {
         this.removeAttribute("active");
