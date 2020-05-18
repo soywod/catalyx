@@ -1,0 +1,52 @@
+:host {
+  border: var(--border);
+  border-radius: var(--border-radius);
+  cursor: pointer;
+  display: inline-flex;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  transition-duration: 125ms;
+  transition-property: background, color, border;
+}
+
+:host(:focus),
+#button:focus {
+  outline: none;
+}
+
+:host(:not([disabled]):hover) {
+  background: var(--gray-light);
+  border: var(--border-hover);
+  outline: none;
+}
+
+:host(:not([disabled]):focus),
+:host(:not([disabled]):focus-within) {
+  border: var(--border-focus);
+  box-shadow: var(--shadow-focus);
+}
+
+:host([disabled]) #button {
+  cursor: not-allowed;
+  opacity: 0.25;
+}
+
+:host(:not([disabled])[active]) {
+  background: var(--primary);
+}
+
+:host(:not([disabled])[active]) #button {
+  color: var(--light);
+}
+
+#button {
+  background: none;
+  border: none;
+  border-radius: var(--border-radius);
+  color: var(--text-color);
+  cursor: pointer;
+  flex: 1;
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
+  padding: 0;
+}
