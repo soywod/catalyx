@@ -22,6 +22,19 @@ customElements.define(
       if (textFieldFormat instanceof TextField) {
         textFieldFormat.format = val => val.split("").reverse().join("");
       }
+
+      const form = this.querySelector("#form");
+      if (form instanceof HTMLFormElement) {
+        /* form.addEventListener("submit", evt => { */
+        /*   evt.preventDefault(); */
+        /*   console.log( */
+        /*     Array.from(form.querySelectorAll("* /deep/ *")) */
+        /*       .filter(elem => customElements.get(elem.tagName.toLowerCase())) */
+        /*       .filter(elem => elem instanceof HTMLElement) */
+        /*       .filter(elem => elem instanceof HTMLElement && elem.value), */
+        /*   ); */
+        /* }); */
+      }
     }
   },
 );

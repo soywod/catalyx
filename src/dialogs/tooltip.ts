@@ -1,6 +1,6 @@
 import {createPopper, Instance as PopperInstance, Placement} from "@popperjs/core";
 
-import {parseStyle, parseTemplate, findOrFail, findFirstOrFail} from "../dom-utils";
+import {parseStyle, parseTpl, findOrFail, findFirstOrFail} from "../dom-utils";
 import {parsePlacement} from "./popover";
 import style from "./tooltip.css";
 import tpl from "./tooltip.html";
@@ -14,7 +14,7 @@ export class Tooltip extends HTMLElement {
 
   public constructor() {
     super();
-    this.attachShadow({mode: "open"}).append(parseStyle(style), parseTemplate(tpl));
+    this.attachShadow({mode: "open"}).append(parseStyle(style), parseTpl(tpl));
 
     const targetSlot = findFirstOrFail(this.shadowRoot, HTMLSlotElement, "slot:not([name])");
     const target = targetSlot.assignedElements()[0];

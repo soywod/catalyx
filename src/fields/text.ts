@@ -1,4 +1,4 @@
-import {parseStyle, parseTemplate, findOrFail} from "../dom-utils";
+import {parseStyle, parseTpl, findOrFail, Validatable} from "../dom-utils";
 import {Tooltip} from "../dialogs";
 import defaultStyle from "./text.css";
 import prefixTpl from "./text-prefix.html";
@@ -19,7 +19,7 @@ function defaultTpl(multiple?: boolean) {
   return prefixTpl + inputTpl + clearTpl + suffixTpl + tooltipTpl;
 }
 
-export class TextField extends HTMLElement {
+export class TextField extends HTMLElement implements Validatable {
   protected _input: HTMLInputElement | HTMLTextAreaElement;
   protected _tooltip: Tooltip;
   protected _clearBtn: HTMLButtonElement;
@@ -31,7 +31,7 @@ export class TextField extends HTMLElement {
 
     this.attachShadow({mode: "open", delegatesFocus: true}).append(
       parseStyle(params.style || defaultStyle),
-      parseTemplate(params.tpl || defaultTpl(this.hasAttribute("multiple"))),
+      parseTpl(params.tpl || defaultTpl(this.hasAttribute("multiple"))),
     );
 
     try {
@@ -69,7 +69,7 @@ export class TextField extends HTMLElement {
 
   private _handleInput = () => {
     this.dispatchEvent(new CustomEvent("change", {detail: {value: this._input.value}}));
-    this._validate();
+    this.validate();
   };
 
   private _handleFocus = () => {
@@ -96,7 +96,7 @@ export class TextField extends HTMLElement {
     this._input.value = "";
   };
 
-  protected _validate = () => {
+  public validate = () => {
     this._input.title = "";
 
     try {
@@ -107,10 +107,12 @@ export class TextField extends HTMLElement {
       this._postValidate();
       this.removeAttribute("invalid");
       this.setAttribute("valid", "");
+      return true;
     } catch (err) {
       this.removeAttribute("valid");
       this.setAttribute("invalid", "");
       this._tooltip.title = err.message;
+      return false;
     }
   };
 

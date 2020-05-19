@@ -1,12 +1,6 @@
-* {
-  cursor: pointer;
-  font-family: var(--font-family);
-  font-size: var(--font-size-md);
-  line-height: var(--line-height-md);
-}
-
 :host {
   align-items: center;
+  cursor: pointer;
   display: inline-flex;
   margin-bottom: var(--spacing-sm);
   position: relative;
@@ -28,8 +22,27 @@
   box-shadow: var(--shadow-focus);
 }
 
+:host([invalid]) #checkmark {
+  background: var(--light);
+  border: var(--border-error);
+  box-shadow: var(--shadow-error);
+}
+
+:host([invalid]) #validation-tooltip {
+  display: flex;
+}
+
+#label {
+  color: var(--text-color);
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
+}
+
 #input {
   box-sizing: border-box;
+  cursor: pointer;
   height: var(--spacing-md);
   margin: 0;
   opacity: 0;
@@ -75,4 +88,19 @@
   right: 0;
   top: 0;
   width: var(--spacing-md);
+}
+
+#validation-tooltip {
+  cursor: default;
+  display: none;
+  left: calc(-1 * var(--spacing-sm));
+  position: absolute;
+  top: calc(-1 * var(--spacing-sm));
+  z-index: 1;
+}
+
+#validation-tooltip svg {
+  color: var(--error);
+  height: var(--font-size-lg);
+  width: var(--font-size-lg);
 }

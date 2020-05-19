@@ -48,7 +48,7 @@ export class DatePicker extends TextField {
     this._content = findOrFail(this.shadowRoot, HTMLDivElement, "content");
     this._popperPlacement = parsePlacement(this._picker.getAttribute("placement"));
     this._yearsCursor = getClosestYearsCursor(new Date());
-    this._input.readOnly = true;
+    /* this._input.readOnly = true; */
   }
 
   connectedCallback() {
@@ -57,7 +57,7 @@ export class DatePicker extends TextField {
     this.addEventListener("keydown", this._handleKeyDown);
     this._picker.addEventListener("mousedown", this._handleClick);
     this._picker.addEventListener("touchstart", this._handleClick);
-    this._input.addEventListener("input", this._validate);
+    this._input.addEventListener("input", this.validate);
     this._content.addEventListener("wheel", this._handleWheel);
   }
 
@@ -67,7 +67,7 @@ export class DatePicker extends TextField {
     this.removeEventListener("keydown", this._handleKeyDown);
     this._picker.removeEventListener("mousedown", this._handleClick);
     this._picker.removeEventListener("touchstart", this._handleClick);
-    this._input.removeEventListener("input", this._validate);
+    this._input.removeEventListener("input", this.validate);
     this._content.removeEventListener("wheel", this._handleWheel);
   }
 
@@ -124,8 +124,9 @@ export class DatePicker extends TextField {
         if (this._year !== undefined && this._month !== undefined) {
           this._date = new Date(this._year, this._month, this._day);
           this._input.value = this._date.toLocaleDateString();
-          this.dispatchEvent(new CustomEvent("change", {detail: {date: this._date}}));
+          this.dispatchEvent(new CustomEvent("change", {detail: {value: this._date}}));
           this._showDailyView();
+          this.validate();
         }
       }
 

@@ -1,4 +1,4 @@
-import {parseStyle, parseTemplate, findOrFail} from "../dom-utils";
+import {parseStyle, parseTpl, findOrFail} from "../dom-utils";
 import defaultStyle from "./button.css";
 import defaultTpl from "./button.html";
 
@@ -8,26 +8,26 @@ export type ButtonParams = {
 };
 
 export class Button extends HTMLElement {
-  private _button: HTMLButtonElement;
-  private _isToggler: boolean;
+  protected _button: HTMLButtonElement;
+  protected _isToggler: boolean;
 
   public constructor(params: ButtonParams = {}) {
     super();
 
     this.attachShadow({mode: "open", delegatesFocus: true}).append(
       parseStyle(params.style || defaultStyle),
-      parseTemplate(params.tpl || defaultTpl),
+      parseTpl(params.tpl || defaultTpl),
     );
 
     this._button = findOrFail(this.shadowRoot, HTMLButtonElement, "button");
     this._isToggler = this.hasAttribute("toggler");
   }
 
-  connectedCallback() {
+  protected connectedCallback() {
     this.addEventListener("click", this._toggle);
   }
 
-  disconnectedCallback() {
+  protected disconnectedCallback() {
     this.removeEventListener("click", this._toggle);
   }
 

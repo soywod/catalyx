@@ -1,18 +1,18 @@
-import {parseStyle, parseTemplate} from "../dom-utils";
+import {parseStyle, parseTpl} from "../dom-utils";
 import style from "./table.css";
 import tpl from "./table.html";
 
 export default class Table extends HTMLElement {
   public constructor() {
     super();
-    this.attachShadow({mode: "open"}).append(parseStyle(style), parseTemplate(tpl));
+    this.attachShadow({mode: "open"}).append(parseStyle(style), parseTpl(tpl));
   }
 }
 
 export class TableCell extends HTMLElement {
   public constructor() {
     super();
-    this.append(parseTemplate(`<slot></slot>`));
+    this.append(parseTpl(`<slot></slot>`));
   }
 }
 

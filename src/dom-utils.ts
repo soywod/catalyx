@@ -9,7 +9,7 @@ export function parseStyle(str: string) {
   return wrapper;
 }
 
-export function parseTemplate(str: string) {
+export function parseTpl(str: string) {
   const wrapper = document.createElement("template");
   wrapper.innerHTML = str;
   return wrapper.content;
@@ -27,7 +27,7 @@ export function findOrFail<T extends HTMLElement>(
 }
 
 export function findFirstOrFail<T extends HTMLElement>(
-  parent: DocumentFragment | null,
+  parent: DocumentFragment | HTMLElement | null,
   type: Constructor<T>,
   selector: string,
 ): T {
@@ -38,7 +38,7 @@ export function findFirstOrFail<T extends HTMLElement>(
 }
 
 export function findAllOrFail<T extends HTMLElement>(
-  parent: DocumentFragment | null,
+  parent: DocumentFragment | HTMLElement | null,
   type: Constructor<T>,
   selector: string,
 ): T[] {
@@ -66,4 +66,24 @@ export function clone(elem: Node): DocumentFragment {
 export function replaceChildren(elem: Node, ...children: Node[]) {
   while (elem.lastChild) elem.removeChild(elem.lastChild);
   for (const child of children) elem.appendChild(child);
+}
+
+export interface Validatable {
+  validate: () => boolean;
+}
+
+export function isValidatable(instance: any): instance is Validatable {
+  return "validate" in instance && typeof instance.validate === "function";
+}
+
+export function transferAttrs(
+  source: HTMLElement,
+  target: HTMLElement,
+  exceptions = ["id", "type", "part"],
+) {
+  Array.from(source.attributes).forEach(attr => {
+    if (!exceptions.includes(attr.name)) {
+      target.setAttribute(attr.name, attr.value);
+    }
+  });
 }

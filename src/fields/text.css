@@ -79,10 +79,8 @@
 
 #validation-tooltip {
   display: none;
-  grid-column: 1;
-  grid-row: 1;
+  left: calc(-1 * var(--spacing-sm));
   position: absolute;
-  right: calc(-1 * var(--spacing-sm));
   top: calc(-1 * var(--spacing-sm));
   z-index: 1;
 }
