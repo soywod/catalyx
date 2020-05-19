@@ -1,0 +1,100 @@
+:host {
+  align-items: center;
+  cursor: pointer;
+  display: inline-flex;
+  margin-bottom: var(--spacing-sm);
+  position: relative;
+  user-select: none;
+}
+
+:host(:hover) #switch-container {
+  border: var(--border-hover);
+}
+
+:host(:focus),
+:host(:focus-within) {
+  outline: none;
+}
+
+:host(:focus) #switch-container,
+:host(:focus-within) #switch-container {
+  border: var(--border-focus);
+  box-shadow: var(--shadow-focus);
+}
+
+:host([invalid]) #switch-container {
+  background: var(--light);
+  border: var(--border-error);
+  box-shadow: var(--shadow-error);
+}
+
+:host([invalid]) #validation-tooltip {
+  display: flex;
+}
+
+#label {
+  color: var(--text-color);
+  cursor: pointer;
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  line-height: var(--line-height-md);
+}
+
+#input {
+  border: var(--border);
+  cursor: pointer;
+  height: calc(2px + var(--spacing-md));
+  margin: 0;
+  opacity: 0;
+  position: absolute;
+  width: calc(2 * var(--spacing-md) + 3px);
+}
+
+#input:checked + #switch-container {
+  background-color: var(--primary);
+  border: var(--border-focus);
+}
+
+#input:checked + #switch-container > #switch {
+  margin-left: var(--spacing-md);
+}
+
+#switch-container {
+  background-color: var(--gray-light);
+  border: var(--border);
+  border-radius: var(--border-radius);
+  display: flex;
+  height: var(--spacing-md);
+  margin-right: var(--spacing-sm);
+  overflow: hidden;
+  padding: 1px;
+  pointer-events: none;
+  position: relative;
+  transition-duration: 125ms;
+  transition-property: background, border, shadow;
+  width: calc(2 * var(--spacing-md));
+}
+
+#switch {
+  background-color: var(--light);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  height: var(--spacing-md);
+  transition: 125ms margin;
+  width: var(--spacing-md);
+}
+
+#validation-tooltip {
+  cursor: default;
+  display: none;
+  left: calc(-1 * var(--spacing-sm));
+  position: absolute;
+  top: calc(-1 * var(--spacing-sm));
+  z-index: 1;
+}
+
+#validation-tooltip svg {
+  color: var(--error);
+  height: var(--font-size-lg);
+  width: var(--font-size-lg);
+}
