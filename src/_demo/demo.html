@@ -297,3 +297,44 @@
   </div>
   <cx-submit>SUBMIT</cx-submit>
 </cx-form>
+
+<cx-heading separator>
+  <h3>Router</h3>
+</cx-heading>
+
+<nav>
+  <cx-link to="/">
+    <cx-button>Home</cx-button>
+  </cx-link>
+  <cx-link to="/about">
+    <cx-button>About</cx-button>
+  </cx-link>
+  <cx-link to="/contact">
+    <cx-button>Contact</cx-button>
+  </cx-link>
+</nav>
+<cx-router>
+  <cx-route pattern="/about">About</cx-route>
+  <cx-route pattern="/contact">Contact</cx-route>
+  <cx-route>Home</cx-route>
+</cx-router>
+
+<cx-code>
+<nav>
+  <cx-link to="/">
+    <cx-button>Home</cx-button>
+  </cx-link>
+  <cx-link to="/about">
+    <cx-button>About</cx-button>
+  </cx-link>
+  <cx-link to="/contact">
+    <cx-button>Contact</cx-button>
+  </cx-link>
+</nav>
+
+<cx-router>
+  <cx-route pattern="/about">About</cx-route>
+  <cx-route pattern="/contact">Contact</cx-route>
+  <cx-route>Home</cx-route>
+</cx-router>
+</cx-code>

@@ -13,8 +13,8 @@ Catalyx is a collection of native web components:
 - [Roadmap to `v1`](#roadmap-to-v1)
 - [Buttons](#buttons)
   - [Button](#button)
-  - [Choice](#choice)
   - [Switch](#switch)
+  - [Choice](#choice)
 - [Fields](#fields)
   - Text based
     - [Text](#text)
@@ -29,10 +29,16 @@ Catalyx is a collection of native web components:
     - [Currency](#currency)
 - [Pickers](#pickers)
   - [Date](#date)
+  - [Select](#select)
+  - [File](#file)
 - [Dialogs](#dialogs)
   - [Tooltip](#tooltip)
+  - [Toast](#toast)
+  - [Modal](#modal)
 - [Layouts](#layouts)
   - [Heading](#heading)
+  - [Form](#form)
+  - [Router](#router)
 - [Changelog](https://github.com/soywod/catalyx/blob/master/CHANGELOG.md)
 - [License](https://github.com/soywod/catalyx/blob/master/LICENSE)
 
@@ -40,8 +46,8 @@ Catalyx is a collection of native web components:
 
 - [ ] Buttons
   - [X] Button
+  - [X] Switch
   - [ ] Choice
-  - [ ] Switch
 - [X] Fields
   - [X] Text based
     - [X] Text
@@ -56,23 +62,16 @@ Catalyx is a collection of native web components:
     - [X] Currency
 - [ ] Pickers
   - [X] Date
-  - [ ] Time
-  - [ ] Datetime
-  - [ ] Month
-  - [ ] Range
-  - [ ] Color
+  - [ ] Select
   - [ ] File
 - [ ] Dialogs
   - [X] Tooltip
+  - [X] Toast
   - [ ] Modal
-  - [ ] Toast
-  - [ ] Drawer
-  - [ ] Dropdown
-  - [ ] Notification
-- [ ] Layouts
+- [X] Layouts
   - [X] Heading
-  - [ ] Form
-  - [ ] Router
+  - [X] Form
+  - [X] Router
 
 ## Buttons
 ### Button
