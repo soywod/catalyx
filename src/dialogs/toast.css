@@ -5,13 +5,14 @@
   box-shadow: var(--shadow);
   cursor: pointer;
   display: flex;
+  margin-top: var(--spacing-md);
   opacity: 0;
   position: fixed;
   right: var(--spacing-md);
   top: var(--spacing-md);
   transform: translateX(25%);
-  transition-duration: 500ms;
-  transition-property: opacity, transform;
+  transition-duration: 300ms;
+  transition-property: top, opacity, transform;
   transition-timing-function: cubic-bezier(0.9, 0, 0, 0.9);
 }
 
@@ -27,6 +28,24 @@
 :host([visible]) {
   opacity: 1;
   transform: translateX(0);
+}
+
+:host([data-type="primary"]) {
+  background: var(--primary);
+}
+
+:host([data-type="primary"]) #toast,
+:host([data-type="primary"]) #close {
+  color: var(--light);
+}
+
+:host([data-type="error"]) {
+  background: var(--error);
+}
+
+:host([data-type="error"]) #toast,
+:host([data-type="error"]) #close {
+  color: var(--light);
 }
 
 #toast {

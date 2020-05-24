@@ -27,6 +27,18 @@ customElements.define(
       if (toast instanceof Button) {
         toast.addEventListener("click", () => Toast.show("Default toast."));
       }
+
+      const toastPrimary = this.querySelector("#toast-primary");
+      if (toastPrimary instanceof Button) {
+        toastPrimary.addEventListener("click", () =>
+          Toast.show("Primary toast.", {type: "primary"}),
+        );
+      }
+
+      const toastError = this.querySelector("#toast-error");
+      if (toastError instanceof Button) {
+        toastError.addEventListener("click", () => Toast.show("Error toast.", {type: "error"}));
+      }
     }
   },
 );
