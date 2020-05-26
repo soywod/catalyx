@@ -1,0 +1,48 @@
+cx-option {
+  background: var(--light);
+  border: none;
+  border-radius: var(--border-radius);
+  color: var(--text-color);
+  cursor: pointer;
+  display: flex;
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  justify-self: stretch;
+  line-height: var(--line-height-md);
+  text-align: left;
+  transition-duration: 125ms;
+  transition-property: background, color;
+}
+
+cx-option:first-of-type {
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+cx-option:last-of-type {
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+cx-option:hover {
+  background: var(--gray-light);
+}
+
+:host([visible]) #picker {
+  background: var(--gray-light);
+  display: grid;
+}
+
+#picker {
+  align-items: center;
+  background: var(--light);
+  border: 1px solid var(--gray);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow);
+  color: var(--text-color);
+  cursor: pointer;
+  display: none;
+  grid-auto-flow: row;
+  grid-row-gap: 1px;
+  justify-items: start;
+  min-width: 12.5rem;
+  z-index: 2;
+}

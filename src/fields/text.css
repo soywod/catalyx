@@ -82,7 +82,7 @@
   left: calc(-1 * var(--spacing-sm));
   position: absolute;
   top: calc(-1 * var(--spacing-sm));
-  z-index: 1;
+  z-index: 3;
 }
 
 #validation-tooltip svg {

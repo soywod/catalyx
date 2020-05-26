@@ -1,0 +1,10 @@
+:host([selectable]) cx-checkbox {
+  display: none;
+}
+
+cx-checkbox {
+  display: flex;
+  margin: 0;
+  padding: var(--spacing-sm);
+  width: 100%;
+}

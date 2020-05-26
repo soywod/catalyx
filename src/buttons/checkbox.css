@@ -38,16 +38,18 @@
   font-family: var(--font-family);
   font-size: var(--font-size-md);
   line-height: var(--line-height-md);
+  padding-left: var(--spacing-sm);
 }
 
 #input {
-  box-sizing: border-box;
   cursor: pointer;
-  height: var(--spacing-md);
+  height: 100%;
+  left: 0;
   margin: 0;
   opacity: 0;
   position: absolute;
-  width: var(--spacing-md);
+  top: 0;
+  width: 100%;
 }
 
 #input:checked + #checkmark {
@@ -56,17 +58,17 @@
 }
 
 #input:checked + #checkmark:after {
-  display: inline-flex;
+  display: inline-grid;
 }
 
 #checkmark {
+  align-items: center;
   background-color: var(--gray-light);
   border: var(--border);
   border-radius: var(--border-radius);
-  box-sizing: border-box;
-  display: inline-block;
+  display: inline-flex;
   height: var(--spacing-md);
-  margin-right: var(--spacing-sm);
+  justify-content: center;
   pointer-events: none;
   position: relative;
   transition-duration: 125ms;
@@ -76,18 +78,29 @@
 
 #checkmark:after {
   align-items: center;
+  border: var(--border);
+  border-color: transparent;
   bottom: 0;
-  box-sizing: border-box;
   color: var(--light);
   content: "✔";
   display: none;
-  height: var(--spacing-md);
-  justify-content: center;
+  font-size: var(--font-size-md);
+  height: 100%;
+  justify-items: center;
   left: 0;
+  line-height: 0;
   position: absolute;
   right: 0;
   top: 0;
-  width: var(--spacing-md);
+  width: 100%;
+}
+
+#checkmark[hidden] {
+  display: none;
+}
+
+#checkmark[hidden] + #label {
+  padding-left: 0;
 }
 
 #validation-tooltip {
