@@ -1,5 +1,32 @@
-:host([selectable]) cx-checkbox {
-  display: none;
+:host {
+  background: var(--light);
+  border: none;
+  color: var(--text-color);
+  cursor: pointer;
+  display: flex;
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  justify-self: stretch;
+  line-height: var(--line-height-md);
+  text-align: left;
+  transition-duration: 125ms;
+  transition-property: background, color;
+}
+
+:host(:first-of-type) {
+  border-radius: var(--border-radius) var(--border-radius) 0 0;
+}
+
+:host(:last-of-type) {
+  border-radius: 0 0 var(--border-radius) var(--border-radius);
+}
+
+:host(:hover) {
+  background: var(--gray-light);
+}
+
+:host([selected]) {
+  background: var(--gray-light);
 }
 
 cx-checkbox {

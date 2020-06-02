@@ -1,9 +1,9 @@
 import {createPopper, Instance as PopperInstance, Placement} from "@popperjs/core";
 
-import {findOrFail, findAllOrFail, parseStyle, parseTpl} from "../dom-utils";
+import {findOrFail, findAllOrFail} from "../dom-utils";
 import {parsePlacement} from "../dialogs";
-import {Checkbox} from "../buttons";
 import {TextField} from "../fields";
+import {Option} from "./option";
 
 import textStyle from "../fields/text.css";
 import prefixTpl from "../fields/text-prefix.html";
@@ -11,60 +11,11 @@ import textTpl from "../fields/text.html";
 import clearTpl from "../fields/text-clear.html";
 import suffixTpl from "../fields/text-suffix.html";
 import tooltipTpl from "../fields/text-tooltip.html";
-import optionTpl from "./option.html";
-import optionStyle from "./option.css";
 import selectStyle from "./select.css";
 import selectTpl from "./select.html";
 
 const style = textStyle + selectStyle;
 const tpl = prefixTpl + textTpl + clearTpl + suffixTpl + tooltipTpl + selectTpl;
-
-export class Option extends HTMLElement {
-  public _checkbox: Checkbox;
-
-  public constructor() {
-    super();
-
-    this.attachShadow({mode: "open", delegatesFocus: true}).append(
-      parseStyle(optionStyle),
-      parseTpl(optionTpl),
-    );
-
-    this._checkbox = findOrFail(this.shadowRoot, Checkbox, "option");
-  }
-
-  protected connectedCallback() {
-    this._checkbox.addEventListener("change", this._handleChange);
-  }
-
-  protected disconnectedCallback() {
-    this._checkbox.removeEventListener("change", this._handleChange);
-  }
-
-  private _handleChange = () => {
-    this.dispatchEvent(new CustomEvent("change", {detail: {value: this.selected}}));
-  };
-
-  public get selected() {
-    return this._checkbox.checked;
-  }
-
-  public set selected(val: boolean) {
-    this._checkbox.checked = val;
-  }
-
-  public get value() {
-    return this.getAttribute("value") || "";
-  }
-
-  public set hideCheckbox(val: boolean) {
-    this._checkbox.hideCheckmark = val;
-  }
-
-  public get hideCheckbox() {
-    return this._checkbox.hideCheckmark;
-  }
-}
 
 export class Select extends TextField {
   private _popperPlacement: Placement;
@@ -72,10 +23,10 @@ export class Select extends TextField {
   private _picker: HTMLDivElement;
   private _opts: Option[];
 
-  private _isMultiple = false;
-  private _min = 1;
-  private _max = 1;
-  private _selectedOptsCount = 0;
+  private _min: number;
+  private _max: number;
+  private _selectedOptsCount: number;
+  private _isMultiple: boolean;
 
   public constructor() {
     super({style, tpl});
@@ -96,9 +47,10 @@ export class Select extends TextField {
     this._opts = findAllOrFail(this._picker, Option, "cx-option");
     this._popperPlacement = parsePlacement(this._picker.getAttribute("placement"));
 
-    this._min = Number(this.getAttribute("min")) || 1;
+    this._min = Number(this.getAttribute("min")) || 0;
     this._max = this.hasAttribute("max") ? max : isMultiple ? this._opts.length - 1 : 1;
     this._isMultiple = this._max > 1;
+    this._selectedOptsCount = 0;
 
     Array.from(this.children).forEach(child => child.remove());
   }
@@ -108,7 +60,7 @@ export class Select extends TextField {
     this.addEventListener("blur", this._hidePicker);
     this._picker.addEventListener("mousedown", this._preventDefault);
     this._picker.addEventListener("touchstart", this._preventDefault);
-    this._input.addEventListener("input", this.validate);
+    this._input.addEventListener("input", this._handleInputChange);
     this._opts.forEach(opt => opt.addEventListener("change", this._updateSelectedOpts));
   }
 
@@ -117,9 +69,19 @@ export class Select extends TextField {
     this.removeEventListener("blur", this._hidePicker);
     this._picker.removeEventListener("mousedown", this._preventDefault);
     this._picker.removeEventListener("touchstart", this._preventDefault);
-    this._input.removeEventListener("input", this.validate);
+    this._input.removeEventListener("input", this._handleInputChange);
     this._opts.forEach(opt => opt.removeEventListener("change", this._updateSelectedOpts));
   }
+
+  private _handleInputChange = () => {
+    this._selectedOptsCount = this._opts.reduce((count, opt) => {
+      const val = opt.textContent || "";
+      opt.selected = (this._isMultiple || count > 0) && this._input.value.includes(val);
+      return count + Number(opt.selected);
+    }, 0);
+
+    this.validate();
+  };
 
   private _updateSelectedOpts = (evt: Event) => {
     const {target} = evt;
@@ -135,9 +97,9 @@ export class Select extends TextField {
         this._opts.forEach(opt => (opt.selected = false));
         target.selected = true;
         this._input.value = target.textContent || "";
-        this.blur();
       }
 
+      this.hasAttribute("autoclose") && this.blur();
       this.validate();
     }
   };
@@ -182,5 +144,4 @@ export class Select extends TextField {
   };
 }
 
-customElements.define("cx-option", Option);
 customElements.define("cx-select", Select);

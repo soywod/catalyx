@@ -62,7 +62,7 @@ Catalyx is a collection of native web components:
     - [X] Currency
 - [ ] Pickers
   - [X] Date
-  - [ ] Select
+  - [X] Select
   - [ ] File
 - [ ] Dialogs
   - [X] Tooltip
