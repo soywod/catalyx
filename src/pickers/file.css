@@ -1,0 +1,39 @@
+:host {
+  align-items: center;
+  background: var(--gray-light);
+  border: var(--border-dashed);
+  border-radius: var(--border-radius);
+  display: grid;
+  justify-items: center;
+  margin-bottom: var(--spacing-md);
+  transition: 125ms border;
+}
+
+:host(:hover),
+:host(:focus-within) {
+  border-color: var(--primary);
+  outline: none;
+}
+
+#input,
+#dropzone {
+  align-self: stretch;
+  grid-column: 1;
+  grid-row: 1;
+  justify-self: stretch;
+}
+
+#input {
+  cursor: pointer;
+  opacity: 0;
+}
+
+#dropzone {
+  display: flex;
+  font-family: var(--font-family);
+  font-size: var(--font-size-md);
+  justify-content: center;
+  line-height: var(--line-height-md);
+  padding: var(--spacing-lg);
+  pointer-events: none;
+}
