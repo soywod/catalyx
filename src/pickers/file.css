@@ -18,6 +18,7 @@
 #input,
 #dropzone {
   align-self: stretch;
+  color: var(--text-color);
   grid-column: 1;
   grid-row: 1;
   justify-self: stretch;
@@ -29,11 +30,40 @@
 }
 
 #dropzone {
-  display: flex;
+  display: grid;
   font-family: var(--font-family);
   font-size: var(--font-size-md);
   justify-content: center;
   line-height: var(--line-height-md);
   padding: var(--spacing-lg);
   pointer-events: none;
+  position: relative;
+  text-align: center;
+}
+
+.file:first-of-type {
+  margin-top: var(--spacing-sm);
+}
+
+#clear {
+  background: none;
+  border: none;
+  color: var(--disabled-color);
+  cursor: pointer;
+  font-size: var(--font-size-lg);
+  line-height: 1rem;
+  padding: var(--spacing-sm);
+  pointer-events: all;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: 125ms color;
+}
+
+#clear:hover {
+  color: var(--text-color);
+}
+
+#clear:focus {
+  outline: none;
 }

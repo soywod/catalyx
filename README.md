@@ -60,10 +60,10 @@ Catalyx is a collection of native web components:
     - [X] Integer
     - [X] Float
     - [X] Currency
-- [ ] Pickers
+- [X] Pickers
   - [X] Date
   - [X] Select
-  - [ ] File
+  - [X] File
 - [ ] Dialogs
   - [X] Tooltip
   - [X] Toast
